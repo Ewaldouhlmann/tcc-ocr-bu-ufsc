@@ -1,94 +1,181 @@
-# OCR — Digitalização de Obras Históricas
+# tcc-ocr-nupill
 
-Extração de texto de PDFs escaneados usando múltiplos motores de OCR.  
-Projeto desenvolvido em parceria com o NUPILL/UFSC.
+Benchmark e pipeline de OCR para digitalização de obras literárias históricas em português, desenvolvido como Trabalho de Conclusão de Curso no Departamento de Informática e Estatística da UFSC.
 
-## Estrutura
+O projeto avalia 13 ferramentas de OCR — desde motores clássicos (Tesseract, EasyOCR, PaddleOCR, DocTR) até modelos baseados em Transformer (TrOCR) e VLMs (Gemma 4, DeepSeek-VL2, Qwen2.5-VL, Mistral OCR, LlamaParse, Gemini 2.0 Flash) — sobre imagens escaneadas de obras literárias do acervo NUPILL/UFSC. O objetivo é identificar a ferramenta mais adequada para o contexto de textos históricos em português com características de degradação física e ortografia arcaica.
+
+---
+
+## Estrutura do repositório
 
 ```
-ocr_project/
-├── src/
-│   └── extrair_ocr.py   # script principal
-├── input/               # coloque os PDFs aqui (ignorado pelo git)
-├── output/              # resultados gerados (ignorado pelo git)
-├── requirements.txt
+tcc-ocr-nupill/
+│
+├── src/                        # Código-fonte principal (pacote Python)
+│   ├── __init__.py
+│   │
+│   ├── ocr/                    # Módulo de modelos OCR
+│   │   ├── __init__.py
+│   │   ├── base_ocr.py         # Classe abstrata BaseOCR
+│   │   ├── classical/          # Motores OCR clássicos
+│   │   │   ├── __init__.py
+│   │   │   ├── tesseract_ocr.py
+│   │   │   ├── easyocr_ocr.py
+│   │   │   ├── paddleocr_ocr.py
+│   │   │   └── doctr_ocr.py
+│   │   ├── transformer/        # Modelos baseados em Transformer
+│   │   │   ├── __init__.py
+│   │   │   ├── trocr_base.py
+│   │   │   └── trocr_large.py
+│   │   └── vlm/                # Modelos de visão-linguagem
+│   │       ├── __init__.py
+│   │       ├── gemma_ocr.py
+│   │       ├── deepseek_ocr.py
+│   │       ├── qwen_ocr.py
+│   │       ├── llamaparse_ocr.py
+│   │       ├── mistral_ocr.py
+│   │       └── gemini_ocr.py
+│   │
+│   ├── pipeline/               # Pipeline de extração completa
+│   │   ├── __init__.py
+│   │   ├── converter.py        # Conversão PDF → PNG
+│   │   └── extractor.py        # Orquestração do pipeline completo
+│   │
+│   └── postprocessing/         # Pós-processamento do texto extraído
+│       ├── __init__.py
+│       └── cleaner.py          # Normalização e limpeza de texto
+│
+├── benchmark/                  # Avaliação comparativa dos modelos
+│   ├── run_benchmark.py        # Ponto de entrada (CLI)
+│   ├── metrics.py              # Cálculo de WER, CER e relatórios
+│   └── ground_truth/           # Transcrições manuais de referência (.txt)
+│
+├── data/
+│   ├── corpus/                 # PDFs e PNGs das obras literárias
+│   │   ├── pdfs/               # Arquivos originais (não versionados)
+│   │   └── images/             # Páginas convertidas em PNG
+│   └── results/                # Saídas OCR organizadas por modelo/página
+│
+├── docs/                       # Análises, notebooks e documentação extra
+│
+├── .env.example                # Variáveis de ambiente necessárias (chaves de API)
+├── requirements.txt            # Dependências Python
 └── README.md
 ```
 
-## Modelos disponíveis
+---
 
-| Modelo | Característica | Indicado para |
-|---|---|---|
-| `tesseract` | Clássico, leve, fácil de instalar | Ponto de partida |
-| `easyocr` | Sem dependências externas, boa precisão | Uso geral |
-| `kraken` | Especializado em documentos históricos | Textos do séc. XIX/XX |
-| `paddleocr` | Estado da arte em benchmarks | Comparação acadêmica |
+## Hierarquia de classes
 
-## Instalação
+Todos os modelos herdam de `BaseOCR`, que define a interface comum:
 
-### 1. Tesseract
+```python
+# src/ocr/base_ocr.py
+from abc import ABC, abstractmethod
+from pathlib import Path
 
-**Windows:**  
-Baixe o instalador: https://github.com/UB-Mannheim/tesseract/wiki  
-Durante a instalação, selecione o idioma **Portuguese**.  
-Adicione `C:\Program Files\Tesseract-OCR` ao PATH.
+class BaseOCR(ABC):
 
-**Linux:**
-```bash
-sudo apt install tesseract-ocr tesseract-ocr-por poppler-utils
+    @abstractmethod
+    def recognize(self, image_path: Path) -> str:
+        """Recebe o caminho de uma imagem PNG e retorna o texto extraído."""
+        ...
+
+    def batch_recognize(self, image_paths: list[Path]) -> list[str]:
+        """Processa uma lista de imagens. Pode ser sobrescrito para otimização."""
+        return [self.recognize(p) for p in image_paths]
 ```
 
-### 2. Poppler (somente Windows)
+As subclasses são organizadas em três categorias:
 
-Baixe em: https://github.com/oschwartz10612/poppler-windows/releases  
-Extraia e adicione a pasta `bin/` ao PATH.
+| Categoria | Classe base intermediária | Modelos |
+|---|---|---|
+| OCR clássico | `ClassicalOCR(BaseOCR)` | Tesseract, EasyOCR, PaddleOCR, DocTR |
+| Transformer | `TransformerOCR(BaseOCR)` | TrOCR base-handwritten, TrOCR large-handwritten |
+| VLM | `VLMOCR(BaseOCR)` | Gemma 4, DeepSeek-VL2, Qwen2.5-VL, LlamaParse Free, LlamaParse Premium, Mistral OCR, Gemini 2.0 Flash |
 
-### 3. Dependências Python
+---
+
+## Requisitos
+
+- Python 3.10+
+- GPU NVIDIA com CUDA (recomendado para VLMs locais)
+- [Ollama](https://ollama.com/) instalado localmente (para Gemma 4, DeepSeek-VL2 e Qwen2.5-VL)
+- Chaves de API configuradas no `.env` (para LlamaParse, Mistral OCR e Gemini)
+
+Instalar dependências:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-> PaddleOCR requer instalação separada:
-> ```bash
-> pip install paddlepaddle paddleocr
-> ```
-
-## Uso
-
-Coloque o PDF na pasta `input/` e rode:
+Copiar e preencher variáveis de ambiente:
 
 ```bash
-# Tesseract (padrão)
-python src/extrair_ocr.py input/arquivo.pdf
-
-# Escolher outro modelo
-python src/extrair_ocr.py input/arquivo.pdf --modelo easyocr
-python src/extrair_ocr.py input/arquivo.pdf --modelo kraken
-python src/extrair_ocr.py input/arquivo.pdf --modelo paddleocr
-
-# Ajustar DPI (padrão 300)
-python src/extrair_ocr.py input/arquivo.pdf --dpi 400
+cp .env.example .env
+# editar .env com suas chaves de API
 ```
 
-## Saída
+---
 
-Os resultados ficam em `output/nome_do_arquivo/modelo/`:
+## Como usar
 
-| Arquivo | Conteúdo |
-|---|---|
-| `pagina_001.txt` | Texto extraído da página |
-| `pagina_001.json` | Palavras com posição `(x, y, largura, altura)` e confiança |
-| `resultado_completo.txt` | Texto de todas as páginas junto |
+### Converter PDFs em imagens
 
-A pasta de saída inclui o nome do modelo, então rodar dois modelos no mesmo PDF não sobrescreve os resultados:
+```bash
+python -m src.pipeline.converter \
+    --input data/corpus/pdfs/ \
+    --output data/corpus/images/ \
+    --dpi 300
 ```
-output/
-└── culto_mulher_01/
-    ├── tesseract/
-    │   ├── pagina_001.txt
-    │   └── resultado_completo.txt
-    └── easyocr/
-        ├── pagina_001.txt
-        └── resultado_completo.txt
+
+### Rodar o benchmark
+
+```bash
+python benchmark/run_benchmark.py \
+    --images data/corpus/images/amostra/ \
+    --ground-truth benchmark/ground_truth/ \
+    --models tesseract easyocr trocr-large gemma4 mistral \
+    --output data/results/
 ```
+
+### Rodar o pipeline completo no corpus
+
+```bash
+python -m src.pipeline.extractor \
+    --corpus data/corpus/pdfs/ \
+    --model mistral \
+    --output data/results/
+```
+
+---
+
+## Métricas de avaliação
+
+A métrica principal é o **WER** (Word Error Rate), calculado por comparação com as transcrições manuais de referência (*ground truth*). O **CER** (Character Error Rate) é reportado complementarmente para análise de erros em nível de caractere.
+
+```
+WER = (Substituições + Deleções + Inserções) / Total de palavras na referência
+```
+
+---
+
+## Corpus
+
+As obras utilizadas pertencem ao acervo do [NUPILL](https://nupill.ufsc.br/) (Núcleo de Pesquisas em Informática, Literatura e Linguística — UFSC). Os arquivos PDF originais **não são distribuídos neste repositório** por questões de direitos e tamanho. Consulte o NUPILL para acesso.
+
+---
+
+## Referências principais
+
+- LI, M. et al. TrOCR: Transformer-based OCR with Pre-trained Models. *arXiv:2109.10282*, 2021.
+- VESALAINEN, A. et al. Error patterns in historical OCR. *arXiv:2602.14524*, 2026.
+- DATA UNBOXED. OCR vs VLM-OCR: accuracy benchmark for scanned documents in 2025. Disponível em: https://www.dataunboxed.io/blog/ocr-vs-vlm-ocr-naive-benchmarking-accuracy-for-scanned-documents
+
+---
+
+## Autor
+
+**Ewaldo Uhlmann** — Ciências da Computação, UFSC  
+Orientador: Prof. Dr. Renato Fileto  
+Colaboração: Prof. Dr. Alckmar Luiz dos Santos (NUPILL)
