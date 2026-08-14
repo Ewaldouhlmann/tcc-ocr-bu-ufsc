@@ -1,13 +1,29 @@
 """Converte páginas de PDF em imagens PNG para uso no pipeline OCR."""
 
+import os
 from pathlib import Path
 import argparse
 
+from pdf2image import convert_from_path
+
 
 def convert_pdf_to_images(pdf_path: Path, output_dir: Path, dpi: int = 300) -> list[Path]:
-    """Converte um PDF em uma lista de imagens PNG, uma por página."""
-    # TODO: implementar com pdf2image
-    raise NotImplementedError
+    """Converte um PDF em uma lista de imagens PNG, uma por página.
+
+    Cada página é salva como "{numero_da_pagina:03d}.png" dentro de output_dir,
+    numerada a partir de 1, seguindo a resolução de 300 DPI descrita na
+    Seção 5.3 do TCC.
+    """
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    pages = convert_from_path(str(pdf_path), dpi=dpi, thread_count=os.cpu_count() or 1)
+
+    image_paths = []
+    for page_number, page in enumerate(pages, start=1):
+        image_path = output_dir / f"{page_number:03d}.png"
+        page.save(image_path, "PNG")
+        image_paths.append(image_path)
+    return image_paths
 
 
 def main():
