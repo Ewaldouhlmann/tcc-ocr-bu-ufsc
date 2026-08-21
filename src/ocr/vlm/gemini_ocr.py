@@ -28,4 +28,10 @@ class GeminiOCR(VLMOCR):
 
         image = Image.open(image_path)
         response = self._model.generate_content([self.PROMPT, image])
+
+        try:
+            self.last_tokens_used = response.usage_metadata.total_token_count
+        except AttributeError:
+            self.last_tokens_used = None
+
         return response.text

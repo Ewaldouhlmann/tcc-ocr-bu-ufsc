@@ -32,4 +32,10 @@ class OllamaVLM(VLMOCR):
                 }
             ],
         )
+
+        try:
+            self.last_tokens_used = response["prompt_eval_count"] + response["eval_count"]
+        except (KeyError, TypeError):
+            self.last_tokens_used = None
+
         return response["message"]["content"]

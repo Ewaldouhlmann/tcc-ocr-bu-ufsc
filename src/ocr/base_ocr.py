@@ -12,6 +12,12 @@ class BaseOCR(ABC):
     #: Nome curto que identifica o modelo nos resultados do benchmark.
     name: str = "base"
 
+    #: Tokens gastos na última chamada a recognize(), quando o modelo/serviço
+    #: expõe essa informação (VLMs via Ollama e Gemini). None quando não
+    #: aplicável (modelos clássicos, TrOCR) ou quando o serviço cobra por
+    #: página/crédito em vez de por token (LlamaParse, Mistral OCR).
+    last_tokens_used: int | None = None
+
     @abstractmethod
     def recognize(self, image_path: Path) -> str:
         """Recebe o caminho de uma imagem PNG e retorna o texto extraído."""
