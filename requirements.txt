@@ -5,6 +5,7 @@ pdf2image==1.17.0
 python-dotenv==1.0.1
 jiwer==3.0.5
 openpyxl==3.1.5
+pyyaml==6.0.2
 
 # EasyOCR
 easyocr==1.7.2

@@ -1,0 +1,180 @@
+# Catálogo de obras e modelos OCR — fonte única de metadados consumida pelo
+# pipeline (src/pipeline/converter.py, src/pipeline/extractor.py) e pelo
+# benchmark (benchmark/run_benchmark.py) via src/catalog.py.
+#
+# Dados de página/dificuldade da amostra de avaliação ficam em
+# benchmark/ground_truth/manifest.csv (Tabela 4.4 do TCC), não aqui.
+# CER/WER de literatura vêm de main.tex (tab:selecao_modelos) e são apenas
+# referência da triagem — não substituem os resultados do benchmark próprio.
+
+obras:
+  heloiza:
+    titulo: "Heloíza"
+    autor: "J. Mariano de Oliveira"
+    ano: "c. 1910"
+    total_paginas: 144
+    tipografia: "Séc. XX, serifada"
+    pdf: "data/corpus/pdfs/heloiza.pdf"
+
+  culto_mulher_v1:
+    titulo: "Culto à Mulher (vol. 1)"
+    autor: "J. Mariano de Oliveira"
+    ano: "c. 1920"
+    total_paginas: 254
+    tipografia: "Séc. XX, itálica"
+    pdf: "data/corpus/pdfs/culto_mulher_v1.pdf"
+
+  culto_mulher_v2:
+    titulo: "Culto à Mulher (vol. 2)"
+    autor: "J. Mariano de Oliveira"
+    ano: "1934"
+    total_paginas: 219
+    tipografia: "Séc. XX, monoespaçada"
+    pdf: "data/corpus/pdfs/culto_mulher_v2.pdf"
+
+  amante_militar:
+    titulo: "A Amante Militar"
+    autor: "Anônimo"
+    ano: "c. 1790"
+    total_paginas: 110
+    tipografia: "Séc. XVIII, arcaica"
+    pdf: "data/corpus/pdfs/amante_militar.pdf"
+
+  feliz_independente:
+    titulo: "O Feliz Independente"
+    autor: "Pe. T. de Melo"
+    ano: "c. 1779"
+    total_paginas: 1043
+    tipografia: "Séc. XVIII, arcaica"
+    pdf: "data/corpus/pdfs/feliz_independente.pdf"
+
+modelos:
+  tesseract:
+    nome: "Tesseract 5"
+    categoria: "classico"
+    arquivo: "src/ocr/classical/tesseract_ocr.py"
+    custo: "gratuito"
+    gpu: "nao"
+    cer_literatura: "30-50%"
+    wer_literatura: "45-65%"
+    observacoes: "Referência clássica; degrada com tipografia histórica"
+
+  easyocr:
+    nome: "EasyOCR"
+    categoria: "classico"
+    arquivo: "src/ocr/classical/easyocr_ocr.py"
+    custo: "gratuito"
+    gpu: "opcional"
+    cer_literatura: "20-35%"
+    wer_literatura: "35-55%"
+    observacoes: "Instalação simples; limitado em layouts complexos"
+
+  paddleocr:
+    nome: "PaddleOCR"
+    categoria: "classico"
+    arquivo: "src/ocr/classical/paddleocr_ocr.py"
+    custo: "gratuito"
+    gpu: "opcional"
+    cer_literatura: "18-32%"
+    wer_literatura: "30-50%"
+    observacoes: "Incompatibilidades de CUDA na instalação; sem modelo pt dedicado"
+
+  doctr:
+    nome: "DocTR"
+    categoria: "classico"
+    arquivo: "src/ocr/classical/doctr_ocr.py"
+    custo: "gratuito"
+    gpu: "opcional"
+    cer_literatura: "18-30%"
+    wer_literatura: "30-48%"
+    observacoes: "Pipeline moderno; sem modelo específico para português"
+
+  trocr-base:
+    nome: "TrOCR base-handwritten"
+    categoria: "transformer"
+    arquivo: "src/ocr/transformer/trocr_base.py"
+    custo: "gratuito"
+    gpu: "recomendada"
+    cer_literatura: "12-25%"
+    wer_literatura: "22-40%"
+    observacoes: "Melhor Transformer avaliado; sensível a degradação severa; requer segmentação de linhas via craft-text-detector"
+
+  trocr-large:
+    nome: "TrOCR large-handwritten"
+    categoria: "transformer"
+    arquivo: "src/ocr/transformer/trocr_large.py"
+    custo: "gratuito"
+    gpu: "recomendada"
+    cer_literatura: null
+    wer_literatura: null
+    observacoes: "Eliminado na triagem da Fase 2 (main.tex); mantido apenas para benchmark comparativo"
+
+  gemma4:
+    nome: "Gemma 4"
+    categoria: "vlm_local"
+    arquivo: "src/ocr/vlm/gemma_ocr.py"
+    custo: "gratuito"
+    gpu: "recomendada"
+    cer_literatura: "8-18%"
+    wer_literatura: "15-30%"
+    observacoes: "VLM local via Ollama; poucos benchmarks em documentos históricos"
+
+  deepseek:
+    nome: "DeepSeek-VL2"
+    categoria: "vlm_local"
+    arquivo: "src/ocr/vlm/deepseek_ocr.py"
+    custo: "gratuito"
+    gpu: "recomendada"
+    cer_literatura: "8-20%"
+    wer_literatura: "15-32%"
+    observacoes: "VLM local via Ollama; arquitetura MoE eficiente; poucos dados em português histórico"
+
+  qwen:
+    nome: "Qwen2.5-VL"
+    categoria: "vlm_local"
+    arquivo: "src/ocr/vlm/qwen_ocr.py"
+    custo: "gratuito"
+    gpu: "recomendada"
+    cer_literatura: "5-12%"
+    wer_literatura: "10-22%"
+    observacoes: "Modelo selecionado para o pipeline final (main.tex); melhor desempenho em documentos históricos entre os gratuitos"
+
+  llamaparse-free:
+    nome: "LlamaParse (Cost Effective)"
+    categoria: "vlm_api"
+    arquivo: "src/ocr/vlm/llamaparse_ocr.py"
+    custo: "pago (tier gratuito limitado)"
+    gpu: "nao"
+    cer_literatura: "6-14%"
+    wer_literatura: "12-25%"
+    observacoes: "Requer LLAMA_CLOUD_API_KEY; envio de dados a terceiros"
+
+  llamaparse-premium:
+    nome: "LlamaParse (Agentic)"
+    categoria: "vlm_api"
+    arquivo: "src/ocr/vlm/llamaparse_ocr.py"
+    custo: "pago"
+    gpu: "nao"
+    cer_literatura: "6-14%"
+    wer_literatura: "12-25%"
+    observacoes: "Requer LLAMA_CLOUD_API_KEY; envio de dados a terceiros"
+
+  mistral:
+    nome: "Mistral OCR"
+    categoria: "vlm_api"
+    arquivo: "src/ocr/vlm/mistral_ocr.py"
+    custo: "pago"
+    gpu: "nao"
+    cer_literatura: "5-12%"
+    wer_literatura: "10-20%"
+    observacoes: "Requer MISTRAL_API_KEY; imagem enviada em base64"
+
+  gemini:
+    nome: "Gemini 2.0 Flash"
+    categoria: "vlm_api"
+    arquivo: "src/ocr/vlm/gemini_ocr.py"
+    custo: "pago"
+    gpu: "nao"
+    cer_literatura: "5-10%"
+    wer_literatura: "9-18%"
+    observacoes: "Requer GEMINI_API_KEY; descontinuação prevista para jun./2026"

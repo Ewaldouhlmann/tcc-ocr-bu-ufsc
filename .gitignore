@@ -4,6 +4,11 @@ output/
 # PDFs de entrada (podem ser grandes)
 input/
 
+# Corpus (PDFs/PNGs, não versionados) e resultados do benchmark;
+# data/catalog.yaml continua versionado.
+data/corpus/
+data/results/
+
 # Python
 __pycache__/
 *.py[cod]
