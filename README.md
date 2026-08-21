@@ -129,6 +129,19 @@ python -m src.pipeline.converter \
     --dpi 300
 ```
 
+Converte o(s) PDF(s) inteiro(s). Para preparar só a amostra usada no benchmark
+(evita renderizar as 1043 páginas de *O Feliz Independente* pra usar 3), use
+`--manifest`, que converte apenas as páginas listadas em
+`benchmark/ground_truth/manifest.csv` — os PDFs de entrada devem se chamar
+`{obra_slug}.pdf` (ex.: `heloiza.pdf`, `feliz_independente.pdf`):
+
+```bash
+python -m src.pipeline.converter \
+    --input data/corpus/pdfs/ \
+    --output data/corpus/images/ \
+    --manifest
+```
+
 ### Rodar o benchmark
 
 ```bash

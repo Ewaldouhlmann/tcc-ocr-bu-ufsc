@@ -13,13 +13,18 @@ easyocr==1.7.2
 # Kraken (requer Python <=3.11, comentado para Python 3.13)
 # kraken==5.2.9
 
-# PaddleOCR (instale separado — depende do PaddlePaddle)
-# pip install paddlepaddle paddleocr
-# paddleocr==2.9.1
+# PaddleOCR (CPU; troque por paddlepaddle-gpu se houver CUDA)
+# ATENÇÃO: paddleocr instala opencv-python e opencv-contrib-python além do
+# opencv-python-headless já usado por easyocr/doctr; ter as 3 variantes ao
+# mesmo tempo quebra "import cv2" (AttributeError em cv2.dnn.DictValue). Após
+# instalar este arquivo, rode:
+#   pip uninstall -y opencv-python opencv-contrib-python opencv-python-headless
+#   pip install opencv-python-headless==4.11.0.86
+paddlepaddle==2.6.2
+paddleocr==2.9.1
 
-# DocTR (instale separado — escolha o backend; usamos torch)
-# pip install "python-doctr[torch]"
-# python-doctr==0.9.0
+# DocTR (backend PyTorch)
+python-doctr[torch]==1.0.1
 
 # TrOCR (Transformer) + segmentação de linhas
 transformers>=4.46
