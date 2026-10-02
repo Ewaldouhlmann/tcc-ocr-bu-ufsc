@@ -26,3 +26,9 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Chaves de API (usar .env.example como modelo)
+.env
+
+# Páginas de teste da EDA (regeneráveis com eda/pagina_sintetica.py)
+eda/dados/paginas/

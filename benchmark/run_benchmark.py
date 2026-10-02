@@ -18,6 +18,11 @@ from src.ocr import MODEL_REGISTRY  # noqa: E402
 
 AVAILABLE_MODELS = list(MODEL_REGISTRY.keys())
 
+# Excluídos antes dos experimentos por dependerem de GPU (Seção "Modelos
+# Excluídos por Requisito de GPU" do TCC). Continuam disponíveis via --models
+# explícito, mas não entram em "all".
+EXCLUDED_MODELS = {"trocr-base", "trocr-large"}
+
 DEFAULT_MANIFEST = Path(__file__).resolve().parent / "ground_truth" / "manifest.csv"
 
 
@@ -141,7 +146,7 @@ def main():
     parser.add_argument("--output", required=True, help="Pasta para salvar resultados")
     args = parser.parse_args()
 
-    models = AVAILABLE_MODELS if "all" in args.models else args.models
+    models = [m for m in AVAILABLE_MODELS if m not in EXCLUDED_MODELS] if "all" in args.models else args.models
     manifest = load_manifest(Path(args.manifest))
     output_dir = Path(args.output)
     output_dir.mkdir(parents=True, exist_ok=True)

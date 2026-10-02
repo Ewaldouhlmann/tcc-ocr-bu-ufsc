@@ -28,6 +28,14 @@ class LlamaParseOCR(VLMOCR):
 
     def recognize(self, image_path: Path) -> str:
         documents = self._parser.load_data(str(image_path))
+        # O SDK não lança exceção em falhas de autenticação/crédito: apenas
+        # registra o erro e devolve lista vazia, o que viraria CER de 100% no
+        # benchmark sem aviso.
+        if not documents:
+            raise RuntimeError(
+                f"LlamaParse não retornou conteúdo para {image_path} "
+                "(verifique LLAMA_CLOUD_API_KEY e créditos da conta)"
+            )
         return "\n".join(doc.text for doc in documents)
 
 
@@ -47,3 +55,18 @@ class LlamaParsePremiumOCR(LlamaParseOCR):
 
     name = "llamaparse-premium"
     parse_mode = "parse_page_with_agent"
+
+
+class LlamaParseLVMOCR(LlamaParseOCR):
+    """Modo com modelo de visão (LVM): cada página é transcrita por um modelo
+    multimodal do provedor, sem o pipeline agêntico."""
+
+    name = "llamaparse-lvm"
+    parse_mode = "parse_page_with_lvm"
+
+
+class LlamaParseLayoutAgentOCR(LlamaParseOCR):
+    """Modo agêntico com foco em layout (o mais sofisticado da API)."""
+
+    name = "llamaparse-layout"
+    parse_mode = "parse_page_with_layout_agent"

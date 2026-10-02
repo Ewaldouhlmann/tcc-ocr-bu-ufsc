@@ -50,6 +50,14 @@ class TransformerOCR(BaseOCR):
 
     def __init__(self, device: str | None = None):
         import torch
+        import torchvision.models.vgg as tv_vgg
+
+        # O craft-text-detector (sem manutenção) importa model_urls, removido
+        # do torchvision 0.13+. Recriar a constante basta para ele carregar.
+        if not hasattr(tv_vgg, "model_urls"):
+            tv_vgg.model_urls = {
+                "vgg16_bn": "https://download.pytorch.org/models/vgg16_bn-6c64b313.pth"
+            }
         from craft_text_detector import Craft
         from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 

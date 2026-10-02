@@ -97,7 +97,7 @@ modelos:
     gpu: "recomendada"
     cer_literatura: "12-25%"
     wer_literatura: "22-40%"
-    observacoes: "Melhor Transformer avaliado; sensível a degradação severa; requer segmentação de linhas via craft-text-detector"
+    observacoes: "Excluído antes dos experimentos por exigir GPU (inferência linha a linha + CRAFT); craft-text-detector incompatível com torchvision atual"
 
   trocr-large:
     nome: "TrOCR large-handwritten"
@@ -107,7 +107,7 @@ modelos:
     gpu: "recomendada"
     cer_literatura: null
     wer_literatura: null
-    observacoes: "Eliminado na triagem da Fase 2 (main.tex); mantido apenas para benchmark comparativo"
+    observacoes: "Excluído antes dos experimentos por exigir GPU (inferência linha a linha + CRAFT); craft-text-detector incompatível com torchvision atual"
 
   gemma4:
     nome: "Gemma 4"

@@ -1,0 +1,31 @@
+% Gerado automaticamente por eda/analise.py -- não editar à mão.
+\begin{table}[H]
+\centering
+\caption{Perfil de execução dos modelos nas páginas sintéticas (A5, 300~DPI), no
+ambiente da Tabela~\ref{tab:ambiente}.}
+\label{tab:eda_resumo}
+\renewcommand{\arraystretch}{1.25}
+{\small
+\begin{tabular}{l r r r r r r}
+\hline
+& \multicolumn{3}{c}{\textbf{Tempo (s)}} & \textbf{RAM} & \multicolumn{2}{c}{\textbf{CER (\%)}} \\
+\textbf{Modelo} & \textbf{Carga} & \textbf{Limpa} & \textbf{Degr.} & \textbf{pico (MB)} & \textbf{Limpa} & \textbf{Degr.} \\
+\hline
+Tesseract & 0,3 & 1,6 & 3,3 & 225 & 0,2 & 16,2 \\
+EasyOCR & 4,8 & 24,5 & 26,8 & 4.302 & 0,9 & 0,6 \\
+PaddleOCR & 4,1 & 2,2 & 2,2 & 1.462 & 1,4 & 2,0 \\
+DocTR & 7,4 & 8,6 & 9,3 & 1.782 & 1,5 & 1,5 \\
+\hline
+Qwen2.5-VL 3B$^{*}$ & 0,5 & 507,0 & -- & 6.097 & 0,6 & -- \\
+Qwen3-VL 2B$^{*}$ & 0,6 & 890,4 & -- & 4.758 & 100,0 & -- \\
+GLM-OCR & 0,7 & 450,4 & 438,4 & 3.749 & 0,1 & 0,1 \\
+\hline
+LlamaParse & 2,1 & 12,1 & 22,2 & 181 & 0,0 & 0,0 \\
+Mistral OCR$^{*}$ & 0,7 & -- & -- & 162 & -- & -- \\
+Gemini 3.8 Flash$^{*}$ & 1,3 & -- & -- & 189 & 0,0 & -- \\
+\hline
+\end{tabular}
+}
+\fonte{Elaborado pelo autor.}
+\par\footnotesize{$^{*}$ Qwen2.5-VL 3B: servidor do Ollama interrompido durante a inferência; Qwen3-VL 2B: tempo limite excedido; Mistral OCR: limite de requisições da API atingido (tempos omitidos, pois incluem as novas tentativas automáticas do cliente); Gemini 3.8 Flash: limite de requisições da API atingido (tempos omitidos, pois incluem as novas tentativas automáticas do cliente).}
+\end{table}

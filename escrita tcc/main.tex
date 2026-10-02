@@ -1,39 +1,35 @@
 %=====================================================================
 % TRABALHO DE CONCLUSÃO DE CURSO (TCC)
 % Universidade Federal de Santa Catarina (UFSC)
-% Título: Reconhecimento de Texto em Imagens de Obras Literárias 
+% Título: Reconhecimento de Texto em Imagens de Obras Literárias
 %         Antigas em Português
 % Autor: Ewaldo Uhlmann
-% Orientador: Prof. Dr. Renato Fileto
+% Orientador: Prof. Renato Fileto, Dr.
 % Ano: 2026
+%
+% Formatação: classe ufsc-thesis-rn46-2019 (v0.11.0), que estende o
+% abnTeX2 com as regras da BU/UFSC para TCCs.
+% https://github.com/alexishuf/ufsc-thesis-rn46-2019
+% O arquivo ufsc-thesis-rn46-2019.cls e o logo-ufsc.pdf precisam ficar
+% no mesmo diretório deste main.tex (inclusive no Overleaf).
 %=====================================================================
 
-\documentclass[
-  12pt,
-  oneside,
-  a4paper,
-  chapter=TITLE,
-  section=TITLE,
-  english,
-  brazil
-]{abntex2}
+% noabntexcite: a classe carrega o abntex2cite em modo autor-data (alf);
+% aqui mantemos o sistema numérico já usado no texto (carregado abaixo).
+\documentclass[noabntexcite]{ufsc-thesis-rn46-2019}
 
 %=====================================================================
 % PACOTES ESSENCIAIS
 %=====================================================================
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage{indentfirst}
-\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{placeins}
-\usepackage[num]{abntex2cite}
+\usepackage[num,abnt-emphasize=bf,abnt-doi=doi,abnt-url-package=url]{abntex2cite}
 
 \newcommand{\attention}[1]{{\color{red}#1}}
 \newcommand{\propFileto}[1]{\textcolor{blue}{#1}}
@@ -45,96 +41,66 @@
 \newcommand{\topic}[1]{\textit{\textcolor{gray}{[TODO: #1]}}}
 
 %=====================================================================
-% CONFIGURAÇÕES DE APARÊNCIA
-%=====================================================================
-\makeatletter
-\hypersetup{
-    pdftitle={\@title}, 
-    pdfauthor={\@author},
-    pdfsubject={\imprimirpreambulo},
-    pdfcreator={LaTeX with abntex2},
-    colorlinks=true,
-    linkcolor=black,
-    citecolor=black,
-    filecolor=magenta,
-    urlcolor=blue,
-    bookmarksdepth=4
-}
-\makeatother
-
-%=====================================================================
 % INFORMAÇÕES DO TRABALHO
 %=====================================================================
 \titulo{Reconhecimento de Texto em Imagens de Obras Literárias Antigas em Português}
-
 \autor{Ewaldo Uhlmann}
-
-\orientador{Prof. Dr. Renato Fileto}
-
 \local{Florianópolis}
+\ano{2026}
+\mes{dezembro}   % TODO: ajustar para o mês da defesa
+\dia{4}          % TODO: ajustar para o dia da defesa
+\instituicao{Universidade Federal de Santa Catarina}
+\centro{Centro Tecnológico}
 
-\data{2026}
+\tcc
+\departamento{Departamento de Informática e Estatística}
+\curso{Ciências da Computação}
+\titulode{Bacharel em Ciências da Computação}
 
-\instituicao{Universidade Federal de Santa Catarina \par Centro Tecnológico \par
-Departamento de Informática e Estatística}
+% A BU exige o título (Dr.) depois do nome.
+\orientador{Prof. Renato Fileto, Dr.}
+\coorientador{Prof. Alckmar Luiz dos Santos, Dr.}
 
-\tipotrabalho{Trabalho de Conclusão de Curso}
+% TODO: definir a banca. Use \membrabanca para avaliadoras.
+% \membrobanca{Prof. Nome Sobrenome, Dr.}{Universidade Federal de Santa Catarina}
 
-\preambulo{Trabalho de Conclusão de Curso submetido ao Curso de Graduação em Ciências
-da Computação da Universidade Federal de Santa Catarina para a obtenção do Grau de
-Bacharel em Ciências da Computação.}
+% Desde os modelos de 24/03/2025 o nome do coordenador não é impresso (a
+% assinatura é digital), mas o comando é necessário para o bloco aparecer.
+\coordenador{Coordenação do Curso}
 
 %=====================================================================
-% AJUSTES DE ESPAÇAMENTO
+% AJUSTES
 %=====================================================================
-\setlength{\parindent}{1.3cm}
-\setlength{\parskip}{0.2cm}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue,
+    bookmarksdepth=4
+}
 
 %=====================================================================
 % INÍCIO DO DOCUMENTO
 %=====================================================================
 \begin{document}
 
-\selectlanguage{brazil}
-\frenchspacing
-\OnehalfSpacing
-
 %=====================================================================
 % ELEMENTOS PRÉ-TEXTUAIS
 %=====================================================================
-
+\pretextual
 \imprimircapa
-
-\imprimirfolhaderosto
-
-\begin{folhadeaprovacao}
-  \begin{center}
-    {\ABNTEXchapterfont\large\imprimirautor}
-    \vspace*{\fill}\vspace*{\fill}
-    \begin{center}
-      \ABNTEXchapterfont\bfseries\Large\imprimirtitulo
-    \end{center}
-    \vspace*{\fill}
-    \hspace{.45\textwidth}
-    \begin{minipage}{.5\textwidth}
-        \imprimirpreambulo
-    \end{minipage}%
-    \vspace*{\fill}
-   \end{center}
-   \begin{center}
-   Este trabalho foi julgado adequado para obtenção do Título de Bacharel em
-   Ciências da Computação e aprovado em sua forma final pela banca examinadora.
-   \end{center}
-   \vspace*{\fill}
-   \begin{center}
-     Florianópolis, 30 de Abril de 2026
-   \end{center}
-\end{folhadeaprovacao}
+\imprimirfolhaderosto*
+% Sem este \cleardoublepage a folha de aprovação sai antes da folha de rosto.
+\cleardoublepage
+% Ficha catalográfica: gerada pela BU após a defesa
+% (https://ficha.bu.ufsc.br/). Descomente quando tiver o PDF.
+% \protect\incluirfichacatalografica{ficha.pdf}
+\imprimirfolhadeaprovacao
 
 %---------------------------------------------------------------------
 % RESUMO
 %---------------------------------------------------------------------
-\begin{resumo}
+\begin{resumo}[Resumo]
 
 Este trabalho investiga a aplicação de técnicas de reconhecimento óptico de caracteres
 (OCR) em obras literárias históricas em português pertencentes ao acervo do NUPILL
@@ -151,20 +117,17 @@ então empregada na extração e transcrição completa de uma obra do acervo. O
 metodológicas que visam orientar iniciativas similares de digitalização de acervos
 históricos em português.
 
-\vspace{\onelineskip}
-
-\noindent
-\textbf{Palavras-chave}: reconhecimento óptico de caracteres; obras literárias
-históricas; literatura brasileira; avaliação comparativa de ferramentas;
-digitalização de acervos.
+\vspace{\baselineskip}
+\textbf{Palavras-chave:} Reconhecimento óptico de caracteres. Obras literárias
+históricas. Literatura brasileira. Avaliação comparativa de ferramentas.
+Digitalização de acervos.
 
 \end{resumo}
 
 %---------------------------------------------------------------------
 % ABSTRACT
 %---------------------------------------------------------------------
-\begin{resumo}[Abstract]
-\selectlanguage{english}
+\begin{abstract}
 
 This work investigates the application of Optical Character Recognition (OCR) techniques
 to historical literary works in Portuguese from the NUPILL collection (Núcleo de
@@ -179,15 +142,11 @@ a work from the collection. The process is structured as a replicable pipeline,
 accompanied by methodological guidelines intended to support similar digitization
 initiatives for historical documents in Portuguese.
 
-\vspace{\onelineskip}
+\vspace{\baselineskip}
+\textbf{Keywords:} Optical character recognition. Historical literary works. Brazilian
+literature. Comparative tool evaluation. Document digitization.
 
-\noindent
-\textbf{Keywords}: optical character recognition; historical literary works; Brazilian
-literature; comparative tool evaluation; document digitization.
-
-\end{resumo}
-
-\selectlanguage{brazil}
+\end{abstract}
 
 %---------------------------------------------------------------------
 % AGRADECIMENTOS
@@ -231,14 +190,12 @@ a manutenção da memória cultural e para a disponibilização de fontes primá
 comunidade acadêmica. No caso específico da literatura brasileira do século XIX e XX,
 muitos textos de importância histórica e intelectual encontram-se em estado físico
 deteriorado, com acesso restrito ou disponíveis apenas em acervos especializados. A
-digitalização automatizada dessas obras é uma estratégia que permite não apenas a
-preservação de seu conteúdo, mas também a democratização do acesso e a viabilização
-de análises computacionais em larga escala.
+digitalização automatizada dessas obras preserva seu conteúdo, amplia o acesso a elas
+e torna possíveis análises computacionais em larga escala.
 
 O reconhecimento óptico de caracteres (OCR --- \textit{Optical Character Recognition})
-emerge como a tecnologia fundamental para transformar imagens de documentos em texto
-editável e processável. Contudo, o desempenho de sistemas OCR varia significativamente
-em função das características físicas dos documentos, da qualidade da digitalização e
+é a tecnologia usada para transformar imagens de documentos em texto editável e
+processável. O desempenho de sistemas OCR, porém, varia bastante em função das características físicas dos documentos, da qualidade da digitalização e
 das particularidades linguísticas do texto. Documentos históricos apresentam desafios
 específicos: degradação do papel, variações tipográficas características da época,
 entintamento desigual, e, no caso do português, a presença de diacríticos e de
@@ -247,40 +204,37 @@ Apesar da disponibilidade de ferramentas de reconhecimento óptico de caracteres
 ainda há pouca sistematização sobre como aplicá-las de forma eficaz em documentos
 antigos em português, especialmente aqueles que apresentam degradação física, variações tipográficas e ortografia não padronizada \cite{clausner2011}.
 
-
-
 \section{Contextualização e Justificativa}
 
 Universidades brasileiras e outras instituições vêm ampliando esforços para digitalizar
-acervos históricos, buscando não apenas preservar obras antigas, mas também torná-las
-acessíveis para novas formas de pesquisa \cite{terras2013}. O
+acervos históricos, para preservar obras antigas e torná-las acessíveis a novas formas
+de pesquisa \cite{terras2013}. O
 NUPILL\footnote{\url{https://nupill.ufsc.br/}} (Núcleo de Pesquisas em Informática,
 Literatura e Linguística) da Universidade
 Federal de Santa Catarina (UFSC) é um exemplo desse movimento, atuando na interseção
 entre tecnologia e estudos literários.
 O NUPILL dedica-se ao estudo de acervos literários históricos,
 combinando abordagens da literatura com métodos computacionais. Como parte de seus
-objetivos, o NUPILL busca digitalizar e disponibilizar obras 
+objetivos, o NUPILL busca digitalizar e disponibilizar obras
 para a pesquisa em Humanidades Digitais.
 A conversão de documentos para texto digital não se limita à preservação, mas
 também viabiliza novas formas de uso, como busca textual, indexação e análises em larga
-escala \cite{burdick2012}, ampliando significativamente o potencial de pesquisa.
+escala \cite{burdick2012}.
 
-
-Dentro desse contexto, obras literárias do século XIX presentes no acervo do NUPILL
-ilustram bem os desafios envolvidos. Esses materiais frequentemente apresentam
+As obras literárias do século XIX do acervo do NUPILL ilustram bem esses desafios. Esses materiais frequentemente apresentam
 degradação física, variações tipográficas e ortografia não padronizada, o que dificulta
 sua digitalização por métodos tradicionais.
-Do ponto de vista tecnológico, o OCR evoluiu significativamente nos últimos anos.
+Do ponto de vista tecnológico, o OCR avançou muito nos últimos anos.
 Modelos baseados em arquiteturas de Transformers, como o TrOCR, têm apresentado
 desempenho superior em diversas tarefas de reconhecimento de texto \cite{huang2021}.
-Ainda assim, existe uma lacuna importante: pouco se sabe sobre o comportamento desses
+Ainda assim, pouco se sabe sobre o comportamento desses
 modelos quando aplicados a textos históricos em português, especialmente aqueles do
 século XIX \cite{smith2019}.
 
-Este trabalho se insere no contexto da digitalização de documentos antigos como presentes no acervo do NUPILL. O objetivo não é apenas digitalizar um corpus
-específico, mas compreender e documentar o processo de aplicação de técnicas de OCR
-nesse contexto, de forma que o processo a ser desenvolvido neste trabalho possa ser replicado e adaptado para outras obras literárias.
+Este trabalho trata da digitalização de documentos antigos como os do acervo do NUPILL.
+Além de digitalizar um corpus específico, busca-se compreender e documentar a aplicação
+de técnicas de OCR a esse tipo de material, de forma que o processo desenvolvido possa
+ser replicado e adaptado para outras obras literárias.
 
 \section{Objetivos}
 
@@ -412,9 +366,8 @@ digitalização de obras antigas em português.
 O Reconhecimento Óptico de Caracteres (OCR) é a tecnologia que transforma imagens de
 texto em formatos legíveis por máquina, permitindo a conversão de documentos impressos
 ou manuscritos em texto digital editável e processável \cite{OneAdvanced2022}.
-Historicamente, a tecnologia tem raízes profundas: em 1914, o físico Emanuel Goldberg
-inventou uma máquina que podia ler caracteres e convertê-los em código telegráfico,
-marcando um dos primeiros passos da OCR \cite{Incode2025}.
+A tecnologia é antiga: em 1914, o físico Emanuel Goldberg inventou uma máquina capaz
+de ler caracteres e convertê-los em código telegráfico \cite{Incode2025}.
 
 \subsection{Evolução Histórica do OCR}
 
@@ -449,12 +402,12 @@ Figura~\ref{fig:ocr_pipeline} ilustra as principais fases deste processo.
 
 \subsection{Papel do OCR em Projetos de Digitalização de Acervos}
 
-O OCR tornou-se fundamental para iniciativas de preservação digital de acervos literários
-históricos. Bibliotecas, arquivos e instituições de pesquisa utilizam OCR para digitalizar
+O OCR está presente na maior parte das iniciativas de preservação digital de acervos
+literários históricos. Bibliotecas, arquivos e instituições de pesquisa utilizam OCR para digitalizar
 coleções de obras antigas, transformando volumes frágeis e degradados em formatos
-acessíveis e pesquisáveis. Essa transformação não apenas preserva o conteúdo, mas também
-democratiza o acesso e viabiliza novas formas de pesquisa e análise que dependem de texto
-processável por máquina \cite{EmergenMind2025}.
+acessíveis e pesquisáveis. Além de preservar o conteúdo, isso facilita o acesso às obras
+e permite pesquisas que dependem de texto processável por máquina
+\cite{EmergenMind2025}.
 
 %---------------------------------------------------------------------
 \section{Principais Técnicas de OCR}
@@ -463,9 +416,8 @@ processável por máquina \cite{EmergenMind2025}.
 
 A evolução dos sistemas de reconhecimento óptico de caracteres produziu quatro gerações
 tecnológicas distintas, cada uma com princípios de funcionamento, pontos fortes e
-limitações próprios. Compreender essas diferenças é essencial para justificar a escolha
-de ferramentas em contextos específicos, como o de obras literárias antigas em
-português. O \textbf{OCR Clássico} opera por segmentação de caracteres e correspondência
+limitações próprios. Essas diferenças orientam a escolha de ferramentas para cada tipo
+de material, como as obras literárias antigas em português. O \textbf{OCR Clássico} opera por segmentação de caracteres e correspondência
 com padrões pré-definidos, sendo leve e reprodutível, mas frágil diante de degradação
 física. O \textbf{OCR baseado em Aprendizado Profundo} combina redes convolucionais
 (CNN) com redes recorrentes (LSTM) para processar linhas de texto, generalizando melhor
@@ -641,12 +593,14 @@ O \href{https://huggingface.co/microsoft/trocr-base-handwritten}{\textbf{TrOCR}}
 \href{https://huggingface.co/microsoft/trocr-base-handwritten}{Hugging Face} sob licença
 MIT, que combina um encoder Vision Transformer (ViT) com um decoder de linguagem baseado
 em Transformer em uma arquitetura \textit{encoder-decoder} pré-treinada em larga escala.
-São avaliadas duas variantes:
+Foram consideradas inicialmente duas variantes:
 \href{https://huggingface.co/microsoft/trocr-base-handwritten}{\texttt{base-handwritten}}
 e
 \href{https://huggingface.co/microsoft/trocr-large-handwritten}{\texttt{large-handwritten}},
 ambas treinadas em dados de texto manuscrito e impresso. O uso de GPU é recomendado para
-tempo de inferência aceitável, especialmente na variante \textit{large}.
+tempo de inferência aceitável, especialmente na variante \textit{large}. Por esse
+motivo, ambas as variantes foram excluídas antes da execução dos experimentos, como
+discutido na Seção~\ref{sec:excluidos}.
 
 \subsection{Modelos de Visão-Linguagem (VLMs)}
 
@@ -691,7 +645,7 @@ na qualidade esperada do reconhecimento.
 
 O \href{https://mistral.ai/news/mistral-ocr}{\textbf{Mistral OCR}} \cite{mistral2025}
 é um serviço da Mistral AI acessado via API, cobrado a US\$\,2,00 por mil páginas no
-modo padrão e US\$\,1,00 via Batch API. Destaca-se pelo suporte a documentos com layouts
+modo padrão e US\$\,1,00 via Batch API, e oferece suporte a documentos com layouts
 complexos e fórmulas matemáticas.
 
 O \href{https://ai.google.dev/gemini-api/docs/models}{\textbf{Gemini~2.0~Flash}}
@@ -707,7 +661,7 @@ principais: cobertura das quatro gerações tecnológicas descritas na
 Seção~\ref{sec:tecnicas} e relevância em benchmarks recentes aplicados a documentos
 complexos \cite{dataunboxed2025,vesalainen2025}. Selecionamos para este estudo ao menos
 uma ferramenta de cada geração tecnológica, dentre as mais populares e bem avaliadas na
-literatura e na Web, para garantir uma avaliação abrangente. Porém, optamos por
+literatura e na Web. Porém, optamos por
 selecionar um maior número de ferramentas mais recentes, por serem mais promissoras
 para lidar com os desafios do OCR em obras antigas. O \textbf{Tesseract~5} foi incluído por
 ser a referência canônica de código aberto, amplamente utilizado como \textit{baseline}
@@ -716,15 +670,18 @@ oferecerem suporte explícito ao português e instalação simplificada, enquant
 \textbf{DocTR} se destaca por integrar detecção e reconhecimento em um único pipeline
 moderno baseado em aprendizado profundo.
 
-Na categoria Transformer, o \textbf{TrOCR} é avaliado em duas variantes
+Na categoria Transformer, o \textbf{TrOCR} foi considerado em duas variantes
 (\texttt{base} e \texttt{large}) por ser o modelo mais citado na literatura de OCR
-histórico \cite{huang2021}. Entre os VLMs locais, o \textbf{Gemma~4}, o
+histórico \cite{huang2021}, mas acabou excluído antes dos experimentos por depender
+de GPU (Seção~\ref{sec:excluidos}). Entre os VLMs locais, o \textbf{Gemma~4}, o
 \textbf{DeepSeek-VL2} e o \textbf{Qwen2.5-VL} foram selecionados por serem executáveis
 sem custo via Ollama e por aparecerem em benchmarks recentes com desempenho competitivo
 \cite{vesalainen2025}. Por fim, entre os serviços via API, o \textbf{LlamaParse} (nas
 camadas gratuita e premium), o \textbf{Mistral OCR} e o \textbf{Gemini~2.0~Flash} foram
 incluídos para cobrir o espectro de soluções comerciais com diferentes relações
-custo-desempenho, permitindo comparação direta com as alternativas locais.
+custo-desempenho, permitindo comparação direta com as alternativas locais. Parte dessas
+ferramentas acabou excluída antes dos experimentos, por limitações de hardware,
+disponibilidade, custo ou acesso às APIs, como detalhado na Seção~\ref{sec:excluidos}.
 
 A Tabela~\ref{tab:ferramentas_fund} apresenta uma visão consolidada de todas as
 ferramentas, indicando para cada uma: a categoria tecnológica, a licença de uso, a forma
@@ -851,15 +808,14 @@ afeta apenas um caractere na métrica CER, mas pode afetar uma ou mais palavras 
 WER. Por exemplo, uma taxa de CER de 5\% pode corresponder a uma WER de 25\% ou superior,
 dependendo da estrutura da língua \cite{WaterCrawl2025}.
 
-Para avaliação abrangente de sistemas OCR, ambas as métricas devem ser reportadas, pois
-capturam diferentes aspectos da qualidade: CER fornece informações sobre precisão em nível
+Por isso, convém reportar as duas métricas, que capturam aspectos diferentes da
+qualidade: CER fornece informações sobre precisão em nível
 fino, enquanto WER mede o impacto prático dos erros na legibilidade de
 palavras \cite{TowardsDataScience2025}.
 
 \subsection{Acurácia em Diferentes Contextos}
 
-É importante notar que a precisão do OCR varia significativamente conforme o tipo de
-material. Texto impresso limpo e bem digitalizado pode alcançar precisão de 95--99\% com
+A precisão do OCR varia muito conforme o tipo de material. Texto impresso limpo e bem digitalizado pode alcançar precisão de 95--99\% com
 mecanismos modernos, enquanto obras históricas, layouts complexos e imagens de baixa
 qualidade tipicamente ficam no intervalo de 50--90\% de acurácia \cite{PictureText2025}.
 Essa variação reflete a dificuldade aumentada de processar publicações que se desviam do
@@ -867,9 +823,9 @@ padrão de texto moderno bem-definido.
 
 \subsection{Validação Qualitativa e Inspeção Manual}
 
-Além de métricas quantitativas como CER e WER, a validação qualitativa por meio de
-inspeção visual dos resultados é essencial. Essa análise permite a categorização dos
-erros em duas categorias principais:
+As métricas quantitativas não mostram que tipo de erro o modelo comete. Para isso,
+usa-se a inspeção visual dos resultados, que permite classificar os erros em duas
+categorias principais:
 
 \begin{itemize}
     \item \textit{Erros Sistemáticos}: ocorrem de forma recorrente sob determinadas
@@ -899,7 +855,7 @@ organizados em três eixos temáticos: a Seção~\ref{sec:ocr_historico} discute
 voltadas ao OCR em documentos históricos e degradados de forma geral, abordando técnicas
 de pré-processamento, arquiteturas de reconhecimento e os principais desafios do domínio.
 A Seção~\ref{sec:ocr_portugues} focaliza especificamente o estado da arte em OCR para a
-língua portuguesa, evidenciando a escassez de recursos e modelos dedicados ao idioma.
+língua portuguesa, que ainda conta com poucos recursos e modelos dedicados.
 Por fim, a Seção~\ref{sec:ocr_historico_pt} restringe o escopo à interseção entre OCR e
 documentos históricos escritos em português, situando o presente trabalho em relação às
 iniciativas mais próximas do problema aqui tratado.
@@ -917,15 +873,16 @@ específicos, sem valor de embasamento teórico.
 
 As buscas foram realizadas tanto em português quanto em inglês, combinando termos
 relacionados à tecnologia de OCR, ao domínio de aplicação e ao idioma-alvo. Entre as
-palavras-chave utilizadas estão: "OCR ferramentas comparação", "\textit{OCR
-documentos históricos português}", "\textit{reconhecimento óptico de caracteres avaliação}",
-\textit{"OCR manuscritos históricos português}", "\textit{historical OCR benchmark}",
-\textit{"vision-language model OCR historical documents}", "\textit{Handwritten Text
-Recognition historical documents}", \textit{"OCR post-correction Portuguese};",\textit{"large
-language model OCR correction}", "\textit{Character Error Rate" ,"Word Error Rate" e "OCR
-evaluation}". Buscas adicionais e mais específicas foram realizadas a partir dos nomes de
-ferramentas e modelos identificados nas etapas anteriores (ex: \textit{"Tesseract
-EasyOCR PaddleOCR TrOCR comparison"}), bem como a partir de autores e termos citados por
+palavras-chave utilizadas estão: ``OCR ferramentas comparação'', ``OCR documentos
+históricos português'', ``reconhecimento óptico de caracteres avaliação'', ``OCR
+manuscritos históricos português'', ``\textit{historical OCR benchmark}'',
+``\textit{vision-language model OCR historical documents}'', ``\textit{Handwritten Text
+Recognition historical documents}'', ``\textit{OCR post-correction Portuguese}'',
+``\textit{large language model OCR correction}'', ``\textit{Character Error Rate}'',
+``\textit{Word Error Rate}'' e ``\textit{OCR evaluation}''. Buscas adicionais e mais
+específicas foram realizadas a partir dos nomes de ferramentas e modelos identificados nas
+etapas anteriores (por exemplo, ``\textit{Tesseract EasyOCR PaddleOCR TrOCR
+comparison}''), bem como a partir de autores e termos citados por
 trabalhos já localizados por outros meios.
 
 O período priorizado foi de 2018 a 2026, com ênfase em publicações a partir de 2023,
@@ -956,9 +913,9 @@ reconhecimento, seja por degradação do suporte físico, tinta desbotada ou inf
 verso da página (\textit{bleed-through}), iluminação desigual nas digitalizações ou por
 variações tipográficas da época e ortografia não padronizada \cite{lombardi2020}.
 
-O pré-processamento das imagens constitui a primeira linha de defesa contra essas
-dificuldades. A binarização (conversão da imagem colorida ou em tons de cinza para
-preto e branco) é uma etapa fundamental, pois separa o conteúdo textual de fatores de
+O pré-processamento das imagens é a primeira etapa para lidar com essas dificuldades. A
+binarização (conversão da imagem colorida ou em tons de cinza para preto e branco) é
+uma etapa importante, pois separa o conteúdo textual de fatores de
 ruído como manchas, fundos não uniformes e entintamento irregular \cite{lombardi2020}.
 Abordagens baseadas em aprendizado profundo, como redes convolucionais e arquiteturas do
 tipo U-Net, têm superado os métodos tradicionais de limiarização nessa tarefa,
@@ -967,8 +924,8 @@ avanços, sistemas OCR frequentemente falham no reconhecimento de padrões de ca
 quando a degradação é severa, e a escassez de dados anotados para treinamento agrava
 essas dificuldades \cite{lombardi2020}.
 
-Com a introdução de arquiteturas baseadas em Transformers, o estado da arte no
-reconhecimento de obras literárias históricas avançou significativamente. O modelo
+Com a introdução de arquiteturas baseadas em Transformers, o reconhecimento de obras
+literárias históricas melhorou de forma considerável. O modelo
 TrOCR \cite{huang2021}, que combina um encoder visual do tipo Vision Transformer (ViT)
 com um decoder de linguagem, apresentou desempenho superior aos métodos anteriores em
 tarefas de reconhecimento de texto impresso e manuscrito, tornando-se uma referência
@@ -991,30 +948,29 @@ consistência, mas são mais suscetíveis à propagação de erros em cascata.
 \label{sec:ocr_portugues}
 
 Apesar do português ser uma das línguas com maior número de falantes no mundo, a
-pesquisa em OCR voltada especificamente a esse idioma permanece consideravelmente menos
-desenvolvida do que para o inglês ou outras línguas europeias de maior recurso
-computacional. Essa lacuna é reconhecida pela própria comunidade científica; Santos
-et al.\ \cite{santos2023} afirmam explicitamente que o OCR em português permanece
+pesquisa em OCR voltada especificamente a esse idioma é bem menos desenvolvida do que
+para o inglês ou outras línguas europeias com mais recursos computacionais. Santos
+et al.\ \cite{santos2023} afirmam que o OCR em português permanece
 largamente inexplorado, mesmo considerando a expressiva base de falantes do idioma.
 
 Do ponto de vista técnico, o português apresenta características que aumentam a
 dificuldade do reconhecimento automático, como o uso extensivo de diacríticos (til,
 agudo, circunflexo, grave e cedilha), a alta frequência de vogais acentuadas e, no caso
 de textos históricos do século XIX, a presença de ortografia pré-reformas, com grafias
-arcaicas e variações não padronizadas que diferem substancialmente das formas modernas.
+arcaicas e variações não padronizadas que diferem bastante das formas modernas.
 Sistemas como o Tesseract, quando configurados sem o modelo de linguagem específico para
 português, tendem a omitir ou substituir incorretamente esses diacríticos, gerando erros
 que, embora pareçam menores no nível do caractere, produzem palavras semanticamente
 distintas ou inexistentes no nível da palavra \cite{smith2019}.
 
 No contexto da pós-correção de OCR em português, estudos recentes demonstram que modelos
-de linguagem de grande porte baseados em Transformers podem reduzir substancialmente as
-taxas de erro residual. Fritzen \cite{fritzen2025} avaliou a aplicação de LLMs como
+de linguagem de grande porte baseados em Transformers podem reduzir bastante as taxas
+de erro residual. Fritzen \cite{fritzen2025} avaliou a aplicação de LLMs como
 Gemma~3 para correção pós-OCR no ESTER-Pt, demonstrando que tais modelos conseguem
 reduzir o CER do estado da arte em português de 5,12 para 1,69, uma melhoria de
-aproximadamente 67\%. Esses resultados evidenciam tanto o potencial dos modelos de
-linguagem para o idioma quanto a persistência de erros que métodos puramente baseados em
-OCR não conseguem eliminar sem auxílio de contexto linguístico.
+aproximadamente 67\%. O resultado mostra o potencial dos modelos de linguagem para o
+idioma e também que parte dos erros não é eliminada por métodos puramente baseados em
+OCR, sem o auxílio de contexto linguístico.
 
 A escassez de modelos OCR treinados especificamente em corpora históricos em português,
 diferentemente do que existe para o alemão, o inglês ou o latim, representa um desafio
@@ -1050,10 +1006,9 @@ ReadCoop, e o Lapelinc Transcriptor, desenvolvido pelo Laboratório de Linguíst
 Corpus da Universidade Estadual do Sudoeste da Bahia. O experimento concentrou-se na
 modelagem da escrita de um único copista e na comparação das transcrições automáticas
 com transcrições diplomáticas produzidas manualmente, sob perspectiva paleográfica. Os
-resultados revelaram que a expertise paleográfica desempenha papel fundamental não apenas
-na interpretação dos resultados, mas também na melhoria do desempenho dos modelos HTR,
-evidenciando a necessidade de colaboração entre especialistas em humanidades e
-desenvolvedores de tecnologia.
+resultados mostraram que a expertise paleográfica pesa tanto na interpretação dos
+resultados quanto na melhoria dos modelos HTR, o que exige colaboração entre
+especialistas em humanidades e desenvolvedores de tecnologia.
 
 Em escala maior, o projeto TraPrInq \cite{baudry2023} aplicou o Transkribus à transcrição
 de aproximadamente 6.000 documentos digitalizados dos processos da Inquisição portuguesa.
@@ -1065,12 +1020,11 @@ Humanidades Digitais e Estudos Inquisitoriais em 2023, e seus resultados demonst
 com volume suficiente de anotação e iteração de treinamento, é possível atingir qualidade
 prática em documentos históricos em português, mesmo para caligrafia do século XVII.
 
-Em conjunto, esses trabalhos evidenciam que o reconhecimento automático de texto em
-documentos históricos em língua portuguesa tem sido abordado quase exclusivamente sob a
-perspectiva de manuscritos. O presente trabalho se diferencia ao focar em obras literárias
-\textit{impressas} de diferentes períodos, avaliando sistematicamente ferramentas de OCR
-modernas, incluindo VLMs, sobre um corpus estratificado por dificuldade, contribuindo
-para preencher essa lacuna na literatura.
+Nesses trabalhos, o reconhecimento automático de texto em documentos históricos em
+língua portuguesa aparece quase sempre aplicado a manuscritos. O presente trabalho se
+diferencia ao tratar de obras literárias \textit{impressas} de diferentes períodos,
+avaliando ferramentas de OCR modernas, incluindo VLMs, sobre um corpus estratificado por
+dificuldade.
 
 \section{Síntese Comparativa dos Trabalhos Relacionados}
 \label{sec:sintese_relacionados}
@@ -1103,11 +1057,11 @@ Vesalainen et al.\ \cite{vesalainen2025} &
 Data Unboxed \cite{dataunboxed2025} &
   Impresso moderno & Inglês &
   Tesseract, EasyOCR, VLMs & Sim. textual &
-  Benchmark OCR clássico vs.VLMs \\
+  Benchmark OCR clássico vs.\ VLMs \\
 \hline
 Santos et al.\ \cite{santos2023} &
   Impresso moderno & Português &
-    - & CER &
+    -- & CER &
   benchmark OCR para português \\
 \hline
 Fritzen \cite{fritzen2025} &
@@ -1139,7 +1093,8 @@ Baudry \cite{baudry2023} &
 \end{tabular}
 \fonte{Elaborado pelo autor.}
 \end{table}
-A análise evidencia duas lacunas que o presente trabalho busca preencher. Primeiro,
+
+A tabela mostra duas lacunas que o presente trabalho procura cobrir. Primeiro,
 os estudos em língua portuguesa concentram-se em manuscritos históricos
 \cite{rosa2025,aguilar2024,baudry2023} ou em texto impresso contemporâneo
 \cite{santos2023,fritzen2025}, sem avaliar obras literárias \textit{impressas}
@@ -1172,9 +1127,13 @@ e o estudo do patrimônio literário por meio de ferramentas computacionais.
 
 A seleção das obras foi realizada em colaboração com o Prof.\ Dr.\ Alckmar Luiz dos
 Santos, pesquisador do NUPILL, que indicou volumes representativos do acervo cujas
-digitalizações apresentam características adequadas para um estudo de benchmark de OCR:
-imagens em formato PDF com camada de imagem, digitalizadas a 300 DPI pelo software ABBYY
-FineReader, cobrindo um espectro variado de condições tipográficas e de degradação física.
+digitalizações apresentam características adequadas para um estudo de benchmark de OCR,
+cobrindo um espectro variado de condições tipográficas e de degradação física. Os
+arquivos são PDFs com a imagem digitalizada de cada página e uma camada de texto gerada
+pelo ABBYY FineReader. As digitalizações não são homogêneas: \textit{A Amante Militar} e
+\textit{O Feliz Independente} foram digitalizadas a 300~ppi, e \textit{Heloíza} e os
+dois volumes de \textit{Culto à Mulher}, com um aplicativo de celular, a cerca de
+150~ppi.
 
 \section{Critérios de Seleção das Obras}
 
@@ -1278,7 +1237,7 @@ Figura~\ref{fig:pagina_media} ilustra um exemplo.
 \subsection{Páginas Difíceis}
 
 Páginas classificadas como difíceis apresentam uma combinação de fatores que tornam o
-reconhecimento óptico de caracteres significativamente mais complexo. Destaca-se a
+reconhecimento óptico de caracteres bem mais difícil. O principal deles é a
 tipografia compacta típica do século XVIII, marcada pela fusão de caracteres, ausência de
 espaçamento padronizado e pouca distinção visual entre determinados glifos. Soma-se a
 isso o elevado nível de degradação física dos documentos, incluindo manchas sobre o corpo
@@ -1416,9 +1375,9 @@ Data Unboxed \cite{dataunboxed2025} e Vesalainen et al.\ \cite{vesalainen2025}, 
 compararam diferentes abordagens de OCR aplicadas a documentos complexos e históricos.
 A seleção contempla representantes das quatro gerações tecnológicas identificadas nesses
 trabalhos: OCR clássico, modelos baseados em aprendizado profundo, arquiteturas
-Transformer e modelos de linguagem visual (VLMs). Dessa forma, busca-se analisar como
-cada abordagem se comporta no contexto específico de obras literárias históricas em
-língua portuguesa, cenário ainda pouco explorado nos estudos anteriores.
+Transformer e modelos de linguagem visual (VLMs). Busca-se, assim, analisar como cada
+abordagem se comporta em obras literárias históricas em língua portuguesa, material
+pouco explorado nos estudos anteriores.
 
 \clearpage
 
@@ -1438,8 +1397,186 @@ abrangendo os três níveis de dificuldade definidos no Capítulo~4: a página~4
 \textit{Heloíza} (fácil), a página~55 de \textit{Culto à Mulher} vol.\,1 (médio), a
 página~50 de \textit{Culto à Mulher} vol.\,2 (médio), a página~35 de \textit{A Amante
 Militar} (difícil) e a página~200 de \textit{O Feliz Independente} (difícil). Cada
-imagem foi extraída do PDF original a 300 DPI e convertida para PNG por meio de um
+página foi convertida para PNG na resolução original da digitalização, por meio de um
 script Python utilizando a biblioteca \texttt{pdf2image}.
+
+\subsection{Ambiente Computacional}
+\label{sec:ambiente}
+
+Todos os experimentos locais deste trabalho foram executados em um computador pessoal
+de uso comum, sem acelerador gráfico dedicado. A escolha foi intencional, já que um dos
+objetivos do trabalho é propor um processo que possa ser reproduzido por núcleos de pesquisa como
+o NUPILL, que nem sempre dispõem de infraestrutura de alto desempenho. A
+Tabela~\ref{tab:ambiente} resume a configuração utilizada.
+
+\begin{table}[H]
+\centering
+\caption{Configuração do ambiente computacional utilizado nos experimentos.}
+\label{tab:ambiente}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{4cm} p{9.5cm}}
+\hline
+\textbf{Componente} & \textbf{Especificação} \\
+\hline
+Equipamento          & Notebook HP 250 G8 \\
+Processador          & Intel Core i3-1115G4 (11ª geração), 2 núcleos / 4 \textit{threads},
+                       até 4,1~GHz \\
+Memória RAM          & 7,5~GiB utilizáveis, com 2~GiB de \textit{swap} \\
+GPU                  & Intel UHD Graphics integrada, sem suporte a CUDA \\
+Armazenamento        & SSD NVMe de 256~GB \\
+Sistema operacional  & Ubuntu 22.04.5 LTS (kernel Linux 6.8) \\
+Python               & 3.10.12 \\
+Principais bibliotecas & PyTorch 2.11, Transformers 5.3, PaddlePaddle 2.6.2 (CPU),
+                         EasyOCR 1.7.2, DocTR 1.0.1, pytesseract 0.3.13 \\
+Motor Tesseract      & 4.1.1, com dados de idioma \texttt{por} e \texttt{eng} \\
+Ollama               & 0.32.15 \\
+\hline
+\end{tabular}
+\fonte{Elaborado pelo autor.}
+\end{table}
+
+Como o equipamento não possui GPU compatível com CUDA, toda a inferência local foi
+realizada em CPU. Essa restrição tem duas consequências diretas para o estudo. A
+primeira é o tempo de processamento: modelos baseados em redes neurais profundas, em
+especial os VLMs, levam bem mais tempo por página do que levariam em GPU. A segunda é a limitação de memória: VLMs executados via Ollama precisam
+carregar integralmente os pesos do modelo na memória RAM, o que restringe o tamanho das
+variantes que podem ser utilizadas. Em testes preliminares, a variante de 7 bilhões de
+parâmetros do Qwen2.5-VL (aproximadamente 6~GB) excedeu a memória disponível durante o
+processamento de uma imagem, levando o sistema operacional a encerrar o processo. Por
+esse motivo, os adaptadores foram configurados com as variantes de menor porte de cada
+VLM local; a viabilidade dessas variantes é analisada na Seção~\ref{sec:viabilidade}. Os modelos
+acessados via API (LlamaParse, Mistral OCR e Gemini) não são afetados por essas
+limitações, pois a inferência ocorre na infraestrutura dos respectivos provedores.
+
+\subsection{Modelos Excluídos antes dos Experimentos}
+\label{sec:excluidos}
+
+Antes da execução do benchmark, cada modelo candidato foi instalado, configurado e
+testado no ambiente descrito na Seção~\ref{sec:ambiente}. Esses testes de configuração
+mostraram que parte dos modelos selecionados a partir da literatura não poderia ser
+avaliada nas condições deste trabalho. Como o pipeline final precisa ser reproduzível
+por núcleos como o NUPILL, com equipamento comum e sem custos recorrentes, esses modelos
+foram excluídos antes dos experimentos, segundo cinco critérios:
+
+\begin{enumerate}
+    \item \textbf{Requisito de hardware}: o modelo depende de GPU ou exige mais memória
+    RAM do que o equipamento dispõe;
+    \item \textbf{Disponibilidade}: o modelo não está disponível na plataforma de
+    execução adotada para os VLMs locais (Ollama);
+    \item \textbf{Dificuldade de implementação}: o modelo não produziu transcrições
+    utilizáveis sem ajustes que fogem ao escopo do trabalho;
+    \item \textbf{Custo financeiro}: o custo por página é incompatível com uma solução
+    sem custos recorrentes;
+    \item \textbf{Acesso à API}: os limites de uso da conta disponível ou a
+    descontinuação do modelo impediram o processamento das páginas de teste.
+\end{enumerate}
+
+A Tabela~\ref{tab:excluidos} resume os modelos excluídos e o critério correspondente.
+
+\begin{table}[H]
+\centering
+\caption{Modelos excluídos antes dos experimentos e critério de exclusão.}
+\label{tab:excluidos}
+\renewcommand{\arraystretch}{1.3}
+{\small
+\begin{tabular}{p{3.6cm} p{3.2cm} p{7.2cm}}
+\hline
+\textbf{Modelo} & \textbf{Critério} & \textbf{Motivo} \\
+\hline
+TrOCR & Hardware & Nas duas variantes, inferência linha a linha inviável em
+  CPU; detector de linhas incompatível com o PyTorch atual \\
+Gemma~4 & Hardware & Menor variante no Ollama (7,2~GB) excede a memória total \\
+DeepSeek-VL2 & Disponibilidade & Ausente do repositório do Ollama; o sucessor
+  DeepSeek-OCR só é distribuído em versão de 6,7~GB \\
+Qwen3-VL 2B & Implementação & Testado como substituto; devolveu transcrição vazia
+  após esgotar a janela de contexto \\
+LlamaParse \textit{Agentic} & Custo & Dez vezes o custo do modo básico, sem ganho
+  reportado na literatura \\
+Gemini & Acesso à API & Versão 2.0 Flash descontinuada; cota gratuita da versão
+  atual esgotada na primeira página \\
+Mistral OCR & Acesso à API & Limite de requisições atingido já na primeira chamada \\
+\hline
+\end{tabular}
+}
+\fonte{Elaborado pelo autor.}
+\end{table}
+
+\subsubsection{Requisito de Hardware}
+
+As duas variantes do TrOCR (\texttt{base-handwritten} e \texttt{large-handwritten})
+foram excluídas sem terem sido executadas sobre o corpus. A exclusão decorre da forma como o TrOCR opera. Diferentemente dos VLMs, que recebem a
+página inteira em uma única requisição, o TrOCR reconhece apenas uma linha de texto por
+vez. Cada página precisa, portanto, ser antes segmentada em linhas por um detector de
+texto externo (neste trabalho, o CRAFT, via \texttt{craft-text-detector}), e cada
+linha resultante passa por uma inferência completa do modelo \textit{encoder-decoder},
+com geração autorregressiva do texto \cite{huang2021}. Como as páginas do corpus têm
+tipicamente dezenas de linhas, o custo por página é multiplicado pelo número de linhas.
+Com 334 milhões de parâmetros na variante \texttt{base} e 558 milhões na
+\texttt{large} \cite{huang2021}, esse processamento é viável em GPU, mas se torna
+proibitivo em uma CPU de dois núcleos, sobretudo considerando a aplicação posterior ao
+corpus completo, com mais de 1.700 páginas.
+
+Somou-se a isso um obstáculo de manutenção: a biblioteca \texttt{craft-text-detector},
+necessária para a segmentação em linhas, não é mais mantida e mostrou-se incompatível
+com as versões atuais do \texttt{torchvision}, falhando já na importação. Contornar o
+problema exigiria fixar versões antigas do PyTorch ou substituir o detector de linhas,
+o que acrescentaria uma variável a mais à comparação sem resolver o problema principal
+de desempenho em CPU.
+
+O Gemma~4 foi excluído por memória. A menor variante disponível no Ollama
+(\texttt{gemma4:e2b}) ocupa 7,2~GB \cite{ollama_gemma4}, praticamente toda a memória do
+equipamento (7,5~GB), antes mesmo de considerar o sistema operacional e a memória
+necessária para processar a imagem. As identificações de variantes menores configuradas
+inicialmente não existem no repositório do Ollama.
+
+\subsubsection{Disponibilidade}
+
+O DeepSeek-VL2 não consta no repositório oficial do Ollama, plataforma adotada para todos
+os VLMs locais deste trabalho. Executá-lo exigiria outra forma de instalação e
+inferência, o que quebraria a padronização entre os VLMs locais. O modelo da mesma
+família disponível no Ollama, o DeepSeek-OCR, é distribuído apenas em uma versão de
+3,3~bilhões de parâmetros sem quantização, com 6,7~GB \cite{ollama_deepseekocr}, acima
+da memória livre no equipamento durante os testes.
+
+\subsubsection{Dificuldade de Implementação}
+
+Como alternativas locais de menor porte ao Gemma~4 e ao DeepSeek-VL2, foram testados dois
+modelos disponíveis no Ollama: o Qwen3-VL, na variante de 2~bilhões de parâmetros
+(1,9~GB), e o GLM-OCR, modelo de 0,9~bilhão de parâmetros especializado em OCR de
+documentos (1,6~GB) \cite{ollama_glmocr}. O Qwen3-VL consumiu toda a janela de contexto
+sem produzir texto na página de teste, comportamento compatível com a geração de
+raciocínio interno antes da resposta. Contorná-lo exigiria ajustes específicos
+desse modelo, e ele foi excluído. O GLM-OCR transcreveu corretamente as páginas de
+teste e foi incorporado ao conjunto avaliado, ao lado do Qwen2.5-VL.
+
+\subsubsection{Custo Financeiro}
+
+O modo \textit{Agentic} do LlamaParse custa US\$\,0,0125 por página, dez vezes o valor
+do modo \textit{Cost Effective}, que apresenta desempenho similar nos benchmarks
+consultados \cite{dataunboxed2025}. Por esse motivo, apenas o modo básico foi mantido.
+
+\subsubsection{Acesso à API}
+
+O Gemini~2.0~Flash, previsto originalmente, foi descontinuado pelo Google em junho de
+2026 \cite{gemini_pricing}, e a versão 2.5 Flash não está disponível para contas novas.
+A versão disponível para a conta utilizada, o Gemini~3.8~Flash, chegou a transcrever uma
+página de teste, mas a cota gratuita se esgotou em seguida. Substituir o modelo previsto
+por uma versão posterior também romperia a comparação com os resultados da literatura,
+obtidos com versões anteriores. O Mistral OCR recusou as requisições por limite de uso
+já na primeira chamada. Nos dois casos, a avaliação dependeria de contratar planos
+pagos, o que contraria o objetivo de uma solução sem custos recorrentes.
+
+\subsubsection{Modelos Mantidos}
+
+Após as exclusões, o conjunto avaliado é composto pelos quatro motores clássicos e
+baseados em CRNN (Tesseract, EasyOCR, PaddleOCR e DocTR), por dois VLMs locais
+(Qwen2.5-VL, na variante de 3~bilhões de parâmetros, e GLM-OCR) e por um serviço via API
+(LlamaParse, modo \textit{Cost Effective}). Todos processaram páginas de teste no
+equipamento do trabalho; os custos de execução de cada um são analisados na
+Seção~\ref{sec:viabilidade}. Adicionalmente,
+os PDFs do acervo já contêm uma camada de texto gerada pelo ABBYY FineReader (versões
+11 e 12) no momento da digitalização. Esse texto é incluído na comparação como referência de uma
+ferramenta comercial, sem custo adicional.
 
 \subsection{Configuração dos Modelos}
 
@@ -1456,14 +1593,15 @@ eventuais termos em latim presentes nas obras.
 
 O EasyOCR foi instalado via \texttt{pip install easyocr} sem dependências adicionais
 além do PyTorch. A inicialização do leitor foi realizada com os idiomas
-\texttt{['pt', 'en']}, permitindo reconhecimento bilíngue. A execução utilizou a GPU
-disponível, com o parâmetro \texttt{gpu=True}.
+\texttt{['pt', 'en']}, permitindo reconhecimento bilíngue. Na ausência de GPU
+compatível com CUDA, a biblioteca executa automaticamente em CPU.
 
 \subsubsection{PaddleOCR}
 
-A instalação do PaddleOCR exigiu a instalação prévia do framework PaddlePaddle, que
-apresentou incompatibilidades com a versão de CUDA disponível no ambiente, exigindo
-a seleção manual de uma versão compatível. Após resolução das dependências, o modelo
+A instalação do PaddleOCR exigiu a instalação prévia do framework PaddlePaddle, na
+versão para CPU. O pacote do PaddleOCR instala variantes da biblioteca OpenCV que
+entram em conflito com a já utilizada pelo EasyOCR e pelo DocTR, o que exigiu
+reinstalar manualmente uma única variante. Após resolução das dependências, o modelo
 foi configurado com \texttt{lang='latin'}, opção mais próxima disponível para o
 português no modelo de reconhecimento padrão.
 
@@ -1474,25 +1612,23 @@ backend PyTorch. O pipeline foi instanciado com os modelos padrão de detecção
 (\texttt{db\_resnet50}) e reconhecimento (\texttt{crnn\_vgg16\_bn}), aplicados
 diretamente sobre as imagens PNG sem configuração adicional.
 
-\subsubsection{TrOCR}
-
-As variantes \texttt{base-handwritten} e \texttt{large-handwritten} do TrOCR foram
-carregadas a partir do Hugging Face Hub via \texttt{transformers}, utilizando o
-processador \texttt{TrOCRProcessor} e o modelo \texttt{VisionEncoderDecoderModel}.
-A inferência foi realizada com GPU. Por operar em nível de linha de texto, cada
-imagem de página foi previamente segmentada em linhas com o auxílio do
-\texttt{craft-text-detector} antes de ser processada pelo modelo.
-
 \subsubsection{VLMs Locais via Ollama}
 
-Os modelos Gemma~4, DeepSeek-VL2 e Qwen2.5-VL foram executados localmente por meio
-da plataforma Ollama. Após a instalação do Ollama (\texttt{curl -fsSL
-https://ollama.com/install.sh | sh}), cada modelo foi obtido com o comando
-\texttt{ollama pull}, sendo utilizadas as variantes de menor tamanho compatíveis com
-a memória de vídeo disponível. A interação com os modelos foi realizada via API REST
-local (\texttt{http://localhost:11434}), enviando a imagem codificada em base64
-junto a um \textit{prompt} instrucional padronizado solicitando a transcrição fiel
-do conteúdo da página, sem normalização ortográfica.
+Os modelos Qwen2.5-VL e GLM-OCR foram executados localmente por meio da plataforma
+Ollama, instalada com o \textit{script} oficial. Cada modelo foi obtido com o comando
+\texttt{ollama pull}, nas variantes \texttt{qwen2.5vl:3b} e \texttt{glm-ocr:q8\_0}. A
+interação foi realizada pela API REST local do Ollama, enviando a imagem junto a um
+\textit{prompt} instrucional padronizado que solicita a transcrição fiel do conteúdo da
+página, sem normalização ortográfica. O GLM-OCR é exceção: por ter sido treinado com
+instruções de tarefa fixas, recebe a instrução \textit{Text Recognition:} prevista
+pelo modelo.
+
+Dois parâmetros do Ollama precisaram ser ajustados para a execução em CPU. A janela de
+contexto padrão sem GPU, de 4.096 \textit{tokens}, é insuficiente: só a imagem de uma
+página gera cerca de 4.150 \textit{tokens} no Qwen2.5-VL, e a janela foi ampliada para
+6.144. Além disso, o tamanho de lote de processamento do \textit{prompt}
+(\texttt{num\_batch}) foi reduzido de 512 para 128, o que diminui o pico de memória e
+evita que o processo seja encerrado pelo sistema operacional.
 
 \subsubsection{LlamaParse}
 
@@ -1502,19 +1638,13 @@ O LlamaParse foi acessado via API, utilizando a biblioteca oficial
 API obtida no portal da LlamaIndex. As páginas foram enviadas como arquivos PDF
 individuais.
 
-\subsubsection{Mistral OCR}
+\subsubsection{Mistral OCR e Gemini}
 
-O Mistral OCR foi acessado via API REST, utilizando a biblioteca \texttt{mistralai}
-para Python. Cada imagem foi enviada codificada em base64, e a resposta continha o
-texto transcrito em formato estruturado. A autenticação foi realizada por chave de
-API.
-
-\subsubsection{Gemini 2.0 Flash}
-
-O Gemini 2.0 Flash foi acessado via API do Google, utilizando a biblioteca
-\texttt{google-generativeai}. As imagens foram enviadas diretamente como parte do
-conteúdo multimodal da requisição, acompanhadas de um \textit{prompt} instrucional
-idêntico ao utilizado nos demais VLMs.
+Os adaptadores do Mistral OCR (biblioteca \texttt{mistralai}) e do Gemini (biblioteca
+\texttt{google-generativeai}) foram implementados e autenticados por chave de API,
+enviando a imagem da página com o mesmo \textit{prompt} dos demais VLMs. Os dois
+modelos, porém, foram excluídos da avaliação por limites de acesso às APIs, conforme a
+Seção~\ref{sec:excluidos}.
 
 \subsection{Observações Qualitativas}
 
@@ -1524,10 +1654,7 @@ modelos clássicos e baseados em CRNN apresentaram dificuldades crescentes confo
 o nível de degradação e a complexidade tipográfica das páginas, sendo os erros mais
 frequentes a confusão entre caracteres visualmente similares (e.g., \texttt{rn} por
 \texttt{m}, \texttt{l} por \texttt{I}) e a falha na segmentação de linhas em layouts
-com múltiplas colunas. Os modelos Transformer (TrOCR) produziram transcrições mais
-coesas em páginas de dificuldade baixa e média, mas apresentaram erros de alucinação
-em páginas com degradação severa, provavelmente associados à falta de dados históricos
-em português no treinamento. Os VLMs demonstraram maior robustez ao layout e à
+com múltiplas colunas. Os VLMs demonstraram maior robustez ao layout e à
 degradação, porém com tendência observada de modernização de grafias arcaicas,
 conforme reportado por Vesalainen et al.\ \cite{vesalainen2025}.
 
@@ -1559,16 +1686,15 @@ de desempenho:
 \begin{enumerate}
     \item \textbf{Custo financeiro}: modelos via API com custo elevado por página foram
     descartados quando alternativas gratuitas apresentavam desempenho competitivo nos
-    benchmarks da literatura. O modo \textit{Agentic} do LlamaParse, com custo de
-    US\$\,0,0125 por página, foi eliminado nesta etapa, uma vez que o modo básico
-    (\textit{Cost Effective}) oferece resultado similar a custo oito vezes menor, e VLMs
-    locais gratuitos superam ambos em benchmarks recentes \cite{dataunboxed2025}.
+    benchmarks da literatura. Por esse critério, o modo \textit{Agentic} do LlamaParse
+    já havia sido eliminado antes dos experimentos (Seção~\ref{sec:excluidos}): o modo
+    básico (\textit{Cost Effective}) oferece resultado similar a um décimo do custo, e
+    VLMs locais gratuitos superam ambos em benchmarks recentes \cite{dataunboxed2025}.
 
     \item \textbf{Custo computacional}: modelos com demanda de GPU incompatível com o
-    hardware disponível ou com tempo de inferência proibitivo foram descartados. A
-    variante \texttt{large} do TrOCR foi eliminada nesta etapa por exigir
-    significativamente mais memória de vídeo que a variante \texttt{base} sem ganho
-    proporcional de desempenho em documentos históricos \cite{vesalainen2025}.
+    hardware disponível ou com tempo de inferência proibitivo foram descartados. As
+    duas variantes do TrOCR foram eliminadas por esse critério ainda na Fase~1, antes
+    da execução dos experimentos (Seção~\ref{sec:excluidos}).
 
     \item \textbf{Desempenho em documentos históricos}: modelos sem resultados
     reportados em benchmarks de documentos históricos ou com desempenho consistentemente
@@ -1577,9 +1703,12 @@ de desempenho:
 
 \subsection{Quadro Comparativo para Seleção}
 
-A Tabela~\ref{tab:selecao_modelos} apresenta os modelos remanescentes após a triagem,
-comparados segundo custo, requisito de GPU, CER e WER médios reportados em benchmarks
-recentes da literatura, e adequação ao contexto deste trabalho.
+A Tabela~\ref{tab:selecao_modelos} apresenta os modelos remanescentes após a triagem e
+as exclusões da Seção~\ref{sec:excluidos}, comparados segundo custo, requisito de GPU,
+CER e WER médios reportados em benchmarks recentes da literatura, e adequação ao
+contexto deste trabalho. O GLM-OCR, incorporado após os testes de configuração, não
+consta da tabela por não haver, na literatura consultada, resultados dele em
+documentos históricos.
 
 \FloatBarrier
 \begin{table}[H]
@@ -1614,22 +1743,6 @@ DocTR
   & $\sim$18--30 & $\sim$30--48
   & Pipeline moderno; sem modelo específico para português \\
 \hline
-TrOCR \texttt{base}
-  & Gratuito & Recomenda
-  & $\sim$12--25 & $\sim$22--40
-  & Melhor Transformer avaliado; sensível a degradação severa
-  \cite{vesalainen2025} \\
-\hline
-Gemma~4
-  & Gratuito & Recomenda
-  & $\sim$8--18 & $\sim$15--30
-  & VLM local recente; poucos benchmarks em documentos históricos \\
-\hline
-DeepSeek-VL2
-  & Gratuito & Recomenda
-  & $\sim$8--20 & $\sim$15--32
-  & Arquitetura MoE eficiente; poucos dados em português histórico \\
-\hline
 \textbf{Qwen2.5-VL}
   & \textbf{Gratuito} & \textbf{Recomenda}
   & $\boldsymbol{\sim}$\textbf{5--12} & $\boldsymbol{\sim}$\textbf{10--22}
@@ -1641,21 +1754,11 @@ LlamaParse Basic
   & $\sim$6--14 & $\sim$12--25
   & Competitivo, mas custo por página e envio de dados a terceiros \\
 \hline
-Mistral OCR
-  & Pago & Não
-  & $\sim$5--12 & $\sim$10--20
-  & Desempenho comparável ao Qwen2.5-VL, porém com custo financeiro \\
-\hline
-Gemini 2.0 Flash
-  & Pago & Não
-  & $\sim$5--10 & $\sim$9--18
-  & Alto desempenho; descontinuado em jun./2026 \cite{gemini_pricing} \\
-\hline
 \end{tabular}
+}
 \fonte{Valores de CER e WER adaptados de \cite{vesalainen2025,dataunboxed2025};
 demais colunas elaboradas pelo autor.}
 \end{table}
-}
 \FloatBarrier
 
 \subsection{Modelo Selecionado e Justificativa}
@@ -1708,8 +1811,8 @@ armazenamento estruturado dos resultados.
     \fonte{Elaborado pelo autor.}
 \end{figure}
 
-Cada volume do corpus é convertido página a página em imagens PNG
-a 300 DPI, utilizando a biblioteca \texttt{pdf2image}. Cada imagem então
+Cada volume do corpus é convertido página a página em imagens PNG na resolução
+original da digitalização, utilizando a biblioteca \texttt{pdf2image}. Cada imagem então
 é enviada ao Qwen2.5-VL via API REST local do Ollama, acompanhada de um
 \textit{prompt} instrucional padronizado que solicita a transcrição fiel do conteúdo,
 explicitando a preservação de grafias históricas e a exclusão de elementos não textuais
@@ -1721,7 +1824,7 @@ página, seguindo a estrutura de diretórios
 
 A implementação será realizada em Python, organizada como um pacote com uma classe
 base abstrata \texttt{BaseOCR} e adaptadores específicos para cada modelo, garantindo
-que o pipeline possa ser estendido para outros modelos em trabalhos futuros. 
+que o pipeline possa ser estendido para outros modelos em trabalhos futuros.
 
 % ---------------------------------------------------------------
 % Fases 4–5: a serem desenvolvidas no TCC2
@@ -1734,7 +1837,177 @@ que o pipeline possa ser estendido para outros modelos em trabalhos futuros.
 % CAPÍTULOS 6 E 7: A SEREM DESENVOLVIDOS NO TCC2
 %=====================================================================
 
-% \chapter{Implementação e Resultados}
+%=====================================================================
+% CAPÍTULO 6: IMPLEMENTAÇÃO E RESULTADOS
+%=====================================================================
+\chapter{Implementação e Resultados}
+\label{cap:implementacao}
+
+Este capítulo apresenta a implementação desenvolvida e a execução dos modelos sobre as
+páginas reais do corpus. A avaliação da qualidade das transcrições, por meio de CER e
+WER, depende da regra ouro descrita no Capítulo~4, ainda em validação, e será
+apresentada quando ela estiver concluída. Por ora, analisam-se a viabilidade e o custo
+de execução de cada modelo no ambiente da Seção~\ref{sec:ambiente}.
+
+\section{Implementação}
+
+\subsection{Organização do Código}
+
+A implementação foi feita em Python e organizada como um pacote com três partes
+principais: os adaptadores de modelos OCR (\texttt{src/ocr}), o pipeline de extração
+(\texttt{src/pipeline}) e o benchmark comparativo (\texttt{benchmark}). Todo o código está
+disponível em repositório público\footnote{\url{https://github.com/Ewaldouhlmann/tcc-ocr-bu-ufsc}}.
+
+Os modelos compartilham uma interface comum, definida pela classe abstrata
+\texttt{BaseOCR}, cujo único método obrigatório recebe o caminho de uma imagem e devolve
+o texto reconhecido. Abaixo dela, três classes intermediárias agrupam os modelos por
+categoria: \texttt{ClassicalOCR} (Tesseract, EasyOCR, PaddleOCR e DocTR),
+\texttt{TransformerOCR} (TrOCR) e \texttt{VLMOCR}, que define o \textit{prompt}
+padronizado usado por todos os modelos de visão-linguagem. Os VLMs locais herdam ainda
+de uma base comum para o Ollama, e os serviços via API têm um adaptador cada. Um
+dicionário (\texttt{MODEL\_REGISTRY}) associa o nome curto de cada modelo à sua classe, o
+que permite escolher os modelos a executar por linha de comando e acrescentar novos
+modelos sem alterar o restante do código.
+
+\subsection{Benchmark em Duas Etapas}
+
+O benchmark foi dividido em duas etapas independentes. Na etapa de extração, cada modelo
+transcreve todas as páginas da amostra, e cada transcrição é salva em um arquivo de texto
+assim que a página termina. Na etapa de avaliação, essas saídas são comparadas às
+transcrições de referência, com cálculo de CER e WER pela biblioteca \texttt{jiwer}.
+Com essa separação, os modelos são executados uma única vez, e a avaliação pode ser
+refeita sem reprocessar as páginas, por exemplo após correções na regra ouro ou mudanças
+na normalização do texto.
+
+\subsection{Execução e Medição de Recursos}
+
+Nos primeiros testes, a medição de memória feita pelo próprio processo Python
+subestimava o custo dos VLMs locais, porque nesses modelos a inferência ocorre no
+servidor do Ollama, que roda como um serviço separado. Por isso, o extrator executa cada
+modelo em um processo isolado e, a cada meio segundo, registra a memória RAM desse
+processo e, no caso dos VLMs locais, também a dos processos do Ollama. Para cada página
+são salvos o tempo de processamento, o pico de memória e o tamanho do texto produzido.
+
+O isolamento por processo também tornou a execução robusta a falhas. Se um modelo é
+encerrado pelo sistema operacional por falta de memória, os demais seguem normalmente, e
+a página em que ocorreu a falha fica registrada. Como cada página é salva ao terminar,
+uma nova execução retoma apenas as páginas pendentes. Erros de limite de requisições das
+APIs disparam novas tentativas com espera crescente.
+
+\subsection{Pipeline de Extração}
+
+Das quatro etapas do pipeline descrito na Seção~\ref{sec:fase3}, a conversão de PDF em
+imagens PNG e a extração em lote já estão implementadas: o extrator do benchmark será
+reaproveitado no pipeline final, aplicado ao modelo escolhido. A normalização do texto
+e o armazenamento definitivo dos resultados serão concluídos após a avaliação com a
+regra ouro.
+
+\section{Execução sobre as Páginas do Corpus}
+\label{sec:viabilidade}
+
+\subsection{Preparação das Páginas}
+
+As 20 páginas da amostra (Tabela~\ref{tab:paginas_corpus}) foram convertidas para PNG
+na resolução original de cada digitalização. Os PDFs do acervo não são homogêneos:
+\textit{A Amante Militar} e \textit{O Feliz Independente} foram digitalizados a 300~ppi,
+com páginas de até 1203$\times$2008~pixels, enquanto \textit{Heloíza} e os dois volumes
+de \textit{Culto à Mulher} foram digitalizados com um aplicativo de celular a cerca de
+150~ppi, com páginas de aproximadamente 900$\times$1260~pixels. Renderizar estas últimas
+a 300~ppi apenas ampliaria a imagem, sem acrescentar detalhe, e aumentaria o custo de
+processamento dos VLMs, cujo número de \textit{tokens} de entrada cresce com o número de
+pixels.
+
+Os sete modelos mantidos (Seção~\ref{sec:excluidos}) foram executados em sequência sobre
+as 20 páginas, em 30 de setembro de 2026, com apenas o ambiente de desenvolvimento aberto
+no equipamento. A rodada completa levou cerca de 1 hora e 50 minutos. O texto gerado pelo
+ABBYY FineReader, já presente nos PDFs, foi extraído das mesmas páginas sem custo de
+processamento. A Tabela~\ref{tab:extracao_resumo} resume a execução.
+
+\input{tabelas/extracao_resumo}
+
+\subsection{Tempo de Processamento}
+
+Os modelos se dividem em dois grupos bem distintos (Figura~\ref{fig:real_tempo}). Os
+motores clássicos e baseados em CRNN e o LlamaParse processam cada página em segundos:
+o PaddleOCR e o Tesseract em menos de 2~segundos, e o DocTR, o LlamaParse e o EasyOCR
+entre 7 e 10~segundos. Os VLMs locais levam minutos: a mediana foi de 2~minutos por
+página no GLM-OCR e de 3,7~minutos no Qwen2.5-VL, uma diferença de duas ordens de
+grandeza em relação ao primeiro grupo. No caso do LlamaParse, o tempo inclui o envio da
+imagem e a fila do serviço, e não reflete custo computacional local.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imagens/eda_real_tempo.pdf}
+    \caption{Tempo de processamento de cada página, por modelo. Cada ponto é uma página;
+    o traço vertical marca a mediana.}
+    \label{fig:real_tempo}
+    \fonte{Elaborado pelo autor.}
+\end{figure}
+
+Projetados para o corpus completo, com cerca de 1.770 páginas, esses tempos dão menos de
+uma hora para o PaddleOCR e o Tesseract, entre 3,5 e 6~horas para o DocTR, o LlamaParse
+e o EasyOCR, e de 4 a 5~dias ininterruptos para cada VLM local. Essa diferença pesa na
+escolha do modelo para o pipeline final, que precisa ser aplicável a acervos inteiros.
+
+A resolução da digitalização afeta os modelos de forma desigual
+(Figura~\ref{fig:real_resolucao}). Nos motores clássicos e baseados em CRNN, o tempo
+praticamente não muda entre as páginas de 150 e de 300~ppi, com exceção do EasyOCR, 1,5
+vez mais lento nas de 300~ppi. Nos VLMs locais, o efeito é maior: o GLM-OCR leva 2,1
+vezes mais tempo nas páginas de 300~ppi, e o Qwen2.5-VL, 1,4 vez, já que mais pixels
+geram mais \textit{tokens} de imagem a processar.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imagens/eda_real_resolucao.pdf}
+    \caption{Tempo médio por página nas digitalizações de cerca de 150~ppi (círculo
+    vazado) e de 300~ppi (círculo cheio). No Qwen2.5-VL, a média a 300~ppi considera
+    apenas as páginas de \textit{A Amante Militar}.}
+    \label{fig:real_resolucao}
+    \fonte{Elaborado pelo autor.}
+\end{figure}
+
+\subsection{Uso de Memória}
+
+O Qwen2.5-VL foi o modelo que mais exigiu memória, com pico de 4,5~GB, seguido do EasyOCR,
+com 3,8~GB, e do GLM-OCR, com 3,0~GB (Figura~\ref{fig:real_ram}). O Tesseract não passou
+de 200~MB. Como o sistema operacional e o ambiente de desenvolvimento ocupam cerca de
+2~GB dos 7,5~GB do equipamento, o Qwen2.5-VL opera no limite da memória disponível.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imagens/eda_real_ram.pdf}
+    \caption{Pico de memória RAM de cada modelo, considerando todas as páginas. Para o
+    LlamaParse, o valor corresponde apenas ao cliente local.}
+    \label{fig:real_ram}
+    \fonte{Elaborado pelo autor.}
+\end{figure}
+
+Esse limite se confirmou na execução. O Qwen2.5-VL processou as 12 páginas de
+\textit{A Amante Militar} e de \textit{Culto à Mulher}, mas, na página~50 de
+\textit{O Feliz Independente}, a maior da amostra, o servidor do Ollama foi encerrado
+pelo sistema operacional por falta de memória, como registrado no \textit{log} do
+\textit{kernel}. As outras sete páginas pendentes não chegaram a ser processadas: após a
+queda, o extrator tentou as páginas seguintes antes de o serviço do Ollama reiniciar.
+O extrator foi corrigido para aguardar o reinício, e essas páginas serão processadas em
+uma nova rodada. Os outros seis modelos concluíram as 20 páginas.
+
+\subsection{Implicações para a Seleção do Modelo}
+
+O Qwen2.5-VL, selecionado na Seção~\ref{sec:fase2} com base na literatura, é executável
+no equipamento, mas é o modelo mais lento e o que opera mais perto do limite de memória.
+O GLM-OCR, também executado localmente, levou cerca de metade do tempo por página e usou
+1,5~GB a menos de memória. A decisão entre os modelos depende da qualidade das
+transcrições, que será medida com a regra ouro. As saídas dos sete modelos e do ABBYY já
+estão salvas, de modo que essa avaliação não exige reprocessar as páginas.
+
+\subsection{Limitações}
+
+Cada modelo foi executado uma única vez sobre cada página, e os tempos variam com a
+densidade de texto: no GLM-OCR, por exemplo, as páginas mais lentas levaram mais que o
+triplo das mais rápidas. As projeções para o corpus completo supõem que as páginas da
+amostra representam bem as demais. Os tempos medidos também dependem do equipamento,
+e seriam bem menores em uma máquina com GPU.
+
 % \chapter{Discussão}
 
 %=====================================================================
@@ -1776,7 +2049,7 @@ para a continuação desta pesquisa:
 % REFERÊNCIAS BIBLIOGRÁFICAS
 % Ordenadas por ordem de primeira aparição no texto (ABNT NBR 6023)
 %=====================================================================
-\bibliographystyle{abntex2-num}
+\bibliographystyle{abntex2-num}  % numérico, compatível com o abntex2cite [num] do preâmbulo
 \bibliography{referencias}
 
 \end{document}

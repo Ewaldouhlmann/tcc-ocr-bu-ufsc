@@ -16,7 +16,10 @@ class MistralOCR(VLMOCR):
     name = "mistral"
 
     def __init__(self, api_key: str | None = None, model: str = "mistral-ocr-latest"):
-        from mistralai import Mistral
+        try:
+            from mistralai.client import Mistral  # mistralai >= 2.0
+        except ImportError:
+            from mistralai import Mistral  # mistralai 1.x
 
         self._client = Mistral(api_key=api_key or os.getenv("MISTRAL_API_KEY"))
         self.model = model
