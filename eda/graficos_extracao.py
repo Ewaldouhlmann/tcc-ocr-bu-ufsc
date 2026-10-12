@@ -3,9 +3,9 @@
 Lê data/results/extracao/metricas.csv (gerado por benchmark/extrair.py) e o
 manifesto da amostra, e produz, sem depender da regra ouro:
 
-- escrita tcc/imagens/eda_real_tempo.pdf       tempo por página, cada página um ponto
-- escrita tcc/imagens/eda_real_resolucao.pdf   tempo médio em páginas de ~150 e 300 ppi
-- escrita tcc/imagens/eda_real_ram.pdf         pico de memória por modelo
+- escrita tcc/imagens/eda_real_tempo.png       tempo por página, cada página um ponto
+- escrita tcc/imagens/eda_real_resolucao.png   tempo médio em páginas de ~150 e 300 ppi
+- escrita tcc/imagens/eda_real_ram.png         pico de memória por modelo
 - escrita tcc/tabelas/extracao_resumo.tex      tabela-resumo com projeção para o corpus
 
 A CPU não é reportada: o Tesseract cria um processo novo por página e a
@@ -38,15 +38,7 @@ MODELOS = {
     "doctr": ("DocTR", "Clássico"),
     "easyocr": ("EasyOCR", "Clássico"),
     "glm-ocr": ("GLM-OCR", "VLM local"),
-    "qwen": ("Qwen2.5-VL 3B", "VLM local"),
-    "qwen3-vl": ("Qwen3-VL 2B", "VLM local"),
     "llamaparse-free": ("LlamaParse (básico)", "VLM via API"),
-    "llamaparse-premium": ("LlamaParse (Agentic)", "VLM via API"),
-    "llamaparse-lvm": ("LlamaParse (LVM)", "VLM via API"),
-    "llamaparse-layout": ("LlamaParse (Layout)", "VLM via API"),
-    "gemini": ("Gemini", "VLM via API"),
-    "mistral": ("Mistral OCR", "VLM via API"),
-    "claude": ("Claude Opus 5.5", "VLM via API"),
 }
 
 # Resolução nativa das digitalizações (ppi das imagens embutidas nos PDFs).
@@ -95,7 +87,7 @@ def figura_tempo(m: pd.DataFrame):
                for c in CORES if c in set(m["categoria"])]
     ax.legend(handles=handles, loc="lower right", fontsize=8)
     fig.tight_layout()
-    fig.savefig(FIGURAS / "eda_real_tempo.pdf")
+    fig.savefig(FIGURAS / "eda_real_tempo.png", dpi=300)
     plt.close(fig)
 
 
@@ -126,7 +118,7 @@ def figura_resolucao(m: pd.DataFrame):
                        markersize=6, label="300 ppi (Amante, Feliz)")
     ax.legend(handles=[vazio, cheio], loc="lower right", fontsize=8)
     fig.tight_layout()
-    fig.savefig(FIGURAS / "eda_real_resolucao.pdf")
+    fig.savefig(FIGURAS / "eda_real_resolucao.png", dpi=300)
     plt.close(fig)
 
 
@@ -152,7 +144,7 @@ def figura_ram(m: pd.DataFrame):
     handles = [plt.Rectangle((0, 0), 1, 1, color=CORES[c]) for c in CORES if c in set(m["categoria"])]
     ax.legend(handles, [c for c in CORES if c in set(m["categoria"])], loc="center right", fontsize=8, handlelength=1)
     fig.tight_layout()
-    fig.savefig(FIGURAS / "eda_real_ram.pdf")
+    fig.savefig(FIGURAS / "eda_real_ram.png", dpi=300)
     plt.close(fig)
 
 
@@ -212,7 +204,7 @@ def main():
     figura_resolucao(m)
     figura_ram(m)
     tabela(m)
-    print("Figuras eda_real_*.pdf e tabela extracao_resumo.tex geradas.")
+    print("Figuras eda_real_*.png e tabela extracao_resumo.tex geradas.")
 
 
 if __name__ == "__main__":

@@ -6,8 +6,6 @@ from src.ocr.vlm.gemma_ocr import GemmaOCR
 from src.ocr.vlm.glm_ocr import GLMOCR
 from src.ocr.vlm.llamaparse_ocr import (
     LlamaParseFreeOCR,
-    LlamaParseLayoutAgentOCR,
-    LlamaParseLVMOCR,
     LlamaParseOCR,
     LlamaParsePremiumOCR,
 )
@@ -25,8 +23,6 @@ __all__ = [
     "LlamaParseOCR",
     "LlamaParseFreeOCR",
     "LlamaParsePremiumOCR",
-    "LlamaParseLVMOCR",
-    "LlamaParseLayoutAgentOCR",
     "MistralOCR",
     "GeminiOCR",
     "ClaudeOCR",

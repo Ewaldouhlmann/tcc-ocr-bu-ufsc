@@ -7,7 +7,7 @@
 # - impede suspensão/desligamento enquanto a extração roda (liberado no fim);
 # - roda em paralelo, desacoplado do terminal/VS Code:
 #     local: qwen (8 páginas que faltam) e qwen3-vl  -> extracao_local.log
-#     API:   modos pagos do LlamaParse, Gemini, Mistral -> extracao_api.log
+#     API:   LlamaParse Agentic, Gemini, Mistral -> extracao_api.log
 # Páginas já salvas são puladas; pode rodar de novo quantas vezes quiser.
 
 set -u
@@ -16,7 +16,7 @@ SAIDA=data/results/extracao
 mkdir -p "$SAIDA"
 
 MODELOS_LOCAIS="qwen qwen3-vl"
-MODELOS_API="llamaparse-premium llamaparse-lvm llamaparse-layout gemini mistral"
+MODELOS_API="llamaparse-premium gemini mistral"
 
 echo "Fechando programas desnecessários..."
 for padrao in '[t]racker-miner-fs' '[u]pdate-notifier' '[g]nome-calendar' '[s]eahorse' \

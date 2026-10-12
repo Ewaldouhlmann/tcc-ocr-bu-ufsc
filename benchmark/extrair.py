@@ -45,8 +45,8 @@ from perfil_recursos import Amostrador  # noqa: E402
 # Modelos mantidos após as exclusões (Seção "Modelos Excluídos antes dos
 # Experimentos" do TCC), dos mais rápidos para os mais lentos: se algo der
 # errado no fim, os resultados rápidos já estarão salvos.
-MODELOS_PADRAO = ["tesseract", "paddleocr", "doctr", "easyocr", "llamaparse-free", "glm-ocr", "qwen"]
-MODELOS_OLLAMA = {"qwen", "glm-ocr", "qwen3-vl", "qwen-7b", "gemma4-e4b", "deepseek-ocr", "paddleocr-vl"}
+MODELOS_PADRAO = ["tesseract", "paddleocr", "doctr", "easyocr", "llamaparse-free", "glm-ocr"]
+MODELOS_OLLAMA = {"qwen", "glm-ocr", "qwen3-vl", "qwen-7b", "gemma4-e4b", "deepseek-ocr"}
 MAX_TENTATIVAS = 3
 TIMEOUT_PAGINA_S = 40 * 60
 INTERVALO_S = 0.5

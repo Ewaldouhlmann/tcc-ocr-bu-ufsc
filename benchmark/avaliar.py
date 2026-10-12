@@ -2,8 +2,8 @@
 
 Não roda nenhum modelo: lê os textos gerados por extrair.py (e os coletados
 por sessao_claude.py) em data/results/extracao/{modelo}/{obra}/{pagina}.txt e
-compara cada um com data/corpus/regra_ouro/{obra}/{pagina}.txt. Toda pasta de
-modelo encontrada em --saidas entra na avaliação.
+compara cada um com data/corpus/regra_ouro/{obra}/{pagina}.txt. Só entram os
+modelos de MODELOS, os que o TCC apresenta nos resultados.
 
 Normalização (aplicada igualmente à referência e às saídas):
 - Unicode NFC;
@@ -45,7 +45,9 @@ SAIDAS = RAIZ / "data" / "results" / "extracao"
 DESTINO = RAIZ / "data" / "results" / "avaliacao"
 TABELAS = RAIZ / "escrita tcc" / "tabelas"
 
-#: Nome de exibição e categoria; modelos fora daqui aparecem pelo nome da pasta.
+#: Modelos apresentados nos resultados do TCC (nome de exibição e categoria).
+#: O Qwen2.5-VL 3B ficou de fora: em CPU não concluiu a amostra (falta de
+#: memória) e foi substituído pela variante 7B, executada em GPU.
 MODELOS = {
     "abbyy": ("ABBYY FineReader", "Comercial"),
     "tesseract": ("Tesseract", "Clássico"),
@@ -53,15 +55,10 @@ MODELOS = {
     "doctr": ("DocTR", "Clássico"),
     "easyocr": ("EasyOCR", "Clássico"),
     "glm-ocr": ("GLM-OCR", "VLM local"),
-    "qwen": ("Qwen2.5-VL 3B", "VLM local"),
-    "qwen3-vl": ("Qwen3-VL 2B", "VLM local"),
     "qwen-7b": ("Qwen2.5-VL 7B", "VLM local (GPU)"),
     "gemma4-e4b": ("Gemma 4 E4B", "VLM local (GPU)"),
     "deepseek-ocr": ("DeepSeek-OCR", "VLM local (GPU)"),
-    "paddleocr-vl": ("PaddleOCR-VL", "VLM local (GPU)"),
     "llamaparse-free": ("LlamaParse (básico)", "VLM via API"),
-    "gemini": ("Gemini", "VLM via API"),
-    "mistral": ("Mistral OCR", "VLM via API"),
     "claude": ("Claude Opus 5.5", "VLM via API"),
 }
 #: Modelos cujo resultado não é comparável aos demais (ver nota da tabela).
@@ -92,7 +89,7 @@ def avaliar(saidas: Path) -> pd.DataFrame:
     referencias = {k: normalizar((REGRA_OURO / k[0] / f"{k[1]}.txt").read_text(encoding="utf-8"))
                    for k in manifesto}
     linhas = []
-    for pasta in sorted(p for p in saidas.iterdir() if p.is_dir() and not p.name.startswith("_")):
+    for pasta in sorted(p for p in saidas.iterdir() if p.is_dir() and p.name in MODELOS):
         for (obra, pagina), info in manifesto.items():
             arquivo = pasta / obra / f"{pagina}.txt"
             if not arquivo.exists():

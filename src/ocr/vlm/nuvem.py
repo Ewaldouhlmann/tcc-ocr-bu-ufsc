@@ -48,14 +48,3 @@ class DeepSeekOCRModel(OllamaVLM):
             return super().recognize(image_path)
         finally:
             self.PROMPT = padrao
-
-
-class PaddleOCRVLOCR(OllamaVLM):
-    """PaddleOCR-VL 0.9B (Baidu), versão comunitária no Ollama.
-
-    Usa os prompts de tarefa do modelo; "OCR:" é o de reconhecimento de texto.
-    """
-
-    name = "paddleocr-vl"
-    model_tag = "MedAIBase/PaddleOCR-VL:0.9b"
-    PROMPT = "OCR:"

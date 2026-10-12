@@ -55,18 +55,3 @@ class LlamaParsePremiumOCR(LlamaParseOCR):
 
     name = "llamaparse-premium"
     parse_mode = "parse_page_with_agent"
-
-
-class LlamaParseLVMOCR(LlamaParseOCR):
-    """Modo com modelo de visão (LVM): cada página é transcrita por um modelo
-    multimodal do provedor, sem o pipeline agêntico."""
-
-    name = "llamaparse-lvm"
-    parse_mode = "parse_page_with_lvm"
-
-
-class LlamaParseLayoutAgentOCR(LlamaParseOCR):
-    """Modo agêntico com foco em layout (o mais sofisticado da API)."""
-
-    name = "llamaparse-layout"
-    parse_mode = "parse_page_with_layout_agent"

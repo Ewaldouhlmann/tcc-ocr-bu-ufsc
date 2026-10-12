@@ -3,7 +3,7 @@
 from src.ocr.base_ocr import BaseOCR, ClassicalOCR, TransformerOCR, VLMOCR
 from src.ocr.classical import DocTROCR, EasyOCR, PaddleOCR, TesseractOCR
 from src.ocr.transformer import TrOCRBase, TrOCRLarge
-from src.ocr.vlm.nuvem import DeepSeekOCRModel, Gemma4E4BOCR, PaddleOCRVLOCR, Qwen7BOCR
+from src.ocr.vlm.nuvem import DeepSeekOCRModel, Gemma4E4BOCR, Qwen7BOCR
 from src.ocr.vlm import (
     ClaudeOCR,
     DeepSeekOCR,
@@ -11,8 +11,6 @@ from src.ocr.vlm import (
     GemmaOCR,
     GLMOCR,
     LlamaParseFreeOCR,
-    LlamaParseLayoutAgentOCR,
-    LlamaParseLVMOCR,
     LlamaParsePremiumOCR,
     MistralOCR,
     Qwen3OCR,
@@ -37,11 +35,8 @@ MODEL_REGISTRY: dict[str, type[BaseOCR]] = {
     "qwen-7b": Qwen7BOCR,
     "gemma4-e4b": Gemma4E4BOCR,
     "deepseek-ocr": DeepSeekOCRModel,
-    "paddleocr-vl": PaddleOCRVLOCR,
     "llamaparse-free": LlamaParseFreeOCR,
     "llamaparse-premium": LlamaParsePremiumOCR,
-    "llamaparse-lvm": LlamaParseLVMOCR,
-    "llamaparse-layout": LlamaParseLayoutAgentOCR,
     "mistral": MistralOCR,
     "gemini": GeminiOCR,
     "claude": ClaudeOCR,
@@ -65,8 +60,6 @@ __all__ = [
     "GLMOCR",
     "LlamaParseFreeOCR",
     "LlamaParsePremiumOCR",
-    "LlamaParseLVMOCR",
-    "LlamaParseLayoutAgentOCR",
     "MistralOCR",
     "GeminiOCR",
     "ClaudeOCR",
