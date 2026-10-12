@@ -58,8 +58,8 @@ MODELOS = {
     "qwen-7b": ("Qwen2.5-VL 7B", "VLM local (GPU)"),
     "gemma4-e4b": ("Gemma 4 E4B", "VLM local (GPU)"),
     "deepseek-ocr": ("DeepSeek-OCR", "VLM local (GPU)"),
-    "llamaparse-free": ("LlamaParse (básico)", "VLM via API"),
-    "claude": ("Claude Opus 5.5", "VLM via API"),
+    "llamaparse-free": ("LlamaParse (básico)", "Serviço via API"),
+    "claude": ("Claude Opus 5.5", "Serviço via API"),
 }
 #: Modelos cujo resultado não é comparável aos demais (ver nota da tabela).
 RESSALVA = {"claude"}
@@ -108,12 +108,20 @@ def avaliar(saidas: Path) -> pd.DataFrame:
     return pd.DataFrame(linhas)
 
 
+#: Página com CER a partir deste valor conta como falha (texto inutilizável:
+#: laço de repetição, saída vazia ou ilegível).
+LIMIAR_FALHA = 0.5
+
+
 def resumir(df: pd.DataFrame) -> pd.DataFrame:
     linhas = []
     for modelo, d in df.groupby("modelo"):
         nome, categoria = MODELOS.get(modelo, (modelo, ""))
+        boas = d[d["cer"] < LIMIAR_FALHA]
         linha = {"modelo": modelo, "nome": nome, "categoria": categoria, "paginas": len(d),
-                 "cer": d["cer"].mean(), "wer": d["wer"].mean()}
+                 "cer": d["cer"].mean(), "wer": d["wer"].mean(), "cer_mediana": d["cer"].median(),
+                 "falhas": int((d["cer"] >= LIMIAR_FALHA).sum()),
+                 "cer_sem_falhas": boas["cer"].mean(), "wer_sem_falhas": boas["wer"].mean()}
         for dif in DIFICULDADES:
             dd = d[d["dificuldade"] == dif]
             linha[f"cer_{dif}"] = dd["cer"].mean() if len(dd) else None
@@ -134,9 +142,11 @@ def tabela_tex(resumo: pd.DataFrame, total: int):
             nome += r"$^{\dagger}$"
         if r["paginas"] < total:
             nome += r"$^{*}$"
-        celulas = [f"{_pct(r[f'cer_{d}'])} / {_pct(r[f'wer_{d}'])}" for d in DIFICULDADES]
-        linhas.append(f"{nome} & {r['paginas']} & {_pct(r['cer'])} & {_pct(r['wer'])} & "
-                      + " & ".join(celulas) + r" \\")
+        celulas = [_pct(r[f"cer_{d}"]) for d in DIFICULDADES]
+        linhas.append(f"{nome} & {_pct(r['cer'])} & {_pct(r['wer'])} & {_pct(r['cer_mediana'])} & "
+                      f"{r['falhas']} & " + " & ".join(celulas) + r" \\")
+    notas.append(r"Falhas: páginas com CER $\geq$ " + f"{LIMIAR_FALHA:.0%}".replace("%", r"\%")
+                 + r" (laço de repetição, saída vazia ou texto ilegível).")
     if (resumo["paginas"] < total).any():
         notas.append(r"$^{*}$ Avaliado só nas páginas concluídas; as médias não são "
                      r"diretamente comparáveis às dos demais modelos.")
@@ -147,15 +157,15 @@ def tabela_tex(resumo: pd.DataFrame, total: int):
     tex = r"""% Gerado automaticamente por benchmark/avaliar.py -- não editar à mão.
 \begin{table}[H]
 \centering
-\caption{CER e WER médios (\%) de cada modelo sobre as páginas da amostra, em
-geral e por classe de dificuldade (CER / WER).}
+\caption{CER e WER (\%) de cada modelo sobre as """ + str(total) + r""" páginas da amostra:
+médias gerais, CER mediano, número de falhas e CER médio por classe de dificuldade.}
 \label{tab:avaliacao_resumo}
 \renewcommand{\arraystretch}{1.25}
 {\small
-\begin{tabular}{l r r r c c c}
+\begin{tabular}{l r r r r r r r}
 \hline
-& & \multicolumn{2}{c}{\textbf{Geral}} & \textbf{Fácil} & \textbf{Médio} & \textbf{Difícil} \\
-\textbf{Modelo} & \textbf{Págs.} & \textbf{CER} & \textbf{WER} & \textbf{CER / WER} & \textbf{CER / WER} & \textbf{CER / WER} \\
+& \multicolumn{2}{c}{\textbf{Média}} & \textbf{CER} & & \multicolumn{3}{c}{\textbf{CER por dificuldade}} \\
+\textbf{Modelo} & \textbf{CER} & \textbf{WER} & \textbf{mediano} & \textbf{Falhas} & \textbf{Fácil} & \textbf{Médio} & \textbf{Difícil} \\
 \hline
 """ + "\n".join(linhas) + r"""
 \hline
@@ -191,7 +201,7 @@ def main():
     tabela_tex(resumo, total=len(ler_manifesto()))
 
     with pd.option_context("display.width", 140, "display.max_columns", 20):
-        print(resumo[["nome", "paginas", "cer", "wer"] + [f"cer_{d}" for d in DIFICULDADES]]
+        print(resumo[["nome", "cer", "wer", "cer_mediana", "falhas", "cer_sem_falhas"] + [f"cer_{d}" for d in DIFICULDADES]]
               .round(3).to_string(index=False))
     print(f"\nArquivos em {DESTINO} e tabela em {TABELAS / 'avaliacao_resumo.tex'}")
 

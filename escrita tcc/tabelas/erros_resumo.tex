@@ -1,0 +1,33 @@
+% Gerado automaticamente por eda/analise_resultados.ipynb -- não editar à mão.
+\begin{table}[H]
+\centering
+\caption{Padrões de erro por modelo: substituições de palavras por tipo e tratamento
+das grafias anteriores às reformas ortográficas.}
+\label{tab:erros_resumo}
+\renewcommand{\arraystretch}{1.25}
+{\small
+\begin{tabular}{l r r r r r r r}
+\hline
+& \multicolumn{5}{c}{\textbf{Substituições de palavras}} & \multicolumn{2}{c}{\textbf{Grafias antigas (\%)}} \\
+\textbf{Modelo} & \textbf{Total} & \textbf{Acent.} & \textbf{Pont.} & \textbf{s$\to$f} & \textbf{Modern.} & \textbf{Preserv.} & \textbf{Modern.} \\
+\hline
+Claude Opus 5.5$^{\dagger}$ & 15 & 7 & 3 & 1 & 0 & 98,7 & 0,0 \\
+Qwen2.5-VL 7B & 167 & 72 & 14 & 12 & 19 & 83,1 & 12,3 \\
+Gemma 4 E4B & 292 & 100 & 19 & 60 & 41 & 59,5 & 26,8 \\
+GLM-OCR & 112 & 46 & 13 & 9 & 5 & 88,3 & 3,2 \\
+LlamaParse (básico) & 216 & 17 & 73 & 10 & 0 & 91,7 & 0,0 \\
+DocTR & 559 & 214 & 53 & 54 & 0 & 69,5 & 0,0 \\
+ABBYY FineReader & 339 & 60 & 40 & 43 & 0 & 74,3 & 0,0 \\
+EasyOCR & 657 & 31 & 210 & 14 & 2 & 72,4 & 1,7 \\
+Tesseract & 290 & 31 & 75 & 48 & 0 & 86,1 & 0,0 \\
+PaddleOCR & 454 & 190 & 78 & 62 & 0 & 69,2 & 0,0 \\
+DeepSeek-OCR & 167 & 66 & 19 & 24 & 5 & 77,3 & 5,7 \\
+\hline
+\end{tabular}
+}
+\fonte{Elaborado pelo autor.}
+\par\footnotesize{s$\to$f: \textit{s} longo lido como \textit{f}, contado só em \textit{O Feliz Independente}.
+Grafias antigas: palavras da regra ouro identificadas pelas regras da Seção~\ref{sec:protocolo_avaliacao},
+entre as alinhadas uma a uma com a saída do modelo.}
+\par\footnotesize{$^{\dagger}$ Regra ouro derivada da transcrição deste modelo.}
+\end{table}

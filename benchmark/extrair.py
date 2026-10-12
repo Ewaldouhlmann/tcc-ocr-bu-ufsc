@@ -39,8 +39,8 @@ import psutil
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent
-sys.path.insert(0, str(RAIZ / "eda"))
-from perfil_recursos import Amostrador  # noqa: E402
+sys.path.insert(0, str(AQUI))
+from amostrador import Amostrador  # noqa: E402
 
 # Modelos mantidos após as exclusões (Seção "Modelos Excluídos antes dos
 # Experimentos" do TCC), dos mais rápidos para os mais lentos: se algo der
