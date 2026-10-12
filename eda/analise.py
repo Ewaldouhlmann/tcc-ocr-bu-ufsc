@@ -49,6 +49,7 @@ MODELOS = {
     "llamaparse-free": ("LlamaParse", "VLM via API"),
     "mistral": ("Mistral OCR", "VLM via API"),
     "gemini": ("Gemini 3.8 Flash", "VLM via API"),
+    "claude": ("Claude Opus 5.5", "VLM via API"),
 }
 MODELOS_OLLAMA = {"qwen", "qwen3-vl", "glm-ocr", "gemma4", "deepseek"}
 VERSOES = {"001": "limpa", "002": "degradada"}

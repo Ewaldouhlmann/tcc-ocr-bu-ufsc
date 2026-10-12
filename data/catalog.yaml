@@ -3,7 +3,7 @@
 # benchmark (benchmark/run_benchmark.py) via src/catalog.py.
 #
 # Dados de página/dificuldade da amostra de avaliação ficam em
-# benchmark/ground_truth/manifest.csv (Tabela 4.4 do TCC), não aqui.
+# data/corpus/regra_ouro/manifest.csv (Tabela 4.4 do TCC), não aqui.
 # CER/WER de literatura vêm de main.tex (tab:selecao_modelos) e são apenas
 # referência da triagem — não substituem os resultados do benchmark próprio.
 
@@ -178,3 +178,11 @@ modelos:
     cer_literatura: "5-10%"
     wer_literatura: "9-18%"
     observacoes: "Requer GEMINI_API_KEY; descontinuação prevista para jun./2026"
+
+  claude:
+    nome: "Claude Opus 5.5"
+    categoria: "vlm_api"
+    arquivo: "src/ocr/vlm/claude_ocr.py"
+    custo: "pago"
+    gpu: "nao"
+    observacoes: "Requer ANTHROPIC_API_KEY; US$ 4/20 por milhão de tokens (entrada/saída). Gerou a transcrição inicial da regra ouro"

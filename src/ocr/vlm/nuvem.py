@@ -32,6 +32,22 @@ class DeepSeekOCRModel(OllamaVLM):
     name = "deepseek-ocr"
     model_tag = "deepseek-ocr:3b"
     PROMPT = "Free OCR."
+    #: Instrução alternativa do modelo, usada quando "Free OCR." devolve só o
+    #: marcador de fim de turno (observado em 5 das 20 páginas da amostra).
+    PROMPT_ALTERNATIVO = "Convert the document to markdown."
+
+    def recognize(self, image_path):
+        import re
+
+        texto = super().recognize(image_path)
+        letras = sum(c.isalpha() for c in re.sub(r"<[^>]*>", " ", texto))
+        if letras >= 50:
+            return texto
+        padrao, self.PROMPT = self.PROMPT, self.PROMPT_ALTERNATIVO
+        try:
+            return super().recognize(image_path)
+        finally:
+            self.PROMPT = padrao
 
 
 class PaddleOCRVLOCR(OllamaVLM):

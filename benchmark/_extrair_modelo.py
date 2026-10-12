@@ -11,6 +11,7 @@ tempo, CPU e RAM por página.
 """
 
 import json
+import re
 import subprocess
 import sys
 import time
@@ -20,6 +21,22 @@ RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
 MAX_FALHAS_POR_PAGINA = 2
+
+#: Mínimo de letras para uma saída contar como transcrição. A página mais curta
+#: da amostra tem ~450 caracteres; abaixo disso o modelo não leu a página.
+MIN_LETRAS = 50
+
+
+def limpar_saida(texto: str) -> str:
+    """Remove códigos especiais de fim de turno que alguns VLMs vazam na
+    resposta (ex.: "<|im_end|>" no DeepSeek-OCR)."""
+    return re.sub(r"<\|[^|<>]{1,40}\|>", "", texto).strip()
+
+
+def tem_texto(texto: str) -> bool:
+    """Falso para saídas vazias ou só com marcação (ex.: uma tabela HTML vazia)."""
+    sem_tags = re.sub(r"<[^>]{0,200}>", " ", limpar_saida(texto))
+    return sum(c.isalpha() for c in sem_tags) >= MIN_LETRAS
 # Preenchido após carregar o modelo: adaptadores Ollama têm model_tag.
 TAGS_OLLAMA: dict[str, str] = {}
 
@@ -122,8 +139,13 @@ def main():
     pendentes = []
     for png in sorted(imagens.glob("*/*.png")):
         chave = f"{png.parent.name}/{png.stem}"
-        if (saida / modelo_nome / png.parent.name / f"{png.stem}.txt").exists():
-            continue
+        salvo = saida / modelo_nome / png.parent.name / f"{png.stem}.txt"
+        if salvo.exists():
+            if tem_texto(salvo.read_text(encoding="utf-8")):
+                continue
+            # Saída salva antes desta checagem existir, sem texto de verdade:
+            # descarta e processa de novo (não conta como falha anterior).
+            salvo.unlink()
         if falhas.get(chave, 0) >= MAX_FALHAS_POR_PAGINA:
             continue
         pendentes.append((chave, png))
@@ -159,11 +181,13 @@ def main():
             subprocess.run(["ollama", "stop", TAGS_OLLAMA[modelo_nome]], capture_output=True)
         if texto is None:
             continue
-        if not texto.strip():
-            # Todas as páginas da amostra têm texto: saída vazia é falha do
-            # modelo (ex.: Qwen3-VL com raciocínio esgotando o contexto).
-            registrar_falha(estado, modelo_nome, chave, "saída vazia")
-            emitir("erro_pagina", pagina=chave, erro="saída vazia")
+        texto = limpar_saida(texto)
+        if not tem_texto(texto):
+            # Todas as páginas da amostra têm texto: saída vazia ou só com
+            # marcação é falha do modelo (ex.: Qwen3-VL esgotando o contexto,
+            # DeepSeek-OCR devolvendo só "<|im_end|>").
+            registrar_falha(estado, modelo_nome, chave, f"saída sem texto: {texto[:80]!r}")
+            emitir("erro_pagina", pagina=chave, erro="saída sem texto")
             continue
         destino = saida / modelo_nome / png.parent.name
         destino.mkdir(parents=True, exist_ok=True)

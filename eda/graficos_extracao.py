@@ -28,7 +28,7 @@ import matplotlib.ticker
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent
 METRICAS = RAIZ / "data" / "results" / "extracao" / "metricas.csv"
-MANIFESTO = RAIZ / "benchmark" / "ground_truth" / "manifest.csv"
+MANIFESTO = RAIZ / "data" / "corpus" / "regra_ouro" / "manifest.csv"
 FIGURAS = RAIZ / "escrita tcc" / "imagens"
 TABELAS = RAIZ / "escrita tcc" / "tabelas"
 
@@ -46,6 +46,7 @@ MODELOS = {
     "llamaparse-layout": ("LlamaParse (Layout)", "VLM via API"),
     "gemini": ("Gemini", "VLM via API"),
     "mistral": ("Mistral OCR", "VLM via API"),
+    "claude": ("Claude Opus 5.5", "VLM via API"),
 }
 
 # Resolução nativa das digitalizações (ppi das imagens embutidas nos PDFs).

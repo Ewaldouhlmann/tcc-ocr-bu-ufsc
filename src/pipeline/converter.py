@@ -8,7 +8,7 @@ import argparse
 from pdf2image import convert_from_path
 
 DEFAULT_MANIFEST = (
-    Path(__file__).resolve().parent.parent.parent / "benchmark" / "ground_truth" / "manifest.csv"
+    Path(__file__).resolve().parent.parent.parent / "data" / "corpus" / "regra_ouro" / "manifest.csv"
 )
 
 

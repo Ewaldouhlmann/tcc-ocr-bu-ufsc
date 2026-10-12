@@ -48,7 +48,7 @@ tcc-ocr-nupill/
 ├── benchmark/                  # Avaliação comparativa dos modelos
 │   ├── run_benchmark.py        # Ponto de entrada (CLI)
 │   ├── metrics.py              # Cálculo de WER, CER e relatórios
-│   └── ground_truth/           # Transcrições manuais de referência (.txt)
+│   (regra ouro em data/corpus/regra_ouro/)
 │
 ├── data/
 │   ├── corpus/                 # PDFs e PNGs das obras literárias
@@ -132,7 +132,7 @@ python -m src.pipeline.converter \
 Converte o(s) PDF(s) inteiro(s). Para preparar só a amostra usada no benchmark
 (evita renderizar as 1043 páginas de *O Feliz Independente* pra usar 3), use
 `--manifest`, que converte apenas as páginas listadas em
-`benchmark/ground_truth/manifest.csv` — os PDFs de entrada devem se chamar
+`data/corpus/regra_ouro/manifest.csv` — os PDFs de entrada devem se chamar
 `{obra_slug}.pdf` (ex.: `heloiza.pdf`, `feliz_independente.pdf`):
 
 ```bash
@@ -147,7 +147,7 @@ python -m src.pipeline.converter \
 ```bash
 python benchmark/run_benchmark.py \
     --images data/corpus/images/amostra/ \
-    --ground-truth benchmark/ground_truth/ \
+    --ground-truth data/corpus/regra_ouro/ \
     --models tesseract easyocr trocr-large gemma4 mistral \
     --output data/results/
 ```

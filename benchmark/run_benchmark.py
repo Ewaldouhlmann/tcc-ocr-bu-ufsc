@@ -23,7 +23,7 @@ AVAILABLE_MODELS = list(MODEL_REGISTRY.keys())
 # explícito, mas não entram em "all".
 EXCLUDED_MODELS = {"trocr-base", "trocr-large"}
 
-DEFAULT_MANIFEST = Path(__file__).resolve().parent / "ground_truth" / "manifest.csv"
+DEFAULT_MANIFEST = Path(__file__).resolve().parent.parent / "data" / "corpus" / "regra_ouro" / "manifest.csv"
 
 
 def load_manifest(manifest_path: Path) -> dict[tuple[str, str], dict]:
