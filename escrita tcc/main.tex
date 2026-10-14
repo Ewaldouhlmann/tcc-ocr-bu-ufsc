@@ -43,6 +43,30 @@
 \newcommand{\topic}[1]{\textit{\textcolor{gray}{[TODO: #1]}}}
 
 %=====================================================================
+% AJUSTES DE COMPILAÇÃO (avisos)
+%=====================================================================
+% Colunas de tabela com texto alinhado à esquerda: em células estreitas, o texto
+% justificado estica os espaços e gera avisos "Underfull \hbox".
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+% O abnTeX2 põe "APÊNDICE" em maiúsculas com \uppercase, que o hyperref não aceita
+% nos marcadores do PDF.
+\pdfstringdefDisableCommands{\def\uppercase#1{#1}}
+% Aviso interno entre a classe e o kernel do LaTeX, sem efeito no documento
+% (o pacote silence já é carregado pela classe).
+\WarningFilter{latex}{Command \showhyphens has changed}
+% Páginas sem esticamento vertical forçado (evita avisos "Underfull \vbox").
+\raggedbottom
+% Figuras e tabelas usam [htb]; estes limites deixam o LaTeX pôr floats grandes
+% no topo ou no pé da página, perto do texto, em vez de mandá-los para o fim.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+
+%=====================================================================
 % INFORMAÇÕES DO TRABALHO
 %=====================================================================
 \titulo{Reconhecimento de Texto em Imagens de Obras Literárias Antigas em Português}
@@ -119,8 +143,9 @@ de visão-linguagem obtiveram os menores erros: o Qwen2.5-VL 7B alcançou CER m�
 e o GLM-OCR, CER mediano de 0,6\%. Parte desses modelos, porém, modernizou grafias antigas
 (até 26,8\% das formas, no Gemma~4) ou entrou em laço de repetição em páginas isoladas.
 Observou-se também que a qualidade da digitalização pesou mais no erro do que a idade da
-tipografia. Selecionou-se o GLM-OCR, que roda em computador comum, sem GPU, e foi o modelo
-local mais fiel à ortografia original. Como contribuição complementar, disponibilizam-se um
+tipografia. Selecionou-se o Qwen2.5-VL 7B, que obteve o menor erro médio, sem
+nenhuma falha, e pode ser executado gratuitamente em GPU na nuvem; o GLM-OCR, mais fiel à
+ortografia original e executável sem GPU, é indicado como alternativa. Como contribuição complementar, disponibilizam-se um
 pipeline de extração e um notebook que aplicam o modelo escolhido a livros inteiros.
 
 \vspace{\baselineskip}
@@ -149,8 +174,10 @@ computational and financial cost. Vision-language models achieved the lowest err
 Qwen2.5-VL 7B reached a mean CER of 1.6\%, and GLM-OCR a median CER of 0.6\%. Some of these
 models, however, modernized historical spellings (up to 26.8\% of the forms, in Gemma~4)
 or fell into repetition loops on isolated pages. Scan quality also proved more influential
-on error than the age of the typeface. GLM-OCR was selected, as it runs on an ordinary
-computer without a GPU and was the local model most faithful to the original spelling. As a
+on error than the age of the typeface. Qwen2.5-VL 7B was selected, as it achieved the
+lowest mean error without any failure and can be run for free on a cloud GPU; GLM-OCR, more
+faithful to the original spelling and able to run without a GPU, is recommended as an
+alternative. As a
 complementary contribution, an extraction pipeline and a notebook that apply the selected
 model to entire books are made available.
 
@@ -352,6 +379,7 @@ Este trabalho está estruturado em oito capítulos e um apêndice:
 % CAPÍTULO 2: FUNDAMENTAÇÃO TEÓRICA
 %=====================================================================
 \chapter{Fundamentação Teórica}
+\label{cap:fundamentacao}
 
 A fundamentação teórica deste trabalho estabelece os conceitos essenciais para
 compreender o reconhecimento óptico de caracteres em obras literárias históricas. Este
@@ -392,7 +420,7 @@ Um sistema de reconhecimento óptico de caracteres segue um processo sequencial 
 definido, no qual cada etapa constrói sobre o resultado da etapa anterior. A
 Figura~\ref{fig:ocr_pipeline} ilustra as principais fases deste processo.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{imagens/ocr-pipeline.png}
     \caption{Diagrama de blocos de um sistema de OCR.}
@@ -431,13 +459,13 @@ escala, ao custo de uma tendência a modernizar grafias históricas. A
 Tabela~\ref{tab:tecnicas_ocr} resume essas quatro abordagens segundo seus respectivos princípios de
 funcionamento, principais vantagens e limitações mais relevantes para o contexto deste trabalho.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Comparativo das principais técnicas de OCR segundo princípio, vantagens e
 limitações.}
 \label{tab:tecnicas_ocr}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{p{2.2cm} p{4cm} p{3.5cm} p{3.5cm}}
+\begin{tabular}{L{2.2cm} L{4cm} L{3.5cm} L{3.5cm}}
 \hline
 \textbf{Técnica} & \textbf{Princípio} & \textbf{Vantagens} & \textbf{Limitações} \\
 \hline
@@ -535,8 +563,7 @@ frequentemente modernizam grafias arcaicas de forma silenciosa, comportamento
 problemático para aplicações que exigem fidelidade diplomática ao original.
 
 %---------------------------------------------------------------------
-\clearpage
-\section{Ferramentas de OCR Avaliadas}
+\section{Ferramentas de OCR Consideradas}
 \label{sec:ferramentas}
 %---------------------------------------------------------------------
 
@@ -689,13 +716,13 @@ A Tabela~\ref{tab:ferramentas_fund} apresenta uma visão consolidada de todas as
 ferramentas, indicando para cada uma: a categoria tecnológica, a licença de uso, a forma
 de acesso (local ou API), o regime de custo e a necessidade de GPU.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Ferramentas de OCR consideradas: categoria, licença, forma de acesso, custo e
 requisito de GPU.}
 \label{tab:ferramentas_fund}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{p{2.3cm} p{2.8cm} p{2cm} p{1.2cm} p{1.8cm} p{2cm}}
+\begin{tabular}{L{2.3cm} L{2.8cm} L{2cm} L{1.2cm} L{1.8cm} L{2cm}}
 \hline
 \textbf{Ferramenta} & \textbf{Categoria} & \textbf{Licença} & \textbf{Acesso}
   & \textbf{Custo} & \textbf{GPU} \\
@@ -867,7 +894,7 @@ iniciativas mais próximas do problema aqui tratado.
 \label{sec:metodologia_revisao}
 
 A revisão bibliográfica apresentada neste capítulo, assim como parte da fundamentação
-teórica do Capítulo~2, foi conduzida por meio de buscas exploratórias em fontes
+teórica do Capítulo~\ref{cap:fundamentacao}, foi conduzida por meio de buscas exploratórias em fontes
 acadêmicas. As buscas
 cobriram conteúdo indexado em bases como Google Scholar, IEEE Xplore e ACM Digital, complementadas pontualmente por
 documentação técnica oficial de ferramentas (páginas de projeto, repositórios de código
@@ -899,11 +926,11 @@ relevantes encontrados, como Vesalainen et al.\ \cite{vesalainen2025}.
 Foram excluídos trabalhos
 sem relação direta com OCR, ou digitalização de texto, bem como conteúdo puramente
 promocional ou de caráter comercial sem embasamento metodológico, este último mantido
-apenas como fonte factual para especificações técnicas de ferramentas (Seção~2.4), e não
+apenas como fonte factual para especificações técnicas de ferramentas (Seção~\ref{sec:ferramentas}), e não
 como referência de embasamento teórico. Esse processo resultou nos sete trabalhos
 diretamente relacionados discutidos nas seções seguintes deste capítulo, sintetizados na
 Tabela~\ref{tab:trabalhos_relacionados}, complementados pelas referências de
-fundamentação teórica e técnica apresentadas no Capítulo~2.
+fundamentação teórica e técnica apresentadas no Capítulo~\ref{cap:fundamentacao}.
 
 \section{OCR para Documentos Históricos e Degradados}
 \label{sec:ocr_historico}
@@ -1037,13 +1064,14 @@ capítulo segundo cinco dimensões: tipo de documento, idioma do corpus, ferrame
 avaliadas, métricas reportadas e principal contribuição. A linha final destaca como
 o presente trabalho se posiciona em relação ao estado da arte.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Síntese comparativa dos trabalhos relacionados em OCR para documentos
 históricos.}
 \label{tab:trabalhos_relacionados}
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{p{2.5cm} p{2.2cm} p{2cm} p{2.8cm} p{2cm} p{3.0cm}}
+{\small
+\begin{tabular}{L{2.4cm} L{2.0cm} L{1.7cm} L{2.6cm} L{1.9cm} L{2.8cm}}
 \hline
 \textbf{Trabalho} &
 \textbf{Tipo} &
@@ -1094,6 +1122,7 @@ Baudry \cite{baudry2023} &
   \textbf{Benchmark com corpus estratificado} \\
 \hline
 \end{tabular}
+}
 \fonte{Elaborado pelo autor.}
 \end{table}
 
@@ -1110,6 +1139,7 @@ métricas padronizadas de CER e WER e uma medida da modernização de grafias an
 % CAPÍTULO 4: CONSTRUÇÃO DA REGRA OURO
 %=====================================================================
 \chapter{Construção da Regra Ouro}
+\label{cap:regra_ouro}
 
 A avaliação objetiva de sistemas de reconhecimento óptico de caracteres requer a
 existência de um conjunto de referência, denominado \textit{regra ouro}, composto por
@@ -1160,12 +1190,12 @@ para o reconhecimento automático de texto. Três critérios principais orientar
 Com base nesses critérios, foram selecionadas cinco obras do acervo NUPILL, descritas na
 Tabela~\ref{tab:obras_corpus}.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Obras selecionadas para composição do corpus de avaliação.}
 \label{tab:obras_corpus}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{p{4.5cm} p{3.5cm} r r p{3.2cm}}
+\begin{tabular}{L{4.5cm} L{3.5cm} r r L{3.2cm}}
 \hline \hline
 \textbf{Obra} & \textbf{Autor} & \textbf{Ano} & \textbf{Págs.} & \textbf{Tipografia} \\
 \hline \hline
@@ -1204,7 +1234,7 @@ operem próximo ao seu desempenho nominal.
 As páginas de \textit{Heloíza} são representativas dessa classe. A
 Figura~\ref{fig:pagina_facil} ilustra um exemplo típico.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.75\textwidth]{imagens/heloiza_p040.png}
     \caption{Exemplo de página fácil: \textit{Heloíza}, p.\ 40. Tipografia serifada,
@@ -1228,7 +1258,7 @@ ambiguidades adicionais, dificultando o desempenho dos modelos de OCR.
 Os volumes de \textit{Culto à Mulher} são representativos dessa classe. A
 Figura~\ref{fig:pagina_media} ilustra um exemplo.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.75\textwidth]{imagens/culto_p055.png}
     \caption{Exemplo de página de dificuldade média: \textit{Culto à Mulher} vol.\,1,
@@ -1253,7 +1283,7 @@ padrões ortográficos modernos.
 As páginas de \textit{A Amante Militar} são representativas dessa classe. A
 Figura~\ref{fig:pagina_dificil} ilustra um exemplo.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.55\textwidth]{imagens/amante_p050.png}
     \caption{Exemplo de página difícil: \textit{A Amante Militar}, p.\ 50. Tipografia
@@ -1274,12 +1304,12 @@ Tabela~\ref{tab:paginas_corpus} apresenta as páginas selecionadas. A classifica
 percepção visual das páginas antes dos experimentos; a Seção~\ref{sec:dificuldade} mostra
 que, na prática, a qualidade da digitalização pesou mais no erro do que a tipografia.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Páginas selecionadas para a regra ouro, por obra e classe de dificuldade.}
 \label{tab:paginas_corpus}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{p{4.5cm} c c p{5cm}}
+\begin{tabular}{L{4.5cm} c c L{5cm}}
 \hline
 \textbf{Obra} & \textbf{Pág. PDF} & \textbf{Dificuldade} & \textbf{Características} \\
 \hline
@@ -1349,13 +1379,14 @@ abaixo:
 
 \section{Validação da Regra Ouro}
 
-As transcrições foram revisadas pelo autor deste trabalho, graduando em Ciência da
-Computação, página por página, contra as imagens originais. A validação por um
-especialista, o professor coorientador, Prof.\ Dr.\ Alckmar Luiz dos Santos, coordenador do
-NUPILL e especialista em literatura brasileira histórica, consiste na comparação
-independente entre a transcrição e a imagem original, com foco nas passagens ambíguas
-\topic{registrar se a validação pelo NUPILL foi realizada, quando e quantas correções
-resultaram dela; caso não tenha ocorrido, mantê-la como limitação no Capítulo 7}.
+A validação foi inteiramente manual: cada transcrição foi conferida pelo autor, página por
+página e linha por linha, contra a imagem original, sem o uso de nenhuma ferramenta
+automática de comparação ou correção. Esse trabalho contou com o auxílio do Núcleo de
+Pesquisas em Informática, Literatura e Linguística (NUPILL), coordenado pelo coorientador,
+Prof.\ Dr.\ Alckmar Luiz dos Santos, especialista em literatura brasileira histórica. O apoio
+do núcleo concentrou-se nas passagens de leitura incerta e nas formas ortográficas da época,
+garantindo que grafias antigas legítimas fossem preservadas e não confundidas com erros de
+transcrição.
 
 O resultado é um conjunto de 20 arquivos de texto plano, um por página, que constitui a
 regra ouro utilizada para o cálculo de CER e WER em todos os experimentos deste trabalho.
@@ -1368,7 +1399,7 @@ regra ouro utilizada para o cálculo de CER e WER em todos os experimentos deste
 
 Este capítulo descreve como os modelos foram configurados, executados, avaliados e
 comparados. O trabalho segue cinco etapas, ilustradas na Figura~\ref{fig:metodologia_geral}:
-a construção da regra ouro, descrita no Capítulo~4; a configuração dos modelos candidatos
+a construção da regra ouro, descrita no Capítulo~\ref{cap:regra_ouro}; a configuração dos modelos candidatos
 e a triagem dos que podiam ser executados (Seções~\ref{sec:ambiente}
 a~\ref{sec:configuracao}); a extração do texto das páginas da amostra
 (Seção~\ref{sec:protocolo_extracao}); a avaliação das transcrições
@@ -1378,13 +1409,13 @@ Capítulo~\ref{cap:resultados}. A aplicação do modelo escolhido a obras comple
 de um pipeline de extração, é uma contribuição complementar e está descrita no
 Apêndice~\ref{ap:pipeline}.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \begin{tikzpicture}[
         etapa/.style={draw=black!60, rounded corners=2pt, align=center, text width=2.25cm,
                       minimum height=1.55cm, font=\footnotesize, fill=black!4},
         seta/.style={-{Stealth[length=2mm]}, semithick, black!70}]
-      \node[etapa] (e1) {\textbf{1. Regra ouro}\\[2pt]{\scriptsize 20 páginas transcritas (Cap.~4)}};
+      \node[etapa] (e1) {\textbf{1. Regra ouro}\\[2pt]{\scriptsize 20 páginas transcritas (Cap.~\ref{cap:regra_ouro})}};
       \node[etapa, right=4mm of e1] (e2) {\textbf{2. Configuração e triagem}\\[2pt]{\scriptsize (Seções~\ref{sec:ambiente} a~\ref{sec:configuracao})}};
       \node[etapa, right=4mm of e2] (e3) {\textbf{3. Extração}\\[2pt]{\scriptsize tempo e memória (Seção~\ref{sec:protocolo_extracao})}};
       \node[etapa, right=4mm of e3] (e4) {\textbf{4. Avaliação}\\[2pt]{\scriptsize CER, WER e erros (Seção~\ref{sec:protocolo_avaliacao})}};
@@ -1422,12 +1453,12 @@ acelerador gráfico dedicado. A escolha foi intencional, já que um dos objetivo
 sempre dispõem de infraestrutura de alto desempenho. A Tabela~\ref{tab:ambiente} resume a
 configuração utilizada.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Configuração do ambiente computacional local utilizado nos experimentos.}
 \label{tab:ambiente}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{p{4cm} p{9.5cm}}
+\begin{tabular}{L{4cm} L{9.5cm}}
 \hline
 \textbf{Componente} & \textbf{Especificação} \\
 \hline
@@ -1495,13 +1526,13 @@ cinco critérios:
 A Tabela~\ref{tab:excluidos} resume os modelos excluídos, o critério correspondente e,
 quando houve, o modelo que o substituiu.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Modelos excluídos antes dos experimentos, critério de exclusão e substituto.}
 \label{tab:excluidos}
 \renewcommand{\arraystretch}{1.3}
 {\small
-\begin{tabular}{p{3.0cm} p{2.4cm} p{6.0cm} p{2.6cm}}
+\begin{tabular}{L{3.0cm} L{2.4cm} L{6.0cm} L{2.6cm}}
 \hline
 \textbf{Modelo} & \textbf{Critério} & \textbf{Motivo} & \textbf{Substituto} \\
 \hline
@@ -1584,7 +1615,7 @@ modo \textit{Cost Effective}, que apresenta desempenho similar nos benchmarks co
 Figura~\ref{fig:exemplo_ocr_par} mostra uma saída do modo \textit{Agentic} obtida no teste
 de configuração, antes da exclusão.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{imagens/culto_p018_original.png}
     \caption{Exemplo de par entrada/saída obtido no teste de configuração.
@@ -1624,13 +1655,13 @@ mesmo modelo (Seção~\ref{sec:transcricao}), o que torna o resultado dele depen
 própria referência. Por isso, o Claude é apresentado à parte nos resultados
 (Seção~\ref{sec:ressalva_claude}) e não participa da seleção.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Ferramentas avaliadas, categoria e ambiente de execução.}
 \label{tab:modelos_avaliados}
 \renewcommand{\arraystretch}{1.3}
 {\small
-\begin{tabular}{p{3.6cm} p{3.0cm} p{4.0cm} p{3.4cm}}
+\begin{tabular}{L{3.6cm} L{3.0cm} L{4.0cm} L{3.4cm}}
 \hline
 \textbf{Ferramenta} & \textbf{Categoria} & \textbf{Execução} & \textbf{Versão / variante} \\
 \hline
@@ -1917,7 +1948,7 @@ em mediana, com páginas entre 1,4 e 5,1~minutos, uma diferença de duas ordens 
 em relação ao primeiro grupo. No caso do LlamaParse, o tempo inclui o envio da imagem e a
 fila do serviço, e não reflete custo computacional local.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.85\textwidth]{imagens/eda_real_tempo.png}
     \caption{Tempo de processamento de cada página, por modelo, no equipamento sem GPU.
@@ -1937,7 +1968,7 @@ praticamente não muda entre as páginas de 150 e de 300~ppi, com exceção do E
 mais lento nas de 300~ppi. No GLM-OCR, o efeito é maior: as páginas de 300~ppi levaram 2,2
 vezes mais tempo, já que mais pixels geram mais \textit{tokens} de imagem a processar.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.85\textwidth]{imagens/eda_real_resolucao.png}
     \caption{Tempo médio por página nas digitalizações de cerca de 150~ppi (círculo
@@ -1952,7 +1983,7 @@ passou de 200~MB. Como o sistema operacional e o ambiente de desenvolvimento ocu
 2~GB dos 7,5~GB do equipamento, todos couberam com folga. Para o LlamaParse, o valor
 corresponde apenas ao cliente local.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.85\textwidth]{imagens/eda_real_ram.png}
     \caption{Pico de memória RAM de cada modelo no equipamento sem GPU, considerando todas
@@ -1985,16 +2016,16 @@ superior a 50\%, nas quais o texto produzido é inutilizável.
 \input{tabelas/avaliacao_resumo}
 
 Os VLMs locais obtiveram os menores erros. O Qwen2.5-VL 7B teve CER médio de 1,6\% e WER
-de 5,4\%, sem nenhuma falha, seguido do Gemma~4 E4B, com 2,1\% e 8,7\%. O GLM-OCR tem CER
-médio de 5,8\%, mas CER mediano de 0,6\%, o menor entre os modelos comparáveis. A diferença
+de 5,5\%, sem nenhuma falha, seguido do Gemma~4 E4B, com 2,2\% e 8,8\%. O GLM-OCR tem CER
+médio de 5,6\%, mas CER mediano de 0,6\%, o menor entre os modelos comparáveis. A diferença
 entre as duas medidas vem de uma única página, em que o modelo entrou em laço de repetição;
-sem ela, o GLM-OCR fica com CER de 0,8\% e WER de 3,5\%. O DeepSeek-OCR também tem CER
-mediano baixo, de 2,1\%, mas falhou em cinco páginas, o que eleva sua média para 26,6\%.
+sem ela, o GLM-OCR fica com CER de 0,6\% e WER de 3,3\%. O DeepSeek-OCR também tem CER
+mediano baixo, de 2,1\%, mas falhou em cinco páginas, o que eleva sua média para 26,5\%.
 
-Entre as demais ferramentas, o LlamaParse ficou com CER de 5,8\% e WER de 13,2\%, e o DocTR,
-com 8,6\% e 28,5\%. O ABBYY FineReader, referência comercial, teve CER de 13,1\%, e os
-outros três motores clássicos, entre 14,8\% (EasyOCR) e 20,2\% (PaddleOCR). Nesses modelos,
-o WER chega a quase metade das palavras, 45,8\% no Tesseract e 46,1\% no EasyOCR: os erros se
+Entre as demais ferramentas, o LlamaParse ficou com CER de 5,9\% e WER de 13,3\%, e o DocTR,
+com 8,7\% e 28,6\%. O ABBYY FineReader, referência comercial, teve CER de 12,8\%, e os
+outros três motores clássicos, entre 14,9\% (EasyOCR) e 20,3\% (PaddleOCR). Nesses modelos,
+o WER chega a quase metade das palavras, 46,0\% no Tesseract e 46,3\% no EasyOCR: os erros se
 espalham por muitas palavras, e basta um caractere errado para invalidar a palavra inteira
 (Seção~\ref{sec:metricas}).
 
@@ -2014,7 +2045,7 @@ se afastam muito dela. As falhas foram de três tipos:
     de \textit{Heloíza} (67\%) e 230 do volume~1 de \textit{Culto à Mulher} (59\%).
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.9\textwidth]{imagens/resultados_cer_paginas.png}
     \caption{CER de cada página, por modelo, ordenados pelo CER médio. O formato do
@@ -2026,18 +2057,18 @@ se afastam muito dela. As falhas foram de três tipos:
 \subsection{Desempenho por Obra e Dificuldade}
 \label{sec:dificuldade}
 
-A classificação de dificuldade do Capítulo~4 não se refletiu no erro como esperado
+A classificação de dificuldade do Capítulo~\ref{cap:regra_ouro} não se refletiu no erro como esperado
 (Figura~\ref{fig:dificuldade}). Em metade dos modelos, as páginas classificadas como
-difíceis, do século XVIII, tiveram CER menor que as de dificuldade média: 11,1\% contra
-24,3\% no Tesseract, 11,4\% contra 24,9\% no PaddleOCR e 2,7\% contra 4,9\% no LlamaParse.
+difíceis, do século XVIII, tiveram CER menor que as de dificuldade média: 11,5\% contra
+24,3\% no Tesseract, 11,7\% contra 24,9\% no PaddleOCR e 2,9\% contra 4,9\% no LlamaParse.
 No Qwen2.5-VL 7B e no Gemma~4 E4B, a diferença entre as três classes ficou abaixo de dois
-pontos percentuais. Somente no DocTR, no ABBYY (23,0\%) e no DeepSeek-OCR, que teve três de
+pontos percentuais. Somente no DocTR, no ABBYY (22,7\%) e no DeepSeek-OCR, que teve três de
 suas cinco saídas vazias nessas páginas, as difíceis foram claramente as piores. A classe
 fácil também não foi a de menor erro em vários modelos: no LlamaParse, no DocTR e no
 ABBYY, as páginas de \textit{Heloíza} tiveram CER maior que as de \textit{Culto à
 Mulher}.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.85\textwidth]{imagens/resultados_dificuldade.png}
     \caption{CER médio de cada modelo por classe de dificuldade.}
@@ -2054,7 +2085,7 @@ todos os modelos clássicos (entre 29\% e 67\%) e do LlamaParse (46\%), embora s
 obra classificada como fácil. A qualidade da digitalização, portanto, pesou mais no erro do
 que a idade da tipografia, ponto retomado no Capítulo~\ref{cap:discussao}.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{imagens/resultados_heatmap.png}
     \caption{CER de cada modelo (linhas) em cada página (colunas), agrupadas por obra. Os
@@ -2066,7 +2097,7 @@ que a idade da tipografia, ponto retomado no Capítulo~\ref{cap:discussao}.
 \subsection{Ressalva sobre o Claude Opus 5.5}
 \label{sec:ressalva_claude}
 
-O Claude Opus 5.5 obteve CER de 0,2\% e WER de 0,7\%, uma transcrição praticamente idêntica
+O Claude Opus 5.5 obteve CER de 0,1\% e WER de 0,5\%, uma transcrição praticamente idêntica
 à regra ouro. Esse resultado era esperado e não deve ser lido como desempenho comparável ao
 dos demais: a transcrição inicial da regra ouro foi gerada pelo mesmo modelo
 (Seção~\ref{sec:transcricao}), e os erros do rascunho que não foram corrigidos na revisão
@@ -2088,7 +2119,7 @@ classificação da Seção~\ref{sec:protocolo_avaliacao}.
 Nos motores clássicos, predominam erros visuais. O DocTR e o PaddleOCR erraram apenas a
 acentuação em 214 e 190 palavras, respectivamente, e o EasyOCR errou a pontuação em 210. Em
 \textit{O Feliz Independente}, o \textit{s} longo foi lido como \textit{f} 62 vezes pelo
-PaddleOCR, 54 pelo DocTR, 48 pelo Tesseract e 43 pelo ABBYY, produzindo formas como
+PaddleOCR, 54 pelo DocTR, 48 pelo Tesseract e 46 pelo ABBYY, produzindo formas como
 \textit{defte} e \textit{fua}. Esses modelos não modernizam: quando erram uma grafia antiga,
 produzem uma forma inexistente, não a forma moderna. Entre os VLMs, a confusão do \textit{s}
 longo foi bem menos frequente (9 casos no GLM-OCR e 12 no Qwen2.5-VL 7B), com exceção do
@@ -2106,7 +2137,7 @@ modernizou 26,8\% das palavras com grafia antiga (\textit{ezistencia} $\to$
 silencioso: o texto resultante é fluente e não aparenta erro, o que o torna difícil de
 detectar em uma revisão, ao contrário de um laço de repetição ou de uma página vazia.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.9\textwidth]{imagens/resultados_fidelidade.png}
     \caption{Proporção das palavras com grafia antiga na regra ouro que cada modelo
@@ -2134,7 +2165,7 @@ O Qwen2.5-VL 7B e o Gemma~4 E4B têm CER médio menor, mas só puderam ser execu
 O LlamaParse combina erro baixo e custo local quase nulo porque o processamento ocorre no
 provedor, com custo por página e envio das imagens a terceiros.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{imagens/resultados_cer_custo.png}
     \caption{CER médio de cada modelo em função do tempo mediano por página (esquerda) e do
@@ -2156,8 +2187,8 @@ Os critérios da Seção~\ref{sec:criterios} foram aplicados em ordem.
 licença comercial para ser aplicado a novas digitalizações; os três foram eliminados.
 Restaram os quatro motores clássicos de código aberto e os quatro VLMs locais.
 
-\textbf{Qualidade.} Os VLMs locais, desconsideradas as falhas, ficaram com CER entre 0,8\%
-e 2,1\%, contra 8,6\% a 18,1\% dos motores clássicos (Tabela~\ref{tab:avaliacao_resumo}).
+\textbf{Qualidade.} Os VLMs locais, desconsideradas as falhas, ficaram com CER entre 0,6\%
+e 2,2\%, contra 8,7\% a 18,2\% dos motores clássicos (Tabela~\ref{tab:avaliacao_resumo}).
 A diferença é grande o bastante para eliminar os motores clássicos, restando o GLM-OCR, o
 Qwen2.5-VL 7B, o Gemma~4 E4B e o DeepSeek-OCR.
 
@@ -2166,24 +2197,24 @@ eliminado. O GLM-OCR falhou em uma página, por laço de repetição; o Qwen2.5-
 Gemma~4 E4B não falharam.
 
 \textbf{Fidelidade ortográfica.} O Gemma~4 E4B modernizou mais de um quarto das grafias
-antigas e foi eliminado, já que a preservação da ortografia é requisito deste trabalho.
+antigas (26,8\%), mais que o dobro de qualquer outro VLM, e foi eliminado.
 
 A decisão ficou entre o GLM-OCR e o Qwen2.5-VL 7B, comparados na
 Tabela~\ref{tab:selecao_final}.
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{Comparação final entre os dois modelos candidatos.}
 \label{tab:selecao_final}
 \renewcommand{\arraystretch}{1.3}
 {\small
-\begin{tabular}{p{6.2cm} r r}
+\begin{tabular}{L{6.2cm} r r}
 \hline
 \textbf{Indicador} & \textbf{GLM-OCR} & \textbf{Qwen2.5-VL 7B} \\
 \hline
-CER médio / WER médio (\%) & 5,8 / 8,5 & 1,6 / 5,4 \\
-CER mediano (\%) & 0,6 & 1,6 \\
-CER / WER sem as falhas (\%) & 0,8 / 3,5 & 1,6 / 5,4 \\
+CER médio / WER médio (\%) & 5,6 / 8,3 & 1,6 / 5,5 \\
+CER mediano (\%) & 0,6 & 1,7 \\
+CER / WER sem as falhas (\%) & 0,6 / 3,3 & 1,6 / 5,5 \\
 Falhas (páginas) & 1 & 0 \\
 Grafias antigas preservadas / modernizadas (\%) & 88,3 / 3,2 & 83,1 / 12,3 \\
 Hardware necessário & CPU, 3,0~GB de RAM & GPU \\
@@ -2195,31 +2226,36 @@ Tempo projetado para o corpus & cerca de 4~dias & cerca de 19~h \\
 \fonte{Elaborado pelo autor.}
 \end{table}
 
-Com base nessa comparação, foi selecionado o \textbf{GLM-OCR}. Quatro razões sustentam a
-escolha:
+Com base nessa comparação, foi selecionado o \textbf{Qwen2.5-VL 7B}. Quatro razões
+sustentam a escolha:
 
 \begin{enumerate}
-    \item fora da página em que entrou em laço, ele errou menos que o Qwen2.5-VL 7B, tanto
-    em mediana (0,6\% contra 1,6\% de CER) quanto em média (0,8\% contra 1,6\% de CER e
-    3,5\% contra 5,4\% de WER);
-    \item foi o modelo local mais fiel à ortografia original, com 88,3\% das grafias antigas
-    preservadas e 3,2\% modernizadas, contra 12,3\% de modernização no Qwen2.5-VL 7B, que
-    altera cerca de uma em cada oito formas antigas;
-    \item a falha que apresentou é detectável: um laço de repetição produz linhas
-    duplicadas, que podem ser identificadas automaticamente e reprocessadas, ao passo que a
-    modernização é silenciosa e só seria encontrada por revisão manual;
-    \item roda no equipamento comum do trabalho, sem GPU, sem custo e sem enviar as imagens
-    a terceiros; os cerca de 4~dias de processamento do corpus em CPU são viáveis em lote,
-    já que a extração retoma de onde parou, e podem ser reduzidos com GPU.
+    \item obteve o menor erro médio considerando todas as páginas, com CER de 1,6\% e WER
+    de 5,5\%, contra 5,6\% e 8,3\% do GLM-OCR. A média sobre todas as páginas é a medida
+    que interessa a uma extração em lote, pois inclui as páginas em que o modelo falha;
+    \item não falhou em nenhuma página e teve desempenho estável entre as classes de
+    dificuldade, com CER entre 1,1\% e 2,6\%. O GLM-OCR entrou em laço de repetição em uma
+    das 20 páginas; mantida essa frequência, seriam cerca de 90 páginas inutilizáveis no
+    corpus, que precisariam ser identificadas e reprocessadas;
+    \item embora dependa de GPU, roda separado do equipamento do NUPILL, na camada gratuita
+    do Google Colab, por meio do notebook do Apêndice~\ref{ap:pipeline}, sem custo
+    financeiro e sem enviar as imagens a um serviço de OCR de terceiros. Nesse ambiente, o
+    corpus completo leva cerca de 19~horas, contra cerca de 4~dias do GLM-OCR em CPU;
+    \item é a variante avaliada por Vesalainen et al.\ \cite{vesalainen2025}, o que
+    permite comparar os resultados deste trabalho com os da literatura.
 \end{enumerate}
 
-O Qwen2.5-VL 7B permanece como alternativa quando houver GPU disponível e a prioridade for
-o menor erro médio sem falhas, aceitando a modernização de parte das grafias, como em
-aplicações de busca textual, para as quais a forma moderna não é um problema. O resultado
-confirma em parte a expectativa formada a partir da literatura: o Qwen2.5-VL, apontado por
-Vesalainen et al.\ \cite{vesalainen2025}, obteve o menor CER médio, mas a medida de
-fidelidade ortográfica, específica deste corpus, favoreceu um modelo menor, especializado
-em documentos e ausente dos estudos revisados.
+O custo da escolha é a fidelidade ortográfica: o Qwen2.5-VL 7B modernizou 12,3\% das
+grafias antigas, cerca de uma em cada oito, contra 3,2\% do GLM-OCR. A modernização se
+concentrou em padrões previsíveis, sobretudo o \textit{z} intervocálico da ortografia do
+início do século XX (\textit{espozo}, \textit{cazamento}, \textit{dezesperos}) e formas
+como \textit{mãi}, o que permite uma revisão dirigida a esses padrões. O GLM-OCR permanece
+como alternativa quando não houver GPU disponível ou quando a fidelidade diplomática for a
+prioridade, como na preparação de edições críticas, desde que acompanhado da detecção e do
+reprocessamento de laços de repetição. O resultado confirma a expectativa formada a partir
+da literatura: o Qwen2.5-VL, apontado por Vesalainen et al.\ \cite{vesalainen2025}, obteve
+o menor erro médio, e a tendência à modernização relatada pelos autores também se
+confirmou no português.
 
 A escolha tem limitações. Com 20 páginas, uma única falha não permite estimar com precisão
 a frequência de laços de repetição no corpus completo; a regra ouro foi produzida por um
@@ -2245,7 +2281,7 @@ grafia antiga aproximadas.}
 %=====================================================================
 \chapter{Conclusão}
 
-\topic{A desenvolver: retomar objetivos, principais achados e a seleção do GLM-OCR.}
+\topic{A desenvolver: retomar objetivos, principais achados e a seleção do Qwen2.5-VL 7B.}
 
 \section{Trabalhos Futuros}
 
@@ -2295,7 +2331,7 @@ modelo e salva o texto. Cada página é salva assim que termina, e uma nova exec
 apenas as pendentes, o que permite processar livros longos em várias sessões. Falhas em
 uma página são registradas sem interromper o livro.
 
-\begin{figure}[H]
+\begin{figure}[htb]
     \centering
     \begin{tikzpicture}[
         etapa/.style={draw=black!60, rounded corners=2pt, align=center, text width=2.9cm,

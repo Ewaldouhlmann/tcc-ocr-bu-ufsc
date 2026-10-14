@@ -7,7 +7,7 @@ modelos de MODELOS, os que o TCC apresenta nos resultados.
 
 Normalização (aplicada igualmente à referência e às saídas):
 - Unicode NFC;
-- s longo (ſ) -> s;
+- s longo (ſ) -> s; hífen invisível (U+00AD) -> hífen;
 - marcação Markdown/HTML removida (#, *, _, `, >, |, <tags>);
 - palavra hifenizada no fim da linha é reunida (afe-\\ntividade -> afetividade);
 - aspas, travessões e reticências unificados (“ ” -> ", – -> —, … -> ...);
@@ -67,7 +67,8 @@ DIFICULDADES = ["Fácil", "Médio", "Difícil"]
 
 
 def normalizar(texto: str) -> str:
-    t = unicodedata.normalize("NFC", texto).replace("ſ", "s")
+    # U+00AD (hífen invisível) é como o ABBYY marca a quebra de palavra no fim da linha.
+    t = unicodedata.normalize("NFC", texto).replace("ſ", "s").replace("\u00ad", "-")
     t = re.sub(r"<[^>]+>", " ", t)
     t = re.sub(r"^\s*(#+|>+|[-*+]\s)\s*", "", t, flags=re.M)
     t = re.sub(r"[*_`|]", " ", t)
@@ -155,7 +156,7 @@ def tabela_tex(resumo: pd.DataFrame, total: int):
                      r"modelo e revisada pelo autor; o resultado tende a ser otimista.")
     nota = "\n".join(r"\par\footnotesize{" + n + "}" for n in notas)
     tex = r"""% Gerado automaticamente por benchmark/avaliar.py -- não editar à mão.
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \caption{CER e WER (\%) de cada modelo sobre as """ + str(total) + r""" páginas da amostra:
 médias gerais, CER mediano, número de falhas e CER médio por classe de dificuldade.}
