@@ -42,13 +42,18 @@
   urlaccessdate = {01 jul. 2026}
 }
 
-@misc{huang2021,
-  author       = {Li, M. and Lv, T. and Chen, J. and Cui, L. and Lu, Y. and Florencio, D. and Zhang, C. and Li, Z. and Wei, F.},
-  title        = {{TrOCR}: Transformer-based Optical Character Recognition with Pre-trained Models},
-  howpublished = {arXiv preprint arXiv:2109.10282},
-  month        = sep,
-  year         = {2021},
-  url          = {https://arxiv.org/abs/2109.10282},
+% REVISADO: o TrOCR foi publicado na AAAI 2023; a chave foi mantida para não
+% quebrar os \cite do texto.
+@inproceedings{huang2021,
+  author    = {Li, M. and Lv, T. and Chen, J. and Cui, L. and Lu, Y. and Florencio, D. and Zhang, C. and Li, Z. and Wei, F.},
+  title     = {{TrOCR}: Transformer-based Optical Character Recognition with Pre-trained Models},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume    = {37},
+  number    = {11},
+  pages     = {13094--13102},
+  year      = {2023},
+  doi       = {10.1609/aaai.v37i11.26538},
+  url       = {https://doi.org/10.1609/aaai.v37i11.26538},
   urlaccessdate = {09 maio 2026}
 }
 
@@ -102,11 +107,14 @@
   urlaccessdate = {09 maio 2026}
 }
 
+% REVISADO: os metadados anteriores (Kumar et al., 2020) não correspondiam à
+% figura do link. A figura é deste trabalho; confirmar o periódico no PDF.
 @misc{ocr_diagram,
-  author       = {Kumar, M. and others},
-  title        = {Ancient text recognition: a review},
-  howpublished = {International Journal of Advanced Research in Computer Science, v. 11, n. 3, p. 1--8},
-  year         = {2020},
+  author       = {Al-Hassani, M. D.},
+  title        = {Optical Character Recognition ({OCR}) System for Multifont {English} Texts Using {DCT} \& Wavelet Transform},
+  howpublished = {ResearchGate},
+  month        = dec,
+  year         = {2013},
   url          = {https://www.researchgate.net/figure/Figure-1-Block-Diagram-of-the-Proposed-OCR-System-Model_fig1_260405352},
   urlaccessdate = {29 abr. 2026}
 }
@@ -143,8 +151,10 @@
   urlaccessdate = {09 maio 2026}
 }
 
+% REVISADO: autores completos conferidos no arXiv. Corpus: inglês do séc. XVIII;
+% modelos: TrOCR-large e Qwen2.5-VL-7B-Instruct.
 @misc{vesalainen2025,
-  author       = {Vesalainen, A. and others},
+  author       = {Vesalainen, A. and Mäkelä, E. and Ruotsalainen, L. and Tolonen, M.},
   title        = {Error patterns in historical {OCR}: a comparative analysis of {TrOCR} and a vision-language model},
   howpublished = {arXiv preprint arXiv:2602.14524},
   month        = feb,
@@ -330,13 +340,15 @@
   urlaccessdate = {01 jul. 2026}
 }
 
-@mastersthesis{fritzen2025,
+% REVISADO: o tipo mastersthesis saía como "Dissertação"; o tipo thesis imprime o tipo
+% como está. Título no idioma original (português), como pede a ABNT.
+@thesis{fritzen2025,
   author  = {Fritzen, Vinicius José},
-  title   = {Evaluating the use of large language models for optical character recognition post-correction in {Portuguese}},
-  school  = {Universidade Federal do Rio Grande do Sul, Instituto de Informática, Curso de Ciência da Computação},
+  title   = {Avaliação do uso de modelos de linguagem de larga escala para correção pós-reconhecimento óptico de caracteres em língua portuguesa},
+  school  = {Universidade Federal do Rio Grande do Sul},
   address = {Porto Alegre},
   year    = {2025},
-  type    = {Trabalho de Conclusão de Curso},
+  type    = {Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação)},
   note    = {Orientador: Dennis Giovani Balreira},
   url     = {https://hdl.handle.net/10183/300245},
   urlaccessdate = {01 jul. 2026}
@@ -370,10 +382,11 @@
   urlaccessdate = {01 jul. 2026}
 }
 
+% REVISADO: o link é um post do blog da Transkribus, não os anais.
 @misc{baudry2023,
   author       = {Baudry, H.},
   title        = {{TraPrInq}: transcrição automática de processos da Inquisição portuguesa com {Transkribus}},
-  howpublished = {Confer\^{e}ncia Humanidades Digitais e Estudos Inquisitoriais, 2023, Anais [...]},
+  howpublished = {Blog Transkribus (READ-COOP)},
   year         = {2023},
   url          = {https://www.transkribus.org/blog/portuguese-inquisition-herve-baudry-traprinq},
   urlaccessdate = {22 maio 2026}
@@ -405,14 +418,6 @@
   urlaccessdate = {26 set. 2026}
 }
 
-@misc{anthropic_claude,
-  author        = {{Anthropic}},
-  title         = {Claude Opus 5.5},
-  howpublished  = {Documentação de modelos da Anthropic},
-  year          = {2026},
-  url           = {https://docs.anthropic.com/en/docs/about-claude/models},
-  urlaccessdate = {12 out. 2026}
-}
 @misc{google_colab,
   author        = {{Google}},
   title         = {Google Colaboratory},
@@ -428,4 +433,163 @@
   year          = {2026},
   url           = {https://pdf.abbyy.com},
   urlaccessdate = {12 out. 2026}
+}
+
+% ADICIONADO: artigo de referência do Tesseract (antes citado com o relatório
+% de Smith e Cordell, que não descreve o motor).
+@inproceedings{smith2007,
+  author    = {Smith, R.},
+  title     = {An Overview of the {Tesseract} {OCR} Engine},
+  booktitle = {Proceedings of the 9th International Conference on Document Analysis and Recognition (ICDAR)},
+  address   = {Curitiba},
+  publisher = {IEEE},
+  year      = {2007},
+  pages     = {629--633},
+  doi       = {10.1109/ICDAR.2007.4376991},
+  url       = {https://doi.org/10.1109/ICDAR.2007.4376991},
+  urlaccessdate = {21 out. 2026}
+}
+
+%---------------------------------------------------------------
+% Referências citadas no texto revisado no Overleaf (adicionadas depois)
+%---------------------------------------------------------------
+
+@article{mori1992,
+  author  = {Mori, S. and Suen, C. Y. and Yamamoto, K.},
+  title   = {Historical review of {OCR} research and development},
+  journal = {Proceedings of the IEEE},
+  volume  = {80},
+  number  = {7},
+  pages   = {1029--1058},
+  year    = {1992},
+  doi     = {10.1109/5.156468}
+}
+
+@article{hochreiter1997,
+  author  = {Hochreiter, S. and Schmidhuber, J.},
+  title   = {Long short-term memory},
+  journal = {Neural Computation},
+  volume  = {9},
+  number  = {8},
+  pages   = {1735--1780},
+  year    = {1997},
+  doi     = {10.1162/neco.1997.9.8.1735}
+}
+
+@inproceedings{graves2006,
+  author    = {Graves, A. and Fern{\'a}ndez, S. and Gomez, F. and Schmidhuber, J.},
+  title     = {Connectionist temporal classification: labelling unsegmented sequence data with recurrent neural networks},
+  booktitle = {Proceedings of the 23rd International Conference on Machine Learning (ICML)},
+  publisher = {ACM},
+  address   = {New York},
+  pages     = {369--376},
+  year      = {2006},
+  doi       = {10.1145/1143844.1143891}
+}
+
+@article{shi2017,
+  author  = {Shi, B. and Bai, X. and Yao, C.},
+  title   = {An end-to-end trainable neural network for image-based sequence recognition and its application to scene text recognition},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume  = {39},
+  number  = {11},
+  pages   = {2298--2304},
+  year    = {2017},
+  doi     = {10.1109/TPAMI.2016.2646371}
+}
+
+@inproceedings{vaswani2017,
+  author    = {Vaswani, A. and Shazeer, N. and Parmar, N. and Uszkoreit, J. and Jones, L. and Gomez, A. N. and Kaiser, {\L}. and Polosukhin, I.},
+  title     = {Attention is all you need},
+  booktitle = {Advances in Neural Information Processing Systems 30 (NeurIPS)},
+  publisher = {Curran Associates},
+  pages     = {5998--6008},
+  year      = {2017}
+}
+
+@inproceedings{dosovitskiy2021,
+  author    = {Dosovitskiy, A. and Beyer, L. and Kolesnikov, A. and Weissenborn, D. and Zhai, X. and Unterthiner, T. and Dehghani, M. and Minderer, M. and Heigold, G. and Gelly, S. and Uszkoreit, J. and Houlsby, N.},
+  title     = {An image is worth 16x16 words: Transformers for image recognition at scale},
+  booktitle = {Proceedings of the 9th International Conference on Learning Representations (ICLR)},
+  year      = {2021},
+  url       = {https://openreview.net/forum?id=YicbFdNTTy}
+}
+
+@inproceedings{baek2019,
+  author    = {Baek, Y. and Lee, B. and Han, D. and Yun, S. and Lee, H.},
+  title     = {Character region awareness for text detection},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  publisher = {IEEE},
+  pages     = {9365--9374},
+  year      = {2019},
+  doi       = {10.1109/CVPR.2019.00959}
+}
+
+@inproceedings{li2019sar,
+  author    = {Li, H. and Wang, P. and Shen, C. and Zhang, G.},
+  title     = {Show, attend and read: a simple and strong baseline for irregular text recognition},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume    = {33},
+  number    = {1},
+  pages     = {8610--8617},
+  year      = {2019},
+  doi       = {10.1609/aaai.v33i01.33018610}
+}
+
+@inproceedings{liao2020,
+  author    = {Liao, M. and Wan, Z. and Yao, C. and Chen, K. and Bai, X.},
+  title     = {Real-time scene text detection with differentiable binarization},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume    = {34},
+  number    = {7},
+  pages     = {11474--11481},
+  year      = {2020},
+  doi       = {10.1609/aaai.v34i07.6812}
+}
+
+@inproceedings{chaurasia2017,
+  author    = {Chaurasia, A. and Culurciello, E.},
+  title     = {{LinkNet}: exploiting encoder representations for efficient semantic segmentation},
+  booktitle = {Proceedings of the IEEE Visual Communications and Image Processing (VCIP)},
+  publisher = {IEEE},
+  pages     = {1--4},
+  year      = {2017},
+  doi       = {10.1109/VCIP.2017.8305148}
+}
+
+@misc{wei2025deepseekocr,
+  author       = {Wei, H. and Sun, Y. and Li, Y.},
+  title        = {{DeepSeek-OCR}: contexts optical compression},
+  howpublished = {arXiv preprint arXiv:2510.18234},
+  year         = {2025},
+  url          = {https://arxiv.org/abs/2510.18234}
+}
+
+@misc{duan2026glmocr,
+  author       = {Duan, S. and Xue, Y. and Wang, W. and Su, Z. and Liu, H. and Yang, S. and others},
+  title        = {{GLM-OCR} technical report},
+  howpublished = {arXiv preprint arXiv:2603.10910},
+  year         = {2026},
+  url          = {https://arxiv.org/abs/2603.10910}
+}
+
+@article{levenshtein1966,
+  author  = {Levenshtein, V. I.},
+  title   = {Binary codes capable of correcting deletions, insertions, and reversals},
+  journal = {Soviet Physics Doklady},
+  volume  = {10},
+  number  = {8},
+  pages   = {707--710},
+  year    = {1966}
+}
+
+@inproceedings{neudecker2021,
+  author    = {Neudecker, C. and Baierer, K. and Gerber, M. and Clausner, C. and Antonacopoulos, A. and Pletschacher, S.},
+  title     = {A survey of {OCR} evaluation tools and metrics},
+  booktitle = {Proceedings of the 6th International Workshop on Historical Document Imaging and Processing (HIP)},
+  publisher = {ACM},
+  address   = {Lausanne},
+  pages     = {13--18},
+  year      = {2021},
+  doi       = {10.1145/3476887.3476888}
 }
