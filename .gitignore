@@ -1,13 +1,33 @@
-# Saídas geradas pelo OCR
-output/
+# Corpus: os PDFs e as imagens das obras pertencem ao acervo do NUPILL e não são
+# versionados. A regra ouro (data/corpus/regra_ouro/) e os resultados do
+# benchmark (data/results/) são versionados, para que a avaliação possa ser
+# reproduzida sem rodar os modelos de novo.
+data/corpus/pdfs/
+data/corpus/images/
+data/results/extracao/extracao.log
 
-# PDFs de entrada (podem ser grandes)
+# Saídas avulsas do pipeline
+output/
 input/
 
-# Corpus (PDFs/PNGs, não versionados) e resultados do benchmark;
-# data/catalog.yaml continua versionado.
-data/corpus/
-data/results/
+# LaTeX: arquivos auxiliares da compilação (o main.pdf é versionado)
+escrita tcc/*.aux
+escrita tcc/*.bbl
+escrita tcc/*.blg
+escrita tcc/*.fdb_latexmk
+escrita tcc/*.fls
+escrita tcc/*.lof
+escrita tcc/*.lot
+escrita tcc/*.toc
+escrita tcc/*.log
+escrita tcc/*.out
+escrita tcc/*.synctex.gz
+
+# Pacotes para envio (Overleaf, downloads); são regenerados quando preciso
+*.zip
+
+# Planilhas pessoais de acompanhamento do TCC
+docs/
 
 # Python
 __pycache__/
@@ -16,6 +36,7 @@ __pycache__/
 .venv/
 venv/
 env/
+.ipynb_checkpoints/
 
 # Sistema
 .DS_Store
@@ -30,5 +51,5 @@ desktop.ini
 # Chaves de API (usar .env.example como modelo)
 .env
 
-# Páginas de teste da EDA (regeneráveis com eda/pagina_sintetica.py)
-eda/dados/paginas/
+# Estado transitório da extração (página em processamento)
+data/results/extracao/_estado/*.atual

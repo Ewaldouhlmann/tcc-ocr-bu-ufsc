@@ -1,194 +1,102 @@
-# tcc-ocr-nupill
+# tcc-ocr-bu-ufsc
 
-Benchmark e pipeline de OCR para digitalização de obras literárias históricas em português, desenvolvido como Trabalho de Conclusão de Curso no Departamento de Informática e Estatística da UFSC.
+Código, dados e texto do Trabalho de Conclusão de Curso **"Reconhecimento de Texto em
+Imagens de Obras Literárias Antigas em Português"** (Ciências da Computação, UFSC, 2026).
 
-O projeto avalia 13 ferramentas de OCR — desde motores clássicos (Tesseract, EasyOCR, PaddleOCR, DocTR) até modelos baseados em Transformer (TrOCR) e VLMs (Gemma 4, DeepSeek-VL2, Qwen2.5-VL, Mistral OCR, LlamaParse, Gemini 2.0 Flash) — sobre imagens escaneadas de obras literárias do acervo NUPILL/UFSC. O objetivo é identificar a ferramenta mais adequada para o contexto de textos históricos em português com características de degradação física e ortografia arcaica.
+O trabalho compara dez ferramentas de OCR sobre 20 páginas de cinco obras dos séculos
+XVIII a XX do acervo do [NUPILL](https://nupill.ufsc.br/), com uma regra ouro transcrita
+manualmente. Mede CER, WER, robustez, fidelidade às grafias antigas e custo de execução, e
+seleciona o **Qwen2.5-VL 7B** para a digitalização do acervo, com o **GLM-OCR** como
+alternativa sem GPU.
 
----
+| Categoria | Ferramentas avaliadas |
+|---|---|
+| Clássico / CRNN | Tesseract, EasyOCR, PaddleOCR, DocTR, ABBYY FineReader (camada de texto dos PDFs) |
+| VLM local (Ollama) | GLM-OCR (CPU), Qwen2.5-VL 7B, Gemma 4 E4B, DeepSeek-OCR (GPU no Colab) |
+| Serviço via API | LlamaParse (modo básico) |
 
-## Estrutura do repositório
+O texto completo está em [`escrita tcc/main.pdf`](escrita%20tcc/main.pdf).
+
+## Estrutura
 
 ```
-tcc-ocr-nupill/
-│
-├── src/                        # Código-fonte principal (pacote Python)
-│   ├── __init__.py
-│   │
-│   ├── ocr/                    # Módulo de modelos OCR
-│   │   ├── __init__.py
-│   │   ├── base_ocr.py         # Classe abstrata BaseOCR
-│   │   ├── classical/          # Motores OCR clássicos
-│   │   │   ├── __init__.py
-│   │   │   ├── tesseract_ocr.py
-│   │   │   ├── easyocr_ocr.py
-│   │   │   ├── paddleocr_ocr.py
-│   │   │   └── doctr_ocr.py
-│   │   ├── transformer/        # Modelos baseados em Transformer
-│   │   │   ├── __init__.py
-│   │   │   ├── trocr_base.py
-│   │   │   └── trocr_large.py
-│   │   └── vlm/                # Modelos de visão-linguagem
-│   │       ├── __init__.py
-│   │       ├── gemma_ocr.py
-│   │       ├── deepseek_ocr.py
-│   │       ├── qwen_ocr.py
-│   │       ├── llamaparse_ocr.py
-│   │       ├── mistral_ocr.py
-│   │       └── gemini_ocr.py
-│   │
-│   ├── pipeline/               # Pipeline de extração completa
-│   │   ├── __init__.py
-│   │   ├── converter.py        # Conversão PDF → PNG
-│   │   └── extractor.py        # Orquestração do pipeline completo
-│   │
-│   └── postprocessing/         # Pós-processamento do texto extraído
-│       ├── __init__.py
-│       └── cleaner.py          # Normalização e limpeza de texto
-│
-├── benchmark/                  # Avaliação comparativa dos modelos
-│   ├── run_benchmark.py        # Ponto de entrada (CLI)
-│   ├── metrics.py              # Cálculo de WER, CER e relatórios
-│   (regra ouro em data/corpus/regra_ouro/)
-│
-├── data/
-│   ├── corpus/                 # PDFs e PNGs das obras literárias
-│   │   ├── pdfs/               # Arquivos originais (não versionados)
-│   │   └── images/             # Páginas convertidas em PNG
-│   └── results/                # Saídas OCR organizadas por modelo/página
-│
-├── docs/                       # Análises, notebooks e documentação extra
-│
-├── .env.example                # Variáveis de ambiente necessárias (chaves de API)
-├── requirements.txt            # Dependências Python
-└── README.md
+benchmark/            benchmark em duas etapas
+  extrair.py          1. roda os modelos sobre as páginas e salva o texto, o tempo e a memória
+  avaliar.py          2. compara as saídas com a regra ouro (CER/WER) e gera a tabela do TCC
+  amostrador.py       mede a RAM do processo e do Ollama durante a extração
+  metrics.py          CER, WER e planilha de resultados
+  rodar_extracao.sh   deixa a extração rodando sem supervisão no equipamento local
+src/
+  ocr/                adaptadores dos modelos (BaseOCR -> ClassicalOCR / TransformerOCR / VLMOCR)
+                      e o registro MODEL_REGISTRY
+  pipeline/
+    converter.py      PDF -> PNG (livro inteiro ou só as páginas do manifesto)
+    extractor.py      pipeline de extração de um livro inteiro (Apêndice A do TCC)
+  catalog.py          leitura de data/catalog.yaml (obras e modelos)
+eda/
+  analise_resultados.ipynb   figuras e tabelas do Cap. 6 do TCC
+  estilo.py                  paleta e formatação das figuras
+notebooks/
+  benchmark_gpu.ipynb        extração dos VLMs em GPU no Google Colab
+  pipeline_colab.ipynb       pipeline de extração no Colab, para quem não tem GPU
+data/
+  catalog.yaml               metadados das obras e dos modelos
+  corpus/regra_ouro/         transcrições de referência das 20 páginas + manifest.csv
+  results/extracao/          saída de cada modelo por página, metricas*.csv e falhas
+  results/avaliacao/         CER/WER por página e por modelo
+escrita tcc/                 LaTeX do TCC (classe ufsc-thesis-rn46-2019), figuras e tabelas
 ```
 
----
+Os PDFs e as imagens das obras (`data/corpus/pdfs/` e `data/corpus/images/`) pertencem ao
+acervo do NUPILL e **não são versionados**. Para obtê-los, consulte o NUPILL.
 
-## Hierarquia de classes
-
-Todos os modelos herdam de `BaseOCR`, que define a interface comum:
-
-```python
-# src/ocr/base_ocr.py
-from abc import ABC, abstractmethod
-from pathlib import Path
-
-class BaseOCR(ABC):
-
-    @abstractmethod
-    def recognize(self, image_path: Path) -> str:
-        """Recebe o caminho de uma imagem PNG e retorna o texto extraído."""
-        ...
-
-    def batch_recognize(self, image_paths: list[Path]) -> list[str]:
-        """Processa uma lista de imagens. Pode ser sobrescrito para otimização."""
-        return [self.recognize(p) for p in image_paths]
-```
-
-As subclasses são organizadas em três categorias:
-
-| Categoria | Classe base intermediária | Modelos |
-|---|---|---|
-| OCR clássico | `ClassicalOCR(BaseOCR)` | Tesseract, EasyOCR, PaddleOCR, DocTR |
-| Transformer | `TransformerOCR(BaseOCR)` | TrOCR base-handwritten, TrOCR large-handwritten |
-| VLM | `VLMOCR(BaseOCR)` | Gemma 4, DeepSeek-VL2, Qwen2.5-VL, LlamaParse Free, LlamaParse Premium, Mistral OCR, Gemini 2.0 Flash |
-
----
-
-## Requisitos
-
-- Python 3.10+
-- GPU NVIDIA com CUDA (recomendado para VLMs locais)
-- [Ollama](https://ollama.com/) instalado localmente (para Gemma 4, DeepSeek-VL2 e Qwen2.5-VL)
-- Chaves de API configuradas no `.env` (para LlamaParse, Mistral OCR e Gemini)
-
-Instalar dependências:
+## Instalação
 
 ```bash
 pip install -r requirements.txt
+sudo apt install tesseract-ocr tesseract-ocr-por poppler-utils
 ```
 
-Copiar e preencher variáveis de ambiente:
+Os VLMs locais usam o [Ollama](https://ollama.com/) (`ollama pull glm-ocr:q8_0`, etc.).
+Para os serviços via API, crie um `.env` a partir do [`.env.example`](.env.example).
+
+## Reproduzir os resultados
+
+A regra ouro e as saídas dos modelos estão no repositório, então a avaliação pode ser
+refeita sem rodar nenhum modelo:
 
 ```bash
-cp .env.example .env
-# editar .env com suas chaves de API
+python benchmark/avaliar.py                                                        # CER/WER
+jupyter nbconvert --to notebook --execute --inplace eda/analise_resultados.ipynb   # figuras e tabelas
 ```
 
----
-
-## Como usar
-
-### Converter PDFs em imagens
+Para rodar os modelos de novo, coloque os PDFs em `data/corpus/pdfs/{obra_slug}.pdf` e:
 
 ```bash
-python -m src.pipeline.converter \
-    --input data/corpus/pdfs/ \
-    --output data/corpus/images/ \
-    --dpi 300
+python -m src.pipeline.converter --input data/corpus/pdfs/ --output data/corpus/images/ --manifest
+python benchmark/extrair.py                 # todos os modelos locais (retoma de onde parou)
+python benchmark/extrair.py --models glm-ocr
 ```
 
-Converte o(s) PDF(s) inteiro(s). Para preparar só a amostra usada no benchmark
-(evita renderizar as 1043 páginas de *O Feliz Independente* pra usar 3), use
-`--manifest`, que converte apenas as páginas listadas em
-`data/corpus/regra_ouro/manifest.csv` — os PDFs de entrada devem se chamar
-`{obra_slug}.pdf` (ex.: `heloiza.pdf`, `feliz_independente.pdf`):
+Os VLMs em GPU (Qwen2.5-VL 7B, Gemma 4 E4B, DeepSeek-OCR) rodam pelo
+`notebooks/benchmark_gpu.ipynb`, no Colab; as saídas vão para `data/results/extracao/`.
+
+## Extrair um livro inteiro
 
 ```bash
-python -m src.pipeline.converter \
-    --input data/corpus/pdfs/ \
-    --output data/corpus/images/ \
-    --manifest
+python -m src.pipeline.extractor --pdf livro.pdf --model qwen-7b --output saida/ --paginas 1-50
 ```
 
-### Rodar o benchmark
+Sem GPU, use o `notebooks/pipeline_colab.ipynb` no Google Colab.
+
+## Compilar o TCC
 
 ```bash
-python benchmark/run_benchmark.py \
-    --images data/corpus/images/amostra/ \
-    --ground-truth data/corpus/regra_ouro/ \
-    --models tesseract easyocr trocr-large gemma4 mistral \
-    --output data/results/
+sudo apt install texlive-publishers latexmk   # abnTeX2
+cd "escrita tcc" && latexmk -pdf main.tex
 ```
-
-### Rodar o pipeline completo no corpus
-
-```bash
-python -m src.pipeline.extractor \
-    --corpus data/corpus/pdfs/ \
-    --model mistral \
-    --output data/results/
-```
-
----
-
-## Métricas de avaliação
-
-A métrica principal é o **WER** (Word Error Rate), calculado por comparação com as transcrições manuais de referência (*ground truth*). O **CER** (Character Error Rate) é reportado complementarmente para análise de erros em nível de caractere.
-
-```
-WER = (Substituições + Deleções + Inserções) / Total de palavras na referência
-```
-
----
-
-## Corpus
-
-As obras utilizadas pertencem ao acervo do [NUPILL](https://nupill.ufsc.br/) (Núcleo de Pesquisas em Informática, Literatura e Linguística — UFSC). Os arquivos PDF originais **não são distribuídos neste repositório** por questões de direitos e tamanho. Consulte o NUPILL para acesso.
-
----
-
-## Referências principais
-
-- LI, M. et al. TrOCR: Transformer-based OCR with Pre-trained Models. *arXiv:2109.10282*, 2021.
-- VESALAINEN, A. et al. Error patterns in historical OCR. *arXiv:2602.14524*, 2026.
-- DATA UNBOXED. OCR vs VLM-OCR: accuracy benchmark for scanned documents in 2025. Disponível em: https://www.dataunboxed.io/blog/ocr-vs-vlm-ocr-naive-benchmarking-accuracy-for-scanned-documents
-
----
 
 ## Autor
 
-**Ewaldo Uhlmann** — Ciências da Computação, UFSC  
-Orientador: Prof. Dr. Renato Fileto  
-Colaboração: Prof. Dr. Alckmar Luiz dos Santos (NUPILL)
+**Ewaldo Uhlmann**, Ciências da Computação, UFSC.
+Orientador: Prof. Renato Fileto, Dr. Coorientador: Prof. Alckmar Luiz dos Santos, Dr. (NUPILL).

@@ -5,7 +5,6 @@ from src.ocr.classical import DocTROCR, EasyOCR, PaddleOCR, TesseractOCR
 from src.ocr.transformer import TrOCRBase, TrOCRLarge
 from src.ocr.vlm.nuvem import DeepSeekOCRModel, Gemma4E4BOCR, Qwen7BOCR
 from src.ocr.vlm import (
-    ClaudeOCR,
     DeepSeekOCR,
     GeminiOCR,
     GemmaOCR,
@@ -39,7 +38,6 @@ MODEL_REGISTRY: dict[str, type[BaseOCR]] = {
     "llamaparse-premium": LlamaParsePremiumOCR,
     "mistral": MistralOCR,
     "gemini": GeminiOCR,
-    "claude": ClaudeOCR,
 }
 
 __all__ = [
@@ -62,6 +60,5 @@ __all__ = [
     "LlamaParsePremiumOCR",
     "MistralOCR",
     "GeminiOCR",
-    "ClaudeOCR",
     "MODEL_REGISTRY",
 ]

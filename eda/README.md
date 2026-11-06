@@ -11,9 +11,8 @@ python benchmark/avaliar.py      # 2. CER/WER contra a regra ouro (segundos)
 jupyter nbconvert --to notebook --execute --inplace eda/analise_resultados.ipynb   # 3. figuras e tabelas
 ```
 
-Os modelos rodados em GPU na nuvem (`notebooks/benchmark_gpu.ipynb`) e o Claude
-(`benchmark/sessao_claude.py`) entram no passo 2 desde que as saídas estejam em
-`data/results/extracao/{modelo}/`.
+Os modelos rodados em GPU na nuvem (`notebooks/benchmark_gpu.ipynb`) entram no
+passo 2 desde que as saídas estejam em `data/results/extracao/{modelo}/`.
 
 ## Arquivos
 

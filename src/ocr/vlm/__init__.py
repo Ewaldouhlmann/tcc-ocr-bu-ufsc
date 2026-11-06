@@ -1,5 +1,4 @@
 from src.ocr.vlm._ollama_base import OllamaVLM
-from src.ocr.vlm.claude_ocr import ClaudeOCR
 from src.ocr.vlm.deepseek_ocr import DeepSeekOCR
 from src.ocr.vlm.gemini_ocr import GeminiOCR
 from src.ocr.vlm.gemma_ocr import GemmaOCR
@@ -25,5 +24,4 @@ __all__ = [
     "LlamaParsePremiumOCR",
     "MistralOCR",
     "GeminiOCR",
-    "ClaudeOCR",
 ]

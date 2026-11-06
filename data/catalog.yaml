@@ -179,10 +179,3 @@ modelos:
     wer_literatura: "9-18%"
     observacoes: "Requer GEMINI_API_KEY; descontinuação prevista para jun./2026"
 
-  claude:
-    nome: "Claude Opus 5.5"
-    categoria: "vlm_api"
-    arquivo: "src/ocr/vlm/claude_ocr.py"
-    custo: "pago"
-    gpu: "nao"
-    observacoes: "Requer ANTHROPIC_API_KEY; US$ 4/20 por milhão de tokens (entrada/saída). Gerou a transcrição inicial da regra ouro"
