@@ -1,0 +1,13 @@
+Situação da extração — 2026-10-12 17:00:01
+
+OK        abbyy               20/20 páginas
+OK        doctr               20/20 páginas
+OK        easyocr             20/20 páginas
+OK        glm-ocr             20/20 páginas
+OK        llamaparse-free     20/20 páginas
+OK        paddleocr           20/20 páginas
+PENDENTE  qwen                12/20 páginas
+OK        tesseract           20/20 páginas
+
+Falhas: ver _estado/falhas.jsonl. Para retomar só o que falta:
+  python benchmark/extrair.py --models <modelo>

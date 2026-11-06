@@ -1,0 +1,11 @@
+Situação da extração — 2026-10-02 14:24:33
+
+PENDENTE  trocr-base           0/20 páginas
+PENDENTE  trocr-large          0/20 páginas
+PENDENTE  paddleocr-vl         0/20 páginas
+OK        deepseek-ocr        20/20 páginas
+OK        gemma4-e4b          20/20 páginas
+OK        qwen-7b             20/20 páginas
+
+Falhas: ver _estado/falhas.jsonl. Para retomar só o que falta:
+  python benchmark/extrair.py --models <modelo>
