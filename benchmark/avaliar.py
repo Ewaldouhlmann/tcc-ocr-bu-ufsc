@@ -1,7 +1,7 @@
 """Etapa 2 do benchmark: compara as saídas salvas com a regra ouro (CER/WER).
 
-Não roda nenhum modelo: lê os textos gerados por extrair.py (e os coletados
-por sessao_claude.py) em data/results/extracao/{modelo}/{obra}/{pagina}.txt e
+Não roda nenhum modelo: lê os textos gerados por extrair.py em
+data/results/extracao/{modelo}/{obra}/{pagina}.txt e
 compara cada um com data/corpus/regra_ouro/{obra}/{pagina}.txt. Só entram os
 modelos de MODELOS, os que o TCC apresenta nos resultados.
 
@@ -59,10 +59,9 @@ MODELOS = {
     "gemma4-e4b": ("Gemma 4 E4B", "VLM local (GPU)"),
     "deepseek-ocr": ("DeepSeek-OCR", "VLM local (GPU)"),
     "llamaparse-free": ("LlamaParse (básico)", "Serviço via API"),
-    "claude": ("Claude Opus 5.5", "Serviço via API"),
 }
 #: Modelos cujo resultado não é comparável aos demais (ver nota da tabela).
-RESSALVA = {"claude"}
+RESSALVA: set[str] = set()
 DIFICULDADES = ["Fácil", "Médio", "Difícil"]
 
 
@@ -188,8 +187,8 @@ def main():
     df.to_csv(DESTINO / "por_pagina.csv", index=False)
     resumo.to_csv(DESTINO / "resumo_modelos.csv", index=False)
 
-    # Planilha com tempo e tokens da extração, quando houver (o Claude via
-    # sessão e o ABBYY não têm essas medições). metricas_gpu.csv vem da rodada
+    # Planilha com tempo e tokens da extração, quando houver (o ABBYY não tem
+    # essas medições). metricas_gpu.csv vem da rodada
     # em GPU na nuvem (notebooks/benchmark_gpu.ipynb), em outro hardware.
     arquivos = [a for a in (SAIDAS / "metricas.csv", SAIDAS / "metricas_gpu.csv") if a.exists()]
     if arquivos:
