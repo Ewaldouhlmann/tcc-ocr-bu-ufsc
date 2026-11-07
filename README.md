@@ -44,6 +44,7 @@ data/
   corpus/regra_ouro/         transcrições de referência das 20 páginas + manifest.csv
   results/extracao/          saída de cada modelo por página, metricas*.csv e falhas
   results/avaliacao/         CER/WER por página e por modelo
+tests/                       testes das métricas e da reprodutibilidade dos resultados
 escrita tcc/                 LaTeX do TCC (classe ufsc-thesis-rn46-2019), figuras e tabelas
 ```
 
@@ -68,6 +69,13 @@ refeita sem rodar nenhum modelo:
 ```bash
 python benchmark/avaliar.py                                                        # CER/WER
 jupyter nbconvert --to notebook --execute --inplace eda/analise_resultados.ipynb   # figuras e tabelas
+```
+
+Os testes conferem as métricas, a normalização, a integridade da regra ouro e se o CER/WER
+recalculado bate com o que está em `data/results/avaliacao/por_pagina.csv`:
+
+```bash
+python -m unittest discover tests -v
 ```
 
 Para rodar os modelos de novo, coloque os PDFs em `data/corpus/pdfs/{obra_slug}.pdf` e:
