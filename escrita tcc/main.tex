@@ -136,6 +136,26 @@
 \imprimirfolhadeaprovacao
 
 %---------------------------------------------------------------------
+% AGRADECIMENTOS
+%---------------------------------------------------------------------
+\begin{agradecimentos}
+
+\topic{Agradecer aqui à família, a quem esteve por perto durante o curso e a quem mais fizer sentido.}
+
+Ao Prof.\ Renato Fileto, pela orientação, pela paciência e pelas revisões que deram forma
+a este trabalho.
+
+Ao Prof.\ Alckmar Luiz dos Santos e ao NUPILL, por abrirem o acervo, pela ajuda na escolha
+das obras e por todo o apoio com as passagens e grafias mais difíceis de ler.
+
+\topic{Colegas, amigos, banca ou outras pessoas que ajudaram no caminho.}
+
+À Universidade Federal de Santa Catarina e aos professores do curso de Ciências da
+Computação, pela formação ao longo desses anos.
+
+\end{agradecimentos}
+
+%---------------------------------------------------------------------
 % RESUMO
 %---------------------------------------------------------------------
 \begin{resumo}[Resumo]
@@ -196,17 +216,6 @@ Vision-language models. Comparative tool evaluation. Document digitization.
 
 \end{abstract}
 
-%---------------------------------------------------------------------
-% AGRADECIMENTOS
-%---------------------------------------------------------------------
-%\begin{agradecimentos}
-
-%\topic{Agradecimentos ao Prof.\ Dr.\ Renato Fileto pela orientação, ao
-%Prof.\ Dr.\ Alckmar Luiz dos Santos pela colaboração com o NUPILL, aos colegas que
-%contribuíram com sugestões e feedback, e à comunidade de pesquisa em Humanidades
-%Digitais.}
-
-%\end{agradecimentos}
 
 %---------------------------------------------------------------------
 % LISTAS E SUMÁRIO
@@ -271,8 +280,7 @@ das particularidades linguísticas do texto. Documentos históricos apresentam d
 específicos: degradação do papel, variações tipográficas características da época,
 entintamento desigual, e, no caso do português, a presença de diacríticos e de
 vocabulário arcaico.
-Apesar da disponibilidade de ferramentas de reconhecimento óptico de caracteres (OCR),
-ainda há pouca sistematização sobre como aplicá-las de forma eficaz em documentos
+Apesar da disponibilidade de ferramentas de OCR, ainda há pouca sistematização sobre como aplicá-las de forma eficaz em documentos
 antigos em português, especialmente aqueles que apresentam degradação física, variações tipográficas e ortografia não padronizada \cite{santos2023}.
 
 \section{Contextualização e Justificativa}
@@ -284,10 +292,10 @@ NUPILL\footnote{\url{https://nupill.ufsc.br/}} (Núcleo de Pesquisas em Informá
 Literatura e Linguística) da Universidade
 Federal de Santa Catarina (UFSC) é um exemplo desse movimento, atuando na interseção
 entre tecnologia e estudos literários.
-O NUPILL dedica-se ao estudo de acervos literários históricos,
-combinando abordagens da literatura com métodos computacionais. Como parte de seus
-objetivos, o NUPILL busca digitalizar e disponibilizar obras
-para a pesquisa em Humanidades Digitais.
+O núcleo dedica-se ao estudo de acervos literários históricos,
+combinando abordagens da literatura com métodos computacionais, e, como parte de seus
+objetivos, busca digitalizar e disponibilizar obras para a pesquisa em Humanidades
+Digitais.
 A conversão de documentos para texto digital não se limita à preservação, mas
 também viabiliza novas formas de uso, como busca textual, indexação e análises em larga
 escala \cite{burdick2012}.
@@ -297,15 +305,16 @@ desafios. Esses materiais frequentemente apresentam degradação física, varia�
 tipográficas e ortografia anterior às reformas ortográficas, o que dificulta sua
 digitalização por métodos tradicionais.
 Do ponto de vista tecnológico, o OCR avançou muito nos últimos anos.
-Modelos baseados em arquiteturas de Transformers, como o TrOCR, têm apresentado
-desempenho superior em diversas tarefas de reconhecimento de texto \cite{huang2021}.
+Modelos baseados em arquiteturas de Transformers, como o TrOCR, e, mais recentemente, os
+modelos de visão-linguagem têm apresentado desempenho superior em diversas tarefas de
+reconhecimento de texto \cite{huang2021,qwen2025vl}.
 Ainda assim, pouco se sabe sobre o comportamento desses modelos em textos históricos,
 sobretudo em línguas com menos recursos que o inglês \cite{smith2019}, como o
 português \cite{santos2023}.
 
 Este trabalho trata da digitalização de documentos antigos como os do acervo do NUPILL.
-Além de digitalizar um corpus específico, busca-se compreender e documentar a aplicação
-de técnicas de OCR a esse tipo de material, de forma que o processo desenvolvido possa
+Mais do que escolher uma ferramenta para um corpus específico, busca-se compreender e
+documentar a aplicação de técnicas de OCR a esse tipo de material, de forma que o processo desenvolvido possa
 ser replicado e adaptado para outras obras literárias.
 
 \section{Objetivos}
@@ -417,9 +426,10 @@ Este trabalho está estruturado em sete capítulos e três apêndices:
 \chapter{Fundamentação Teórica}
 \label{cap:fundamentacao}
 
-Este capítulo apresenta os princípios técnicos de OCR, as principais técnicas e ferramentas
-avaliadas, as métricas de avaliação utilizadas e os desafios específicos enfrentados na
-digitalização de obras antigas em português.
+Este capítulo apresenta os princípios técnicos de OCR, as principais técnicas, as
+ferramentas consideradas neste trabalho e as métricas de avaliação utilizadas. Os desafios
+específicos dos documentos históricos e da língua portuguesa são discutidos no
+\autoref{cap:relacionados}.
 
 %---------------------------------------------------------------------
 \section{Reconhecimento Óptico de Caracteres (OCR)}
@@ -484,8 +494,8 @@ física. O \textbf{OCR baseado em Aprendizado Profundo} combina redes convolucio
 (CNN) com redes recorrentes (LSTM) para processar linhas de texto, generalizando melhor
 do que o clássico, porém ainda dependente de uma segmentação de boa qualidade. Os modelos
 \textbf{Transformer} aplicam mecanismos de atenção sobre patches da imagem, capturando
-dependências de longo alcance dentro da página, o que os torna mais robustos a variações
-tipográficas. Por fim, os \textbf{Modelos de Visão-Linguagem (VLMs)} dispensam qualquer
+dependências de longo alcance dentro da página, o que ajuda a lidar com variações
+tipográficas ao longo de uma mesma linha. Por fim, os \textbf{Modelos de Visão-Linguagem (VLMs)} dispensam qualquer
 etapa de segmentação explícita: recebem a imagem completa e geram a transcrição por
 geração autorregressiva, aproveitando conhecimento linguístico pré-treinado em larga
 escala, ao custo de uma tendência a modernizar grafias históricas. A
@@ -603,9 +613,10 @@ fidelidade diplomática ao original.
 Esta seção apresenta as ferramentas de reconhecimento automático de texto consideradas
 neste trabalho. Parte delas foi excluída ou substituída por outra variante antes dos
 experimentos (\autoref{sec:excluidos}), e o conjunto efetivamente avaliado está na
-\autoref{tab:modelos_avaliados}. A seleção abrange as quatro gerações tecnológicas descritas na
-\autoref{sec:tecnicas}: OCR clássico, aprendizado profundo (CRNN), Transformers e
-modelos de visão-linguagem. Para cada ferramenta são indicados o modelo de acesso, o
+\autoref{tab:modelos_avaliados}. As ferramentas consideradas abrangem as quatro gerações
+tecnológicas descritas na \autoref{sec:tecnicas}: OCR clássico, aprendizado profundo (CRNN),
+Transformers e modelos de visão-linguagem. As avaliadas cobrem três delas, porque o único
+representante dos Transformers foi excluído antes dos experimentos. Para cada ferramenta são indicados o modelo de acesso, o
 regime de custo e os requisitos de hardware, aspectos relevantes para a replicabilidade
 do benchmark.
 
@@ -652,19 +663,16 @@ O \href{https://huggingface.co/microsoft/trocr-base-handwritten}{\textbf{TrOCR}}
 \href{https://huggingface.co/microsoft/trocr-base-handwritten}{Hugging Face} sob licença
 MIT, que combina um encoder Vision Transformer (ViT) com um decoder de linguagem baseado
 em Transformer em uma arquitetura \textit{encoder-decoder} pré-treinada em larga escala.
-Foram consideradas inicialmente duas variantes:
+Entre as variantes disponíveis estão a
 \href{https://huggingface.co/microsoft/trocr-base-handwritten}{\texttt{base-handwritten}}
-e
+e a
 \href{https://huggingface.co/microsoft/trocr-large-handwritten}{\texttt{large-handwritten}},
-ambas ajustadas para texto manuscrito \cite{huang2021}. O uso de GPU é recomendado para
-tempo de inferência aceitável, especialmente na variante \textit{large}. Por limitações
-de hardware e de implementação, ambas as variantes foram excluídas antes da execução dos experimentos, como
-discutido na \autoref{sec:excluidos}.
+ajustadas para texto manuscrito \cite{huang2021}. O uso de GPU é recomendado para
+tempo de inferência aceitável, especialmente na variante \textit{large}.
 
 \subsection{Modelos de Visão-Linguagem (VLMs)}
 
-Os modelos de visão-linguagem avaliados neste trabalho podem ser acessados de duas
-formas: execução local, por meio do
+Os modelos de visão-linguagem podem ser acessados de duas formas: execução local, por meio do
 \href{https://ollama.com}{\textbf{Ollama}} \cite{ollama2023}, uma plataforma de código
 aberto que simplifica o download e a execução de modelos em hardware local, ou via
 API, em que o processamento ocorre em servidores remotos mediante pagamento por volume
@@ -678,12 +686,11 @@ O \href{https://ai.google.dev/gemma/docs/core}{\textbf{Gemma~4}}
 sob licença Apache~2.0. Disponível em quatro tamanhos (E2B, E4B, 26B e 31B) via Ollama,
 combina compreensão visual e geração de texto sem etapa explícita de segmentação.
 
-O \textbf{DeepSeek-VL2} \cite{wu2024deepseekvl2}, da DeepSeek, foi considerado
-inicialmente. É um VLM de uso geral com arquitetura de mistura de especialistas
-(\textit{Mixture of Experts}, MoE), com variantes de 1,0B, 2,8B e 4,5B de parâmetros
-ativos. Como não está disponível no Ollama, foi substituído pelo \textbf{DeepSeek-OCR}
-\cite{wei2025deepseekocr}, da mesma empresa, voltado especificamente ao reconhecimento de
-documentos. O DeepSeek-OCR combina um codificador visual de cerca de 380 milhões de
+O \textbf{DeepSeek-VL2} \cite{wu2024deepseekvl2}, da DeepSeek, é um VLM de uso geral com
+arquitetura de mistura de especialistas (\textit{Mixture of Experts}, MoE), com variantes de
+1,0B, 2,8B e 4,5B de parâmetros ativos. A mesma empresa disponibiliza o
+\textbf{DeepSeek-OCR} \cite{wei2025deepseekocr}, voltado especificamente ao reconhecimento
+de documentos. O DeepSeek-OCR combina um codificador visual de cerca de 380 milhões de
 parâmetros, que comprime a imagem em poucos \textit{tokens}, com um decodificador MoE de
 3 bilhões de parâmetros, dos quais cerca de 570 milhões são ativados por \textit{token}.
 
@@ -701,23 +708,18 @@ ser pequeno, é um dos poucos VLMs que cabem na memória de um computador pessoa
 
 O \href{https://www.llamaindex.ai/llamaparse}{\textbf{LlamaParse}}
 \cite{llamaparse_pricing} é um serviço da LlamaIndex, acessado via API, que oferece modos
-de processamento com e sem modelos de linguagem. O plano gratuito inclui 10.000 créditos
-mensais, e o custo por página varia conforme o modo: o modo básico
-(\texttt{parse\_page\_without\_llm}) extrai o texto sem modelo de linguagem e consome
-1 crédito por página (US\$\,0,00125), enquanto os modos agênticos, que empregam modelos
-de linguagem, consomem 10 ou 45 créditos por página (US\$\,0,0125 ou US\$\,0,05625).
-Neste trabalho, foram considerados o modo básico e o modo agêntico
-(\texttt{parse\_page\_with\_agent}).
+de processamento com e sem modelos de linguagem. O custo por página varia conforme o modo: o modo básico
+(\texttt{parse\_page\_without\_llm}) extrai o texto sem modelo de linguagem e é o mais
+barato, enquanto os modos agênticos (\texttt{parse\_page\_with\_agent}), que empregam
+modelos de linguagem, custam de 10 a 45 vezes mais (\autoref{tab:ferramentas_fund}).
 
 O \href{https://mistral.ai/news/mistral-ocr}{\textbf{Mistral OCR}} \cite{mistral2025}
-é um serviço da Mistral AI acessado via API, cobrado a US\$\,2,00 por mil páginas no
-modo padrão e US\$\,1,00 via Batch API, e oferece suporte a documentos com layouts
-complexos e fórmulas matemáticas.
+é um serviço da Mistral AI acessado via API e cobrado por página, com suporte a
+documentos com \textit{layouts} complexos e fórmulas matemáticas.
 
 O \href{https://ai.google.dev/gemini-api/docs/models}{\textbf{Gemini~2.0~Flash}}
-\cite{gemini_pricing} é um modelo do Google acessado via API, cobrado a
-US\$\,0,10 por milhão de \textit{tokens} de entrada, com camada gratuita disponível. O
-Google descontinuou essa versão em junho de 2026 (\autoref{sec:excluidos}).
+\cite{gemini_pricing} é um modelo do Google acessado via API, cobrado por
+\textit{tokens} e com camada gratuita, descontinuado em junho de 2026.
 
 Além dessas ferramentas, uma solução comercial foi incluída como referência: o
 \textbf{ABBYY FineReader} \cite{abbyy_finereader}, software comercial de OCR amplamente
@@ -729,11 +731,10 @@ momento da digitalização, como descrito na \autoref{sec:excluidos}.
 A seleção das ferramentas avaliadas neste trabalho foi orientada por dois critérios
 principais: cobertura das quatro gerações tecnológicas descritas na
 \autoref{sec:tecnicas} e uso em estudos recentes de OCR aplicado a documentos históricos
-\cite{huang2021,vesalainen2025}. Selecionamos para este estudo ao menos
-uma ferramenta de cada geração tecnológica, dentre as mais populares e bem avaliadas na
-literatura e na Web. Porém, optamos por
-selecionar um maior número de ferramentas mais recentes, por serem mais promissoras
-para lidar com os desafios do OCR em obras antigas. O \textbf{Tesseract} foi incluído por
+\cite{huang2021,vesalainen2025}. Foi selecionada ao menos uma
+ferramenta de cada geração tecnológica, dentre as mais populares e bem avaliadas na
+literatura e na Web, com um número maior de ferramentas recentes, por serem as mais
+promissoras para lidar com os desafios do OCR em obras antigas. O \textbf{Tesseract} foi incluído por
 ser a referência canônica de código aberto, amplamente utilizado como \textit{baseline}
 em estudos comparativos. O \textbf{EasyOCR} e o \textbf{PaddleOCR} foram escolhidos por
 oferecerem suporte explícito ao português e instalação simplificada, enquanto o
@@ -745,7 +746,8 @@ Na categoria Transformer, o \textbf{TrOCR} foi considerado em duas variantes
 Transformer \cite{huang2021}, mas acabou excluído antes dos experimentos por limitações
 de hardware e de implementação (\autoref{sec:excluidos}). Entre os VLMs locais, o \textbf{Gemma~4}, o
 \textbf{DeepSeek-VL2} e o \textbf{Qwen2.5-VL} foram selecionados por serem executáveis
-sem custo via Ollama. Por fim, entre os serviços via API, o \textbf{LlamaParse} (nos
+sem custo via Ollama; o \textbf{GLM-OCR} e o \textbf{DeepSeek-OCR} entraram depois, como
+substitutos de candidatos que não puderam ser executados. Por fim, entre os serviços via API, o \textbf{LlamaParse} (nos
 modos básico e agêntico), o \textbf{Mistral OCR} e o \textbf{Gemini~2.0~Flash} foram
 incluídos para cobrir o espectro de soluções comerciais com diferentes relações
 custo-desempenho, permitindo comparação direta com as alternativas locais. Parte dessas
@@ -758,38 +760,42 @@ de acesso (local ou API), o regime de custo e a necessidade de GPU.
 
 \begin{table}[htb]
 \centering
-\caption{Ferramentas de OCR consideradas: categoria, licença, forma de acesso, custo e
-requisito de GPU.}
+\caption{Ferramentas de OCR consideradas (candidatas e substitutas): categoria, licença,
+forma de acesso, custo e requisito de GPU.}
 \label{tab:ferramentas_fund}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{L{2.3cm} L{2.8cm} L{2cm} L{1.2cm} L{1.8cm} L{2cm}}
+\small
+\begin{tabular}{L{3.4cm} L{2.6cm} L{1.9cm} L{1.2cm} L{1.5cm} L{1.9cm}}
 \hline
 \textbf{Ferramenta} & \textbf{Categoria} & \textbf{Licença} & \textbf{Acesso}
   & \textbf{Custo} & \textbf{GPU} \\
 \hline
-\href{https://github.com/tesseract-ocr/tesseract}{Tesseract}
+\href{https://github.com/tesseract-ocr/tesseract}{Tesseract}$^{*}$
   & OCR Clássico         & Apache 2.0   & Local & Gratuito  & Não \\
+ABBYY FineReader$^{*}$
+  & OCR Clássico         & Proprietária & Local & Pago      & Não \\
 \hline
-\href{https://github.com/JaidedAI/EasyOCR}{EasyOCR}
-  & Deep Learning (CRNN) & Apache 2.0   & Local & Gratuito  & Opcional \\
-\href{https://github.com/PaddlePaddle/PaddleOCR}{PaddleOCR}
-  & Deep Learning (CRNN) & Apache 2.0   & Local & Gratuito  & Opcional \\
-\href{https://github.com/mindee/doctr}{DocTR}
-  & Deep Learning (CRNN) & Apache 2.0   & Local & Gratuito  & Opcional \\
+\href{https://github.com/JaidedAI/EasyOCR}{EasyOCR}$^{*}$ & Deep Learning (CRNN) & Apache 2.0   & Local & Gratuito  & Opcional \\
+\href{https://github.com/PaddlePaddle/PaddleOCR}{PaddleOCR}$^{*}$ & Deep Learning (CRNN) & Apache 2.0   & Local & Gratuito  & Opcional \\
+\href{https://github.com/mindee/doctr}{DocTR}$^{*}$ & Deep Learning (CRNN) & Apache 2.0   & Local & Gratuito  & Opcional \\
 \hline
 \href{https://huggingface.co/microsoft/trocr-base-handwritten}{TrOCR \texttt{base}}
   & Transformer          & MIT          & Local & Gratuito  & Recomenda \\
 \href{https://huggingface.co/microsoft/trocr-large-handwritten}{TrOCR \texttt{large}}
   & Transformer          & MIT          & Local & Gratuito  & Recomenda \\
 \hline
-\href{https://ai.google.dev/gemma/docs/core}{Gemma 4 (Ollama)}
+\href{https://ai.google.dev/gemma/docs/core}{Gemma 4 (Ollama)}$^{*}$
   & VLM local            & Apache 2.0   & Local & Gratuito  & Recomenda \\
 \href{https://github.com/deepseek-ai/DeepSeek-VL2}{DeepSeek-VL2 (Ollama)}
   & VLM local            & Aberta$^{a}$ & Local & Gratuito  & Recomenda \\
-\href{https://github.com/QwenLM/Qwen2.5-VL}{Qwen2.5-VL (Ollama)}
+\href{https://github.com/QwenLM/Qwen2.5-VL}{Qwen2.5-VL (Ollama)}$^{*}$
   & VLM local            & Apache 2.0   & Local & Gratuito  & Recomenda \\
+DeepSeek-OCR (Ollama)$^{*}$
+  & VLM local            & MIT          & Local & Gratuito  & Recomenda \\
+GLM-OCR (Ollama)$^{*}$
+  & VLM local            & MIT          & Local & Gratuito  & Opcional \\
 \hline
-\href{https://www.llamaindex.ai/llamaparse}{LlamaParse Basic}
+\href{https://www.llamaindex.ai/llamaparse}{LlamaParse Basic}$^{*}$
   & OCR via API          & Proprietária & API   & Pago$^{b}$ & Não \\
 \href{https://www.llamaindex.ai/llamaparse}{LlamaParse Agentic}
   & VLM via API          & Proprietária & API   & Pago$^{b}$ & Não \\
@@ -798,8 +804,10 @@ requisito de GPU.}
 \href{https://ai.google.dev/gemini-api/docs/models}{Gemini 2.0 Flash}
   & VLM via API          & Proprietária & API   & Pago$^{d}$ & Não \\
 \hline
-\multicolumn{6}{p{14.5cm}}{%
-  \footnotesize
+\multicolumn{6}{p{14.3cm}}{%
+    \footnotesize
+  $^{*}$~Ferramentas efetivamente avaliadas (\autoref{tab:modelos_avaliados}); as demais
+  foram excluídas antes dos experimentos (\autoref{sec:excluidos}).
   $^{a}$~DeepSeek-VL2: licença DeepSeek Model License (uso comercial permitido com
   restrições).
   $^{b}$~LlamaParse opera por créditos (10.000 créditos/mês no plano gratuito):
@@ -903,7 +911,10 @@ por meio de retreinamento ou pós-processamento específico, enquanto erros isol
 ser mais fáceis de tratar mediante limpeza de dados ou ajustes localizados. A inspeção
 manual também permite entender o contexto dos erros: um caractere pode ser confundido com
 outro com maior frequência em certos tipos de \textit{layout}, resoluções de digitalização
-ou estilos tipográficos.
+ou estilos tipográficos. Neste trabalho, essa classificação foi feita alinhando as palavras
+da referência e da saída de cada modelo e agrupando as diferenças por tipo
+(\autoref{sec:protocolo_avaliacao}); os casos mais frequentes foram conferidos nas próprias
+saídas e são discutidos na \autoref{sec:padroes_erro}.
 
 %=====================================================================
 % CAPÍTULO 3: TRABALHOS RELACIONADOS
@@ -1002,8 +1013,9 @@ e WER que o TrOCR em textos impressos do século XVIII, eles
 tendem a realizar normalização ortográfica implícita, modernizando grafias históricas de
 forma silenciosa \cite{vesalainen2025}. Esse comportamento pode ser problemático para
 aplicações acadêmicas que requerem fidelidade diplomática ao texto original, como é o
-caso deste trabalho. Modelos OCR dedicados preservam a fidelidade ortográfica com maior
-consistência, mas são mais suscetíveis à propagação de erros em cascata.
+caso deste trabalho. Segundo os mesmos autores, o modelo de OCR dedicado preservou a
+grafia original com mais consistência, mas foi mais suscetível à propagação de erros em
+cascata.
 
 \section{OCR em Português}
 \label{sec:ocr_portugues}
@@ -1023,9 +1035,9 @@ Erros nesses diacríticos, embora pequenos no nível do caractere, produzem pala
 distintas ou inexistentes no nível da palavra, como se observa nos resultados deste
 trabalho (\autoref{sec:padroes_erro}).
 
-No contexto da pós-correção de OCR em português, estudos recentes demonstram que modelos
-de linguagem de grande porte baseados em Transformers podem reduzir bastante as taxas
-de erro residual. Fritzen \cite{fritzen2025} avaliou a aplicação de LLMs como
+No contexto da pós-correção de OCR em português, há indícios de que modelos de linguagem
+de grande porte podem reduzir bastante as taxas de erro residual. Fritzen
+\cite{fritzen2025} avaliou a aplicação de LLMs como
 Gemma~3 para correção pós-OCR no ESTER-Pt, demonstrando que tais modelos conseguem
 reduzir o CER do estado da arte em português de 5,12 para 1,69, uma melhoria de
 aproximadamente 67\%. O resultado mostra o potencial dos modelos de linguagem para o
@@ -1074,7 +1086,7 @@ Ao longo de nove sessões de treinamento realizadas entre junho de 2022 e julho 
 o modelo de reconhecimento de texto em português foi progressivamente refinado a ponto
 de, a partir da quarta sessão, a transcrição manual poder ser gradualmente substituída
 pela correção das saídas automáticas do motor. O projeto foi apresentado na conferência
-Humanidades Digitais e Estudos Inquisitoriais em 2023, e seus resultados demonstram que,
+Humanidades Digitais e Estudos Inquisitoriais em 2023, e o relato do projeto indica que,
 com volume suficiente de anotação e iteração de treinamento, é possível atingir qualidade
 prática em documentos históricos em português, mesmo para caligrafia do século XVII.
 
@@ -1115,8 +1127,8 @@ Vesalainen et al.\ \cite{vesalainen2025} &
 \hline
 Santos et al.\ \cite{santos2023} &
   Impresso moderno & Português &
-    -- & CER &
-  benchmark OCR para português \\
+  Conjunto de avaliação ESTER-Pt & CER &
+  Benchmark de OCR para o português \\
 \hline
 Fritzen \cite{fritzen2025} &
   Impresso moderno & Português &
@@ -1240,8 +1252,9 @@ Com base nesses critérios, foram selecionadas cinco obras do acervo NUPILL, des
 \section{Classificação de Dificuldade}
 
 Para estruturar a avaliação de forma estratificada, as páginas selecionadas foram
-classificadas em três níveis de dificuldade: fácil, médio e difícil. Essa classificação
-baseia-se em três eixos observáveis diretamente nas imagens digitalizadas: qualidade
+classificadas em três níveis de dificuldade: fácil, médio e difícil. Essa classificação foi
+feita a partir da inspeção visual das imagens, antes dos experimentos, e baseia-se em três
+eixos observáveis diretamente nas imagens digitalizadas: qualidade
 tipográfica, grau de degradação física e complexidade ortográfica.
 
 \subsection{Páginas Fáceis}
@@ -1397,14 +1410,12 @@ critérios abaixo:
 
 \section{Validação da Regra Ouro}
 
-A validação foi inteiramente manual: cada transcrição foi conferida pelo autor, página por
-página e linha por linha, contra a imagem original, sem o uso de nenhuma ferramenta
-automática de comparação ou correção. Esse trabalho contou com o auxílio do Núcleo de
-Pesquisas em Informática, Literatura e Linguística (NUPILL), coordenado pelo coorientador,
-Prof.\ Dr.\ Alckmar Luiz dos Santos, especialista em literatura brasileira histórica. O apoio
-do núcleo concentrou-se nas passagens de leitura incerta e nas formas ortográficas da época,
-garantindo que grafias antigas legítimas fossem preservadas e não confundidas com erros de
-transcrição.
+Depois de transcritas, as páginas foram conferidas pelo autor contra a imagem original,
+página por página e linha por linha. Essa revisão contou com o auxílio do NUPILL,
+coordenado pelo coorientador, Prof.\ Dr.\ Alckmar Luiz dos Santos, especialista em
+literatura brasileira histórica, sobretudo nas passagens de leitura incerta e nas formas
+ortográficas da época, para que grafias antigas legítimas não fossem confundidas com erros
+de transcrição.
 
 O resultado é um conjunto de 20 arquivos de texto plano, um por página, que constitui a
 regra ouro utilizada para o cálculo de CER e WER em todos os experimentos deste trabalho.
@@ -1450,9 +1461,11 @@ de um pipeline de extração, é uma contribuição complementar e está descrit
     \fonte{Elaborado pelo autor.}
 \end{figure}
 
-As ferramentas avaliadas foram escolhidas de modo a cobrir as quatro gerações
+As ferramentas candidatas foram escolhidas de modo a cobrir as quatro gerações
 tecnológicas descritas na \autoref{sec:tecnicas}: OCR clássico, modelos baseados em
-aprendizado profundo, arquiteturas Transformer e modelos de visão-linguagem (VLMs). A
+aprendizado profundo, arquiteturas Transformer e modelos de visão-linguagem (VLMs). Como o
+TrOCR, único representante dos Transformers, foi excluído antes dos experimentos
+(\autoref{sec:excluidos}), as ferramentas avaliadas cobrem três dessas gerações. A
 \autoref{sec:ferramentas} descreve cada ferramenta e os critérios dessa escolha. O
 objetivo é observar como cada geração se comporta em obras literárias históricas em
 língua portuguesa, material pouco explorado nos estudos anteriores
@@ -1627,19 +1640,8 @@ avaliado.
 
 O modo \textit{Agentic} do LlamaParse custa US\$\,0,0125 por página, dez vezes o valor do
 modo básico \cite{llamaparse_pricing}. Por esse motivo, apenas o modo básico foi
-mantido. A
-\autoref{fig:exemplo_ocr_par} mostra uma saída do modo \textit{Agentic} obtida no teste
-de configuração, antes da exclusão.
+mantido.
 
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=\textwidth]{imagens/culto_p018_original.jpg}
-    \caption{Exemplo de par entrada/saída obtido no teste de configuração.
-    \textbf{Esquerda:} página~18 de \textit{Culto à Mulher} vol.\,1. \textbf{Direita
-    (trecho):} saída do LlamaParse no modo \textit{Agentic}.}
-    \label{fig:exemplo_ocr_par}
-    \fonte{NUPILL/UFSC (imagem); elaborado pelo autor (transcrição OCR).}
-\end{figure}
 
 \subsection{Acesso à API}
 
@@ -1783,6 +1785,12 @@ aplicativo de celular a cerca de 150~ppi, com páginas de aproximadamente
 acrescentar detalhe, e aumentaria o custo de processamento dos VLMs, cujo número de
 \textit{tokens} de entrada cresce com o número de pixels.
 
+Nenhum pré-processamento, como binarização, correção de inclinação ou remoção de ruído, foi
+aplicado às imagens. Todas as ferramentas receberam as mesmas páginas e foram usadas na
+configuração padrão, como um usuário do acervo as aplicaria sem ajustes específicos para
+cada obra. O ganho que o pré-processamento pode trazer, discutido na
+\autoref{sec:ocr_historico}, fica como trabalho futuro.
+
 \subsection{Organização do Código}
 
 A implementação foi feita em Python e organizada como um pacote com três partes principais:
@@ -1901,7 +1909,10 @@ A escolha do modelo segue cinco critérios, aplicados na ordem abaixo
     \item \textbf{Custo e controle dos dados} (eliminatório): o modelo deve poder ser usado
     sem custo recorrente e sem enviar as imagens do acervo a serviços de OCR de terceiros,
     o que exclui as APIs pagas e as licenças comerciais. Admite-se o uso de infraestrutura
-    de nuvem genérica, como o Google Colab, na qual o próprio usuário executa o modelo;
+    de nuvem genérica, como o Google Colab: nela, o próprio usuário executa um modelo de
+    pesos abertos, com código sob seu controle, e as imagens são processadas em uma
+    máquina virtual temporária vinculada à sua conta, em vez de entregues a um serviço de
+    OCR que as processa em seu nome;
     \item \textbf{Qualidade}: CER e WER médios e CER mediano;
     \item \textbf{Robustez}: número de falhas, isto é, páginas com texto inutilizável;
     \item \textbf{Fidelidade ortográfica}: proporção de grafias antigas preservadas e
@@ -1938,7 +1949,10 @@ figuras e tabelas deste capítulo são geradas pelo notebook
 
 \subsection{Equipamento sem GPU}
 
-Seis modelos foram avaliados no equipamento descrito na \autoref{tab:ambiente}, processando as 20 páginas de textos históricos selecionadas para a regra ouro, descrita no \autoref{cap:regra_ouro}. A \autoref{tab:extracao_resumo} resume os resultados para cada ferramenta avaliada, em termos de tempo mediano, mínimo e máximo de execução por página, quantidade de RAM utilizada no pico do processamento e o tempo estimado para processar todas as 1.770 páginas das cinco obras completas do corpus com o qual foi feita a regra ouro.
+Seis modelos foram executados no equipamento descrito na \autoref{tab:ambiente}, sobre as
+20 páginas da regra ouro (\autoref{cap:regra_ouro}). A \autoref{tab:extracao_resumo}
+resume, para cada um, o tempo mediano, mínimo e máximo por página, o pico de memória RAM e
+o tempo estimado para processar as 1.770 páginas das cinco obras completas.
 
 \input{tabelas/extracao_resumo}
 
@@ -2266,7 +2280,7 @@ Este trabalho avaliou ferramentas de reconhecimento óptico de caracteres aplica
 obras literárias impressas em português entre os séculos XVIII e XX, do acervo do NUPILL,
 com o objetivo de selecionar a mais adequada à digitalização desse acervo. Os objetivos
 específicos foram cumpridos: a revisão bibliográfica (Capítulos~\ref{cap:fundamentacao}
-e~\ref{cap:relacionados}) orientou a escolha de ferramentas de quatro gerações tecnológicas; a regra ouro, com
+e~\ref{cap:relacionados}) orientou a escolha de ferramentas candidatas de quatro gerações tecnológicas, das quais três foram avaliadas; a regra ouro, com
 20 páginas de cinco obras estratificadas por dificuldade, foi construída e revisada
 manualmente (\autoref{cap:regra_ouro}); dez ferramentas foram executadas sobre essa
 amostra, com registro de tempo e memória (\autoref{sec:viabilidade}); a comparação
@@ -2381,8 +2395,11 @@ ferramentas em projetos semelhantes.
     \item Ampliar a regra ouro com mais páginas e um segundo transcritor, para medir a
     concordância entre transcrições.
 
-    \item Redigitalizar a 300~ppi as obras fotografadas com celular e medir o ganho de
+        \item Redigitalizar a 300~ppi as obras fotografadas com celular e medir o ganho de
     qualidade.
+
+    \item Avaliar o efeito do pré-processamento das imagens, como binarização e correção
+    de curvatura, sobre os motores clássicos e os VLMs.
 \end{enumerate}
 
 %=====================================================================
@@ -2401,7 +2418,7 @@ ferramentas em projetos semelhantes.
 % APÊNDICES
 %=====================================================================
 \begin{apendicesenv}
-\partapendices
+% \partapendices  % folha "Apêndices" removida: em página única ela ficava praticamente em branco
 
 \chapter{Pipeline de Extração}
 \label{ap:pipeline}
