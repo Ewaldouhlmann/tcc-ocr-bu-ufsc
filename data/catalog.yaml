@@ -1,6 +1,6 @@
 # Catálogo de obras e modelos OCR — fonte única de metadados consumida pelo
 # pipeline (src/pipeline/converter.py, src/pipeline/extractor.py) e pelo
-# benchmark (benchmark/run_benchmark.py) via src/catalog.py.
+# benchmark (benchmark/extrair.py) via src/catalog.py.
 #
 # Dados de página/dificuldade da amostra de avaliação ficam em
 # data/corpus/regra_ouro/manifest.csv (Tabela 4.4 do TCC), não aqui.

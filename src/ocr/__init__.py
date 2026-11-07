@@ -17,7 +17,7 @@ from src.ocr.vlm import (
 )
 
 #: Mapa nome -> classe, usado pelo benchmark para instanciar modelos a partir do
-#: CLI (--models), com as mesmas chaves de benchmark/run_benchmark.py::AVAILABLE_MODELS.
+#: CLI (--models), com as mesmas chaves de benchmark/extrair.py.
 MODEL_REGISTRY: dict[str, type[BaseOCR]] = {
     "tesseract": TesseractOCR,
     "easyocr": EasyOCR,
